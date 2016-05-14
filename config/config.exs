@@ -5,6 +5,14 @@
 # is restricted to this project.
 use Mix.Config
 
+config :exantenna, Exantenna.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  database: "exantenna_repo",
+  username: "user",
+  password: "pass",
+  hostname: "localhost"
+
+
 # Configures the endpoint
 config :exantenna, Exantenna.Endpoint,
   url: [host: "localhost"],
@@ -27,3 +35,7 @@ import_config "#{Mix.env}.exs"
 config :phoenix, :generators,
   migration: true,
   binary_id: false
+
+# for Ecto 2.0
+config :exantenna,
+  ecto_repos: [Exantenna.Repo]
