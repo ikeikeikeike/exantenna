@@ -1,30 +1,51 @@
 exports.config = {
   // See http://brunch.io/#documentation for docs.
   files: {
-    javascripts: {
-      joinTo: "js/app.js"
+    //  javascripts: {
+    //    joinTo: "js/app.js"
 
-      // To use a separate vendor.js bundle, specify two files path
-      // https://github.com/brunch/brunch/blob/stable/docs/config.md#files
-      // joinTo: {
-      //  "js/app.js": /^(web\/static\/js)/,
-      //  "js/vendor.js": /^(web\/static\/vendor)|(deps)/
-      // }
-      //
-      // To change the order of concatenation of files, explicitly mention here
-      // https://github.com/brunch/brunch/tree/master/docs#concatenation
-      // order: {
-      //   before: [
-      //     "web/static/vendor/js/jquery-2.1.1.js",
-      //     "web/static/vendor/js/bootstrap.min.js"
-      //   ]
-      // }
+    //    // To use a separate vendor.js bundle, specify two files path
+    //    // https://github.com/brunch/brunch/blob/stable/docs/config.md#files
+    //    // joinTo: {
+    //    //  "js/app.js": /^(web\/static\/js)/,
+    //    //  "js/vendor.js": /^(web\/static\/vendor)|(deps)/
+    //    // }
+    //    //
+    //    // To change the order of concatenation of files, explicitly mention here
+    //    // https://github.com/brunch/brunch/tree/master/docs#concatenation
+    //    // order: {
+    //    //   before: [
+    //    //     "web/static/vendor/js/jquery-2.1.1.js",
+    //    //     "web/static/vendor/js/bootstrap.min.js"
+    //    //   ]
+    //    // }
+    //  },
+    //  stylesheets: {
+    //    joinTo: "css/app.css"
+    //  },
+    //  templates: {
+    //    joinTo: "js/app.js"
+    //  }
+
+    javascripts: {
+      joinTo: "js/app.js",
+      order: {
+        before: [
+          "bower_components/jquery/dist/jquery.min.js",
+          "bower_components/bootstrap/dist/js/bootstrap.min.js",
+        ]
+      }
     },
     stylesheets: {
-      joinTo: "css/app.css"
-    },
-    templates: {
-      joinTo: "js/app.js"
+      joinTo: {
+        'css/app.css': /^(web\/static\/css|bower_components)/
+      },
+      order: {
+        before: [
+          "bower_components/bootstrap/dist/css/bootstrap.min.css",
+          // "bower_components/bootstrap/dist/css/bootstrap-theme.css",
+        ]
+      }
     }
   },
 
@@ -39,8 +60,11 @@ exports.config = {
   paths: {
     // Dependencies and current project directories to watch
     watched: [
+      "deps/phoenix/web/static",
+      "deps/phoenix_html/web/static",
       "web/static",
-      "test/static"
+      "test/static",
+      "bower_components/bootstrap/dist/css",
     ],
 
     // Where to compile files to
@@ -52,7 +76,11 @@ exports.config = {
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/web\/static\/vendor/]
-    }
+    },
+    afterBrunch: [
+      'mkdir -p priv/static/fonts',
+      'cp -f bower_components/bootstrap/fonts/* priv/static/fonts',
+    ]
   },
 
   modules: {
