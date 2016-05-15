@@ -11,9 +11,10 @@ defmodule Exantenna.Repo.Migrations.CreateBlogVerifier do
       timestamps
     end
 
-    create index(:blog_verifiers, [:blog_id])
     create index(:blog_verifiers, [:name])
     create index(:blog_verifiers, [:state])
+
+    create index(:blog_verifiers, [:blog_id])
 
   end
 end

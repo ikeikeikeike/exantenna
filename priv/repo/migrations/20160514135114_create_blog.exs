@@ -13,6 +13,8 @@ defmodule Exantenna.Repo.Migrations.CreateBlog do
       add :penalty, :string
       add :last_modified, :datetime
 
+      add :user_id, references(:users, on_delete: :nothing)
+
       timestamps
     end
 

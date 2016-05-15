@@ -1,36 +1,14 @@
 <div class="jumbotron">
   <h2><%= gettext "Welcome to %{name}", name: "Phoenix!" %></h2>
   <p class="lead">A productive web framework that<br />does not compromise speed and maintainability.</p>
-</div>
-
-<div class="row marketing">
-  <div class="col-lg-6">
-    <h4>Resources</h4>
-    <ul>
-      <li>
-        <a href="http://phoenixframework.org/docs/overview">Guides</a>
-      </li>
-      <li>
-        <a href="http://hexdocs.pm/phoenix">Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-    </ul>
-  </div>
-
-  <div class="col-lg-6">
-    <h4>Help</h4>
-    <ul>
-      <li>
-        <a href="http://groups.google.com/group/phoenix-talk">Mailing list</a>
-      </li>
-      <li>
-        <a href="http://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">@elixirphoenix</a>
-      </li>
-    </ul>
+  <div class="row">
+    <div class="col-xs-12 text-center">
+      <%= if @current_user do %>
+        <%= @current_user.email %> <br />
+        <%= link "Sign out", to: auth_path(@conn, :logout), method: :delete, class: "btn btn-danger" %>
+      <% else %>
+        <%= link "Sign in", to: auth_path(@conn, :login, "login"), method: :get, class: "btn btn-success" %>
+      <% end %>
+    </div>
   </div>
 </div>

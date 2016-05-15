@@ -13,20 +13,17 @@ defmodule Exantenna.Blog do
     field :penalty, :string, default: "beginning"  # beginning, soft, hard, ban
     field :last_modified, Ecto.DateTime
 
+    belongs_to :user, Exantenna.User
+
     has_many :verifiers, Exantenna.BlogVerifier
 
     timestamps
   end
 
-  @required_fields ~w(name url rss mediatype adtype penalty last_modified)
-  @optional_fields ~w()
+  @required_fields ~w(name url rss)
+  @optional_fields ~w(penalty last_modified mediatype adtype)
 
-  @doc """
-  Creates a changeset based on the `model` and `params`.
-
-  If no params are provided, an invalid changeset is returned
-  with no validation performed.
-  """
+  @doc false
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)

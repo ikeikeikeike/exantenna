@@ -20,7 +20,10 @@ defmodule Exantenna.Mixfile do
     [
       mod: {Exantenna, []},
       applications: [
-        :phoenix, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex
+        :phoenix, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex,
+        :ueberauth,
+        # :ueberauth_identity, :ueberauth_facebook, :ueberauth_twitter,
+        :ueberauth_google
       ]
     ]
   end
@@ -42,6 +45,10 @@ defmodule Exantenna.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:timex, "~> 2.1"},
+      {:ueberauth, "~> 0.2"},
+      {:ueberauth_google, "~> 0.2"},
+      {:ueberauth_identity, "~> 0.2"},
+      {:guardian, "~> 0.11.0"},
     ]
   end
 

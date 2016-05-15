@@ -39,3 +39,5 @@ config :phoenix, :generators,
 # for Ecto 2.0
 config :exantenna,
   ecto_repos: [Exantenna.Repo]
+
+import_config "ueberauth.secret.exs"
