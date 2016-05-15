@@ -1,4 +1,4 @@
-defmodule Exantenna.UserFromAuth do
+defmodule Exantenna.Guardian.UserFromAuth do
   alias Exantenna.Repo
   alias Exantenna.User
   alias Exantenna.Authorization

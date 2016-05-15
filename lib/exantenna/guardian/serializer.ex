@@ -1,4 +1,4 @@
-defmodule Exantenna.GuardianSerializer do
+defmodule Exantenna.Guardian.Serializer do
   @behaviour Guardian.Serializer
 
   alias Exantenna.Repo
