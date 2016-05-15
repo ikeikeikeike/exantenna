@@ -10,7 +10,7 @@
     <div class='panel-body'>
       <%= if not Enum.member?(@current_auths, "google") do %>
         <p>
-          <a class="btn btn-primary col-xs-12" href="<%= auth_path(@conn, :login, "google") %>">
+          <a class="btn btn-primary col-xs-12" href="<%= admin_auth_path(@conn, :login, "google") %>">
             Sign in with Google
           </a>
           <a class="btn col-xs-12" href="<%= page_path(@conn, :index) %>">

@@ -1,4 +1,4 @@
-defmodule Exantenna.AuthController do
+defmodule Exantenna.Admin.AuthController do
   use Exantenna.Web, :controller
 
   alias Exantenna.Guardian.UserFromAuth

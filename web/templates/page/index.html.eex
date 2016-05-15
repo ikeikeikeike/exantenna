@@ -5,9 +5,9 @@
     <div class="col-xs-12 text-center">
       <%= if @current_user do %>
         <%= @current_user.email %> <br />
-        <%= link "Sign out", to: auth_path(@conn, :logout), method: :delete, class: "btn btn-danger" %>
+        <%= link "Sign out", to: admin_auth_path(@conn, :logout), method: :delete, class: "btn btn-danger" %>
       <% else %>
-        <%= link "Sign in", to: auth_path(@conn, :login, "login"), method: :get, class: "btn btn-success" %>
+        <%= link "Sign in", to: admin_auth_path(@conn, :login, "login"), method: :get, class: "btn btn-success" %>
       <% end %>
     </div>
   </div>

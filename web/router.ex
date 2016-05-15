@@ -22,16 +22,16 @@ defmodule Exantenna.Router do
     pipe_through [:browser, :browser_auth]
 
     get "/", PageController, :index
-    delete "/logout", AuthController, :logout
+    # delete "/logout", AuthController, :logout
   end
 
-  scope "/auth", Exantenna do
+  scope "/admin", Exantenna.Admin, as: "admin" do
     pipe_through [:browser, :browser_auth]
 
-    get "/:provider", AuthController, :login
-    get "/:provider/callback", AuthController, :callback
-    post "/:provider/callback", AuthController, :callback
-    delete "/logout", AuthController, :logout
+    get "/auth/:provider", AuthController, :login
+    get "/auth/:provider/callback", AuthController, :callback
+    post "/auth/:provider/callback", AuthController, :callback
+    delete "/auth/logout", AuthController, :logout
   end
 
 
