@@ -1,0 +1,95 @@
+<%#
+{{append . "HeadStyles" "/static/css/admin/custom.css"}}
+{{append . "HeadStyles" "/static/css/admin/signup.css"}}
+%>
+
+<div class="container">
+  <div class="row vertical-offset-50">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="panel panel-default">
+        <div class="panel-heading text-center">
+          <h3 class="panel-title"><strong><%= gettext "Register your website" %></strong></h3>
+        </div>
+
+        <div class="panel-body">
+          <form accept-charset="utf-8" role="form" class="form-horizontal" method="POST" action='<%# {{urlfor "admin.LoginController.Signup"}} %>'>
+
+            <%# {{template "base/alerts/flashform.tpl" .}} %>
+
+            <div class="form-group">
+              <label for="inputRss" class="col-sm-3 control-label"><%= gettext "Site's RSS" %></label>
+              <div class="col-sm-9">
+                <input class="form-control" placeholder="<%= gettext "e.g. http://example.com/index.rdf" %>"
+                       value='<%# {{index .Params "Rss"}} %>' name="rss" type="url" required autofocus id="inputRss" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="inputEmail" class="col-sm-3 control-label"><%= gettext "E-Mail" %></label>
+              <div class="col-sm-9">
+                <input class="form-control" placeholder="<%= gettext "e.g. admin@example.com" %>" name="Email"
+                       value="<%# {{index .Params "Email"}} %>" type="email" required id="inputEmail" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword" class="col-sm-3 control-label"><%= gettext "Password" %></label>
+              <div class="col-sm-9">
+                <input class="form-control" placeholder="<%= gettext "Please fill out password form" %>" name="Password" type="password" value="" required
+                       pattern=".{6,}" title="<%= gettext "Please fill out password more than 6 letters" %>" id="inputPassword"  />
+                <input class="form-control" placeholder="<%= gettext "Password confirmation" %>" name="Repassword" type="password" required
+                       pattern=".{6,}" title="<%= gettext "Please fill out password more than 6 letters" %>" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label" for="media-type"><%= gettext "Media Type" %></label>
+              <div class="col-sm-9">
+                <select id="media-type" class="form-control" name="mediatype" required>
+                  <option value=''><%= gettext "Please choose one" %></option>
+                  <option value='image' <%# {{if eq (index .Params "Mediatype") "image" }}selected{{end}} %>><%= gettext "Images primarily" %></option>
+                  <option value='movie' <%# {{if eq (index .Params "Mediatype") "movie" }}selected{{end}} %>><%= gettext "Movies primarily" %></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label" for="kindof"><%= gettext "Kind of Contents" %></label>
+              <div class="col-sm-9">
+                <select id="kindof" class="form-control" name="kindof" required>
+                  <option value=''><%= gettext "Please choose one" %></option>
+                  <option value='2d' <%# {{if eq (index .Params "kindof") "2d" }}selected{{end}} %>><%= gettext "Anime or Commic primarily" %></option>
+                  <option value='3d' <%# {{if eq (index .Params "kindof") "3d" }}selected{{end}} %>><%= gettext "Idol or Pornstar primarily" %></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                  <label>
+                    <input name="remember" type="checkbox" value="Remember Me" required />
+                    <strong>
+                      <%= gettext "By clicking on 'Register' below, you are agreeing to the " %>
+                      <a target='_blank' href='<%# {{urlfor "admin.LicensesController.Terms"}} %>'><%= gettext "Terms of service" %></a>
+                      <%= gettext "and the" %>
+                      <a target='_blank' href='<%# {{urlfor "admin.LicensesController.Privacy"}} %>'><%= gettext "Privacy Policy" %></a>
+                    </strong>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <input class="btn btn-lg btn-success btn-block" type="submit" value="<%= gettext "Register to %{sitename}", sitename: "" %>">
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel-footer text-center clearfix">
+          <%= gettext "When you'd have Account: " %> <a href='<%# {{urlfor "admin.LoginController.Login"}} %>'><%= gettext "Log in" %></a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%# {{append . "HeadScripts" "/static/js/admin/users.js"}} %>
