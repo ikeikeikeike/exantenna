@@ -45,8 +45,8 @@
             <div class="form-group">
               <label for="inputPassword" class="col-sm-3 control-label"><%= gettext "Password" %></label>
               <div class="col-sm-9">
-                <input class="form-control" placeholder='<%= gettext "Please fill out password more than 6 letters" %>' name="password"
-                       type="password" value="" required pattern=".{6,}" title='<%= gettext "Please fill out password form" %>' id="inputPassword"  />
+                <input id="inputPassword" class="form-control" placeholder='<%= gettext "Please fill out password form" %>' name="password"
+                       type="password" value="" required pattern=".{6,}" title='<%= gettext "Please fill out password more than 6 letters" %>'  />
               </div>
             </div>
             <div class="form-group">

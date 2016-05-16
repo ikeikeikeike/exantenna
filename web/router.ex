@@ -28,6 +28,8 @@ defmodule Exantenna.Router do
   scope "/admin", Exantenna.Admin, as: "admin" do
     pipe_through [:browser, :browser_auth]
 
+    get "/signup", UserController, :signup
+
     get "/auth/:provider", AuthController, :login
     get "/auth/:provider/callback", AuthController, :callback
     post "/auth/:provider/callback", AuthController, :callback

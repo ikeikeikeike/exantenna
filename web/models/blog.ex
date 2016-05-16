@@ -7,8 +7,8 @@ defmodule Exantenna.Blog do
     field :url, :string
     field :rss, :string
 
+    field :kindof, :string
     field :mediatype, :string
-    field :adtype, :string
 
     field :penalty, :string, default: "beginning"  # beginning, soft, hard, ban
     field :last_modified, Ecto.DateTime
@@ -21,7 +21,7 @@ defmodule Exantenna.Blog do
   end
 
   @required_fields ~w(name url rss)
-  @optional_fields ~w(penalty last_modified mediatype adtype)
+  @optional_fields ~w(penalty last_modified mediatype kindof)
 
   @doc false
   def changeset(model, params \\ :empty) do

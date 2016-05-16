@@ -7,7 +7,7 @@ defmodule Exantenna.Repo.Migrations.CreateBlog do
       add :url, :string
       add :rss, :string
 
-      add :adtype, :string
+      add :kindof, :string
       add :mediatype, :string
 
       add :penalty, :string
@@ -20,7 +20,7 @@ defmodule Exantenna.Repo.Migrations.CreateBlog do
 
     create index(:blogs, [:url], unique: true)
 
-    create index(:blogs, [:adtype])
+    create index(:blogs, [:kindof])
     create index(:blogs, [:mediatype])
     create index(:blogs, [:penalty])
     create index(:blogs, [:last_modified])
