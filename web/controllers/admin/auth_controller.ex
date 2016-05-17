@@ -1,6 +1,5 @@
 defmodule Exantenna.Admin.AuthController do
   use Exantenna.Web, :controller
-
   alias Exantenna.Guardian.UserFromAuth
 
   plug Ueberauth

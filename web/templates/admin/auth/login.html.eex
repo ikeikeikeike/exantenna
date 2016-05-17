@@ -10,7 +10,7 @@
     <div class='panel-body'>
       <%= if not Enum.member?(@current_auths, "google") do %>
         <p>
-          <a class="btn btn-primary col-xs-12" href="<%= admin_auth_path(@conn, :login, "google") %>">
+          <a class="btn btn-primary col-xs-12" href='<%= admin_auth_path(@conn, :login, "google") %>'>
             Sign in with Google
           </a>
           <a class="btn col-xs-12" href="<%= page_path(@conn, :index) %>">
@@ -31,8 +31,7 @@
         </div>
 
         <div class="panel-body">
-          <form accept-charset="utf-8" role="form" class="form-horizontal" method="POST" action='<%# {{urlfor "admin.LoginController.Login"}} %>'>
-
+          <%= form_tag admin_auth_path(@conn, :callback, "identity"), method: "post", role: "form", class: "form-horizontal" do %>
             <%# {{template "base/alerts/flashform.tpl" .}} %>
 
             <div class="form-group">
@@ -57,7 +56,7 @@
                 </a>
               </div>
             </div>
-          </form>
+          <% end %>
         </div>
 
         <div class="panel-footer text-center clearfix">

@@ -3,6 +3,9 @@ defmodule Exantenna.Guardian.UserFromAuth do
   alias Exantenna.User
   alias Exantenna.Authorization
 
+  # alias Ueberauth.Auth
+
+  # def find_or_create(%Auth{provider: :identity} = auth) do
   def find_or_create(auth) do
     case find_authorization(auth) do
       {:error, :not_found} ->

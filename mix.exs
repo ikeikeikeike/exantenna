@@ -21,9 +21,7 @@ defmodule Exantenna.Mixfile do
       mod: {Exantenna, []},
       applications: [
         :phoenix, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex,
-        :ueberauth,
-        # :ueberauth_identity, :ueberauth_facebook, :ueberauth_twitter,
-        :ueberauth_google
+        :ueberauth, :ueberauth_identity, :ueberauth_google
       ]
     ]
   end
