@@ -28,6 +28,7 @@ defmodule Exantenna.Router do
     pipe_through [:browser, :browser_auth]
 
     get "/signup", UserController, :signup
+    post "/register", UserController, :register
 
     get "/auth/:provider", AuthController, :login
     get "/auth/:provider/callback", AuthController, :callback

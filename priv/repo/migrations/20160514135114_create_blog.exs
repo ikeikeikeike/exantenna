@@ -4,11 +4,12 @@ defmodule Exantenna.Repo.Migrations.CreateBlog do
   def change do
     create table(:blogs) do
       add :name, :string
+
       add :url, :string
       add :rss, :string
 
-      add :kindof, :string
       add :mediatype, :string
+      add :contenttype, :string
 
       add :penalty, :string
       add :last_modified, :datetime
@@ -19,9 +20,8 @@ defmodule Exantenna.Repo.Migrations.CreateBlog do
     end
 
     create index(:blogs, [:url], unique: true)
-
-    create index(:blogs, [:kindof])
     create index(:blogs, [:mediatype])
+    create index(:blogs, [:contenttype])
     create index(:blogs, [:penalty])
     create index(:blogs, [:last_modified])
 

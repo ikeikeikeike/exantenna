@@ -50,7 +50,7 @@ defmodule Exantenna.Web do
       use Phoenix.HTML
 
       import Exantenna.Router.Helpers
-      import Exantenna.ErrorHelpers
+      import Exantenna.Helpers
       import Exantenna.Gettext
     end
   end
