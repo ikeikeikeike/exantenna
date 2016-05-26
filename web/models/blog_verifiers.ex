@@ -13,7 +13,6 @@ defmodule Exantenna.BlogVerifier do
   @required_fields ~w(name state)
   @optional_fields ~w()
 
-  @doc false
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)

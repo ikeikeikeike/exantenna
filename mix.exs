@@ -22,7 +22,8 @@ defmodule Exantenna.Mixfile do
       applications: [
         :phoenix, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex,
         :ueberauth, :ueberauth_identity, :ueberauth_google,
-        :comeonin
+        :timex, :timex_ecto, :tzdata,
+        :comeonin,
       ]
     ]
   end
@@ -44,10 +45,11 @@ defmodule Exantenna.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:timex, "~> 2.1"},
+      {:timex_ecto, github: "bitwalker/timex_ecto"},
       {:ueberauth, "~> 0.2"},
       {:ueberauth_google, "~> 0.2"},
       {:ueberauth_identity, "~> 0.2"},
-      {:guardian, "~> 0.11.0"},
+      {:guardian, "~> 0.11"},
       {:comeonin, "~> 2.4"},
     ]
   end

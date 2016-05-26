@@ -11,7 +11,7 @@ defmodule Exantenna.Blog do
     field :contenttype, :string
 
     field :penalty, :string, default: "beginning"  # beginning, soft, hard, ban
-    field :last_modified, Ecto.DateTime
+    field :last_modified, Timex.Ecto.DateTime
 
     belongs_to :user, Exantenna.User
 
@@ -23,7 +23,6 @@ defmodule Exantenna.Blog do
   @required_fields ~w(name url rss)
   @optional_fields ~w(penalty last_modified mediatype contenttype)
 
-  @doc false
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)

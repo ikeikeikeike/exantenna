@@ -15,7 +15,7 @@ defmodule Exantenna.Tmpuser do
 
     field :token, :string
     field :tokentype, :string
-    field :expires, Ecto.DateTime
+    field :expires, Timex.Ecto.DateTime
 
     timestamps
   end
@@ -27,11 +27,9 @@ defmodule Exantenna.Tmpuser do
   @mediatypes ~w(image movie)
   @contenttypes ~w(second_dimension third_dimention)
 
-  @doc false
-  def register_changeset(model, params \\ :empty) do
+  def register_changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
-    |> unique_constraint(:email)
     |> validate_required(~w(rss email password password_confirmation mediatype contenttype)a)
     |> validate_format(:rss, ~r/^https?:\/\//)
     |> validate_format(:email, ~r/@/)
@@ -39,10 +37,9 @@ defmodule Exantenna.Tmpuser do
     |> validate_confirmation(:password)
     |> validate_inclusion(:mediatype, @mediatypes)
     |> validate_inclusion(:contenttype, @contenttypes)
-  end
-
-  def generate_password(changeset) do
-    put_change(changeset, :encrypted_password, Comeonin.Pbkdf2.hashpwsalt(changeset.params["password"]))
+    |> put_change(:token, Ecto.UUID.generate)
+    |> put_change(:tokentype, "signup")
+    |> put_change(:expires, Timex.shift(Timex.DateTime.now, days: 1))
   end
 
 end

@@ -19,5 +19,6 @@ defmodule Exantenna.Repo.Migrations.CreateTmpuser do
       timestamps
     end
 
+    # create unique_index(:tmpusers, [:email, :tokentype], name: :tmpusers_email_tokentype_index)
   end
 end
