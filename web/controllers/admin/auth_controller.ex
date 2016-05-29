@@ -23,12 +23,12 @@ defmodule Exantenna.Admin.AuthController do
     case UserFromAuth.find_or_create(auth) do
       {:ok, user} ->
         conn
-        |> put_flash(:info, "Signed in as #{user.email}")
+        |> put_flash(:info, gettext("Signed in as %{email}", email: user.email))
         |> Guardian.Plug.sign_in(user, :token, perms: %{default: Guardian.Permissions.max})
         |> redirect(to: page_path(conn, :index))
       {:error, reason} ->
         conn
-        |> put_flash(:error, "Could not authenticate. Error: #{reason}")
+        |> put_flash(:error, gettext("Could not authenticate. %{reason}", reason: reason))
         |> render("login.html", current_user: current_user, current_auths: auths(current_user))
     end
   end
@@ -43,11 +43,11 @@ defmodule Exantenna.Admin.AuthController do
       # but I prefer to clear out the session. This means that because we
       # use tokens in two locations - :default and :admin - we need to load it (see above)
       |> Guardian.Plug.sign_out
-      |> put_flash(:info, "Signed out")
+      |> put_flash(:info, gettext("Signed out"))
       |> redirect(to: "/")
     else
       conn
-      |> put_flash(:info, "Not logged in")
+      |> put_flash(:info, gettext("Not logged in"))
       |> redirect(to: "/")
     end
   end

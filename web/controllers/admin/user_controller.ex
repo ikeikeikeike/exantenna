@@ -46,8 +46,10 @@ defmodule Exantenna.Admin.UserController do
       tmpuser ->
         case Services.User.register(tmpuser) do
           {:error, changeset} ->
-            msg = "Message: %{r}\n Please start registration again at one's beginnings"
-            text conn, gettext(msg, r: "#{inspect changeset.errors}")
+            msg =
+              "Message: %{r}\n Please start registration again at one's beginnings"
+              |> gettext(r: "#{inspect changeset.errors}")
+            text conn, msg
 
           {:ok, _user} ->
             Repo.delete(tmpuser)

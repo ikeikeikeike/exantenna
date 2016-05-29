@@ -11,10 +11,12 @@ defmodule Exantenna.Guardian.UserFromAuth do
       {:error, :not_found} ->
         case find_user(auth) do
           {:error, :not_found} ->
-            create_user_and_authorization(auth)
+            {:error, "user not found"}
+
           {:ok, user} ->
             create_authorization(auth, user)
         end
+
       authz ->
         update_authorization(auth, authz)
     end
@@ -34,20 +36,6 @@ defmodule Exantenna.Guardian.UserFromAuth do
     end
   end
 
-  defp create_user_and_authorization(auth) do
-    Repo.transaction fn ->
-      case Repo.insert(%User{email: email_from_auth(auth)}) do
-        {:ok, user} ->
-          case create_authorization(auth, user) do
-            {:ok, user} -> user
-            {:error, reason} -> reason
-          end
-        {:error, reason} ->
-          reason
-      end
-    end
-  end
-
   defp create_authorization(auth, user) do
     authz =
       Ecto.build_assoc(user,
@@ -58,6 +46,7 @@ defmodule Exantenna.Guardian.UserFromAuth do
           refresh_token: refresh_token_from_auth(auth),
           expires_at: expires_at_from_auth(auth)
       )
+
     case Repo.insert(authz) do
       {:ok, _authorization} -> {:ok, user}
       {:error, reason} -> {:error, reason}
