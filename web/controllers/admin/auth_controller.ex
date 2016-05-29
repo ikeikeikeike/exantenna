@@ -20,6 +20,13 @@ defmodule Exantenna.Admin.AuthController do
   def callback(%Plug.Conn{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     current_user = Guardian.Plug.current_resource(conn)
 
+    if auth.provider == :identity do
+      auth = struct(auth, [credentials: Map.merge(auth.credentials,
+        %{token: Ecto.UUID.generate,
+          expires_at: Timex.to_unix(Timex.shift(Timex.DateTime.now, days: 2))}
+      )])
+    end
+
     case UserFromAuth.find_or_create(auth) do
       {:ok, user} ->
         conn

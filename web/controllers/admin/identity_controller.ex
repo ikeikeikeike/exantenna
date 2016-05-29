@@ -1,4 +1,4 @@
-defmodule Exantenna.Admin.UserController do
+defmodule Exantenna.Admin.IdentityController do
   use Exantenna.Web, :controller
 
   alias Exantenna.Tmpuser
