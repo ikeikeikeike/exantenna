@@ -32,6 +32,7 @@ defmodule Exantenna.Tmpuser do
     |> cast(params, @required_fields, @optional_fields)
     |> validate_required(~w(rss email password password_confirmation mediatype contenttype)a)
     |> validate_format(:rss, ~r/^https?:\/\//)
+    # |> validate_rss_format_and_connection  TODO:
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 5)
     |> validate_confirmation(:password)
@@ -40,6 +41,13 @@ defmodule Exantenna.Tmpuser do
     |> put_change(:token, Ecto.UUID.generate)
     |> put_change(:tokentype, "signup")
     |> put_change(:expires, Timex.shift(Timex.DateTime.now, days: 1))
+  end
+
+  def register_confirmation_query(token) do
+    from q in __MODULE__,
+    where: q.token == ^token
+       and q.expires > ^Ecto.DateTime.utc
+       and q.tokentype == "signup"
   end
 
 end

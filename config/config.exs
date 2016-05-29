@@ -43,3 +43,5 @@ config :exantenna,
   ecto_repos: [Exantenna.Repo]
 
 import_config "ueberauth.secret.exs"
+import_config "sitemeta.secret.exs"
+import_config "mailgun.secret.exs"

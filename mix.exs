@@ -42,7 +42,7 @@ defmodule Exantenna.Mixfile do
       {:phoenix_ecto, "~> 3.0.0-rc"},
       {:phoenix_html, "~> 2.4"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:gettext, "~> 0.11"},
+      {:gettext, github: "elixir-lang/gettext", override: true},
       {:cowboy, "~> 1.0"},
       {:timex, "~> 2.1"},
       {:timex_ecto, github: "bitwalker/timex_ecto"},
@@ -51,6 +51,7 @@ defmodule Exantenna.Mixfile do
       {:ueberauth_identity, "~> 0.2"},
       {:guardian, "~> 0.11"},
       {:comeonin, "~> 2.4"},
+      {:mailgun, "~> 0.1"},
     ]
   end
 
