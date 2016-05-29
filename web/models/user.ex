@@ -1,6 +1,6 @@
 defmodule Exantenna.User do
   use Exantenna.Web, :model
-  alias Exantenna.Auth.Changeset, as: Authc
+  # alias Exantenna.Auth.Changeset, as: Authc
 
   schema "users" do
     field :email, :string
@@ -24,9 +24,9 @@ defmodule Exantenna.User do
   def register_changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
-    # |> validate_required(~w(email encrypted_password)a)
-    |> validate_format(:email, ~r/@/)
+    |> validate_required(~w(email encrypted_password)a)
     |> unique_constraint(:email)
+    |> validate_format(:email, ~r/@/)
   end
 
 
