@@ -21,7 +21,7 @@ defmodule Exantenna.Admin.UserController do
       {:ok, model} ->
 
         SignupMailer.send_activation model.email,
-          confirm_url(model.token)
+          Helpers.admin_user_url(:register_confirm, model.token)
 
         msg = gettext("""
         Please make sure that created account successfly.
@@ -56,13 +56,9 @@ defmodule Exantenna.Admin.UserController do
 
             conn
             |> put_flash(:info, gettext("Your media account created successfuly"))
-            |> redirect(to: "/")
+            |> redirect(to: Helpers.admin_auth_path(:login))
         end
     end
-  end
-
-  defp confirm_url(token) do
-    Helpers.admin_user_url(Exantenna.Endpoint, :register_confirm, token)
   end
 
 end
