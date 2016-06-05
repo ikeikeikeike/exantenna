@@ -29,5 +29,4 @@ defmodule Exantenna.User do
     |> validate_format(:email, ~r/@/)
   end
 
-
 end

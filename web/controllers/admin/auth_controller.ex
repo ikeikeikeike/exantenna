@@ -1,6 +1,7 @@
 defmodule Exantenna.Admin.AuthController do
   use Exantenna.Web, :controller
   alias Exantenna.Guardian.UserFromAuth
+  alias Exantenna.Auth.User, as: AuthUser
 
   plug Ueberauth
 
@@ -20,19 +21,31 @@ defmodule Exantenna.Admin.AuthController do
   def callback(%Plug.Conn{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     current_user = Guardian.Plug.current_resource(conn)
 
-    if auth.provider == :identity do
-      auth = struct(auth, [credentials: Map.merge(auth.credentials,
-        %{token: Ecto.UUID.generate,
-          expires_at: Timex.to_unix(Timex.shift(Timex.DateTime.now, days: 2))}
-      )])
-    end
-
     case UserFromAuth.find_or_create(auth) do
       {:ok, user} ->
         conn
         |> put_flash(:info, gettext("Signed in as %{email}", email: user.email))
         |> Guardian.Plug.sign_in(user, :token, perms: %{default: Guardian.Permissions.max})
         |> redirect(to: page_path(conn, :index))
+      {:error, reason} ->
+        conn
+        |> put_flash(:error, gettext("Could not authenticate. %{reason}", reason: reason))
+        |> render("login.html", current_user: current_user, current_auths: auths(current_user))
+    end
+  end
+
+  def identity_callback(%{assigns: %{ueberauth_auth: auth}} = conn, params) do
+    current_user = Guardian.Plug.current_resource(conn)
+
+    case AuthUser.check_password(auth) do
+      {:ok, _user} ->
+        auth = struct(auth, [credentials: Map.merge(auth.credentials,
+          %{token: Ecto.UUID.generate,
+            expires_at: Timex.to_unix(Timex.shift(Timex.DateTime.now, days: 2))}
+        )])
+
+        struct(conn, [assigns: %{ueberauth_auth: auth}])
+        |> callback(params)
       {:error, reason} ->
         conn
         |> put_flash(:error, gettext("Could not authenticate. %{reason}", reason: reason))

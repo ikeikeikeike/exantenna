@@ -13,7 +13,7 @@
 
         <div class="panel-body">
 
-          <%= form_for @changeset, admin_identity_path(@conn, :register), [role: "form", class: "form-horizontal"], fn f -> %>
+          <%= form_for @changeset, admin_user_path(@conn, :register), [role: "form", class: "form-horizontal"], fn f -> %>
             <%= if f.errors != [] do %>
               <div class="alert alert-danger">
                 <p>Oops, something went wrong! Please check the errors below:</p>

@@ -2,6 +2,7 @@ defmodule Exantenna.Guardian.UserFromAuth do
   alias Exantenna.Repo
   alias Exantenna.User
   alias Exantenna.Authorization
+
   alias Ueberauth.Auth
 
   def find_or_create(%Auth{} = auth) do

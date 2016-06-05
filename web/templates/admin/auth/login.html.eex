@@ -31,7 +31,7 @@
         </div>
 
         <div class="panel-body">
-          <%= form_tag admin_auth_path(@conn, :callback, "identity"), method: "post", role: "form", class: "form-horizontal" do %>
+          <%= form_tag admin_auth_path(@conn, :identity_callback, "identity"), method: "post", role: "form", class: "form-horizontal" do %>
             <%# {{template "base/alerts/flashform.tpl" .}} %>
 
             <div class="form-group">
@@ -60,7 +60,7 @@
         </div>
 
         <div class="panel-footer text-center clearfix">
-          <%= gettext "When wouldn't you have Account." %> <a href='<%= admin_identity_path(@conn, :signup) %>'>
+          <%= gettext "When wouldn't you have Account." %> <a href='<%= admin_user_path(@conn, :signup) %>'>
             <%= gettext "Sign Up for %{sitename}", sitename: "" %>
           </a>
         </div>
