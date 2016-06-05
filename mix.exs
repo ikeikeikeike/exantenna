@@ -49,7 +49,7 @@ defmodule Exantenna.Mixfile do
       {:ueberauth, "~> 0.2"},
       {:ueberauth_google, "~> 0.2"},
       {:ueberauth_identity, "~> 0.2"},
-      {:guardian, "~> 0.11"},
+      {:guardian, "~> 0.12"},
       {:comeonin, "~> 2.4"},
       {:mailgun, "~> 0.1"},
     ]

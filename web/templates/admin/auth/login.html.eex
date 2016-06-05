@@ -60,7 +60,7 @@
         </div>
 
         <div class="panel-footer text-center clearfix">
-          <%= gettext "When wouldn't you have Account." %> <a href='<%= admin_user_path(@conn, :signup) %>'>
+          <%= gettext "When wouldn't you have Account." %> <a href='<%= admin_login_path(@conn, :signup) %>'>
             <%= gettext "Sign Up for %{sitename}", sitename: "" %>
           </a>
         </div>
