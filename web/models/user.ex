@@ -1,6 +1,5 @@
 defmodule Exantenna.User do
   use Exantenna.Web, :model
-  # alias Exantenna.Auth.Changeset, as: Authc
 
   schema "users" do
     field :email, :string

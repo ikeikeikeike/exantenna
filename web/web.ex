@@ -33,6 +33,8 @@ defmodule Exantenna.Web do
       use Phoenix.Controller
 
       alias Exantenna.Repo
+      alias Exantenna.Auth.Plug, as: AuthPlug
+
       import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
 
