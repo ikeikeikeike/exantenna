@@ -23,7 +23,7 @@ defmodule Exantenna.Auth.Plug.LoginRequired do
   end
 
   defp redirect(conn, []), do: redirect conn, to: default_path
-  defp redirect(conn, opts) when is_nil(opts), do: redirect conn, to: default_path
+  defp redirect(conn, nil), do: redirect conn, to: default_path
   defp redirect(conn, opts) do
     conn
     |> Phoenix.Controller.redirect(opts)

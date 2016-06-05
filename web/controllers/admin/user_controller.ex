@@ -7,4 +7,8 @@ defmodule Exantenna.Admin.UserController do
     render conn, "dashboard.html"
   end
 
+  def blogs(conn, _params) do
+    render conn, "blogs.html"
+  end
+
 end
