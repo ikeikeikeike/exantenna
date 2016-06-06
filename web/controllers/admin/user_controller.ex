@@ -8,7 +8,8 @@ defmodule Exantenna.Admin.UserController do
   end
 
   def blogs(conn, _params) do
-    render conn, "blogs.html"
+    current_user = Guardian.Plug.current_resource(conn)
+    render conn, "blogs.html", user: Repo.preload(current_user, blogs: :verifiers)
   end
 
 end

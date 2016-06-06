@@ -1,0 +1,38 @@
+{{append . "HeadStyles" "/static/css/admin/custom.css"}}
+{{append . "HeadStyles" "/static/css/admin/signup.css"}}
+<style>.tooltip-inner { font-size: 13px; }</style>
+<script>$(function() {$("[data-toggle=tooltip]").tooltip();});</script>
+
+
+<div class="container">
+  <div class="row">
+
+    <%= render "_sidenavi.html", conn: @conn %>
+
+    <div class="col-sm-9 col-md-9">
+      <%= render "_blogs_inner.html", conn: @conn %>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><%= gettext "About allow images" %></h3>
+        </div>
+        <div class="panel-body">
+            <%= gettext "We recommend that you should allow image's access from %{domain} book.%{domain} for your profitability.", sitename: "", domain: "" %><br/>
+            <%= gettext "The page which displaying a lot of images are going to help you. Because a lot of users will be come to your site if you would do that. Also improving SEO and user access into External Links." %>
+        </div>
+        <div class="panel-footer text-center clearfix"></div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><%= gettext "About Blog parts, Reciprocal Links, Reciprocal RSS" %></h3>
+        </div>
+        <div class="panel-body">
+          {{template "admin/licenses/treats.tpl" .}}
+        </div>
+        <div class="panel-footer text-center clearfix"></div>
+      </div>
+      {{template "admin/licenses/guideline-inner.tpl" .}}
+    </div>
+
+  </div>
+</div>
