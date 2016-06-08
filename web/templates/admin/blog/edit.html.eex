@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row">
+    <%= render Exantenna.Admin.LayoutView, "_sidenavi.html", conn: @conn %>
+
+    <div class="col-sm-7 col-md-7">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><%= @blog.name %></h3>
+        </div>
+        <div class="panel-body">
+          <%= render "_form.html", conn: @conn, changeset: @changeset, action: admin_blog_path(@conn, :edit), blog: @blog %>
+        </div>
+
+        <div class="panel-footer text-center clearfix"><a data-toggle="modal" data-target="#userTerminate" href='#'><%= gettext "Delete site" %></a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render "_delete.html", conn: @conn, changeset: @changeset, action: admin_blog_path(@conn, :delete, @blog) %>

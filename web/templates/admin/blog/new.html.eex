@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="row">
+    <%= render Exantenna.Admin.LayoutView, "_sidenavi.html", conn: @conn %>
+
+    <div class="col-sm-7 col-md-7">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><%= gettext "Registering new site" %></h3>
+        </div>
+        <div class="panel-body">
+          <%= render "_form.html", conn: @conn, changeset: @changeset, action: admin_blog_path(@conn, :new), blog: @blog %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render "_delete.html", conn: @conn, changeset: @changeset, action: admin_blog_path(@conn, :new) %>
