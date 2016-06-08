@@ -1,0 +1,74 @@
+<div class="col-sm-3 col-md-3">
+  <div class="well well-sm">
+    <div class="row">
+      <div class="col-xs-3 col-md-3 text-center">
+        <img src="/static/img/icons/r18starndard.png" alt="bootsnipp" class="img-rounded img-responsive" />
+      </div>
+      <div class="section-box">
+        <h5>{{truncate .Userinfo.Email 24}}
+          <a href='{{urlfor "UsersController.ChangeMail"}}'>
+            <span class="glyphicon glyphicon-new-window"></span>
+          </a>
+        </h5>
+      </div>
+    </div>
+  </div>
+  <div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+            <span class="glyphicon glyphicon-folder-close"></span> サイト情報
+          </a>
+        </h4>
+      </div>
+      <div id="collapseOne" class="panel-collapse collapse
+        {{if ne .Path (urlfor "UsersController.ChangeMail")}}in{{end}}
+      ">
+        <div class="list-group">
+          {{range $i, $b := .Userinfo.Blogs}}
+            <a href='{{urlfor "admin.UsersController.Blog" ":id" ($b.Id|tostr)}}' class="list-group-item right-arrow">{{$b.Name|noname}} </a>
+          {{end}}
+        </div>
+        <div class="container-fluid">
+            <a href="{{urlfor "admin.UsersController.Blogs"}}"><span class="glyphicon glyphicon-list text-primary"></span> サイト一覧</a>
+            <a class='pull-right' href="{{urlfor "admin.UsersController.BlogRegister"}}"><span class="glyphicon glyphicon-log-in text-primary"></span> サイトを登録</a>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+            <span class="glyphicon glyphicon-file"></span> ユーザー情報
+          </a>
+        </h4>
+      </div>
+      <div id="collapseFour" class="panel-collapse collapse
+        {{if eq .Path (urlfor "UsersController.ChangeMail")}}in{{end}}
+      ">
+        <div class="list-group">
+          <a href='{{urlfor "UsersController.ChangeMail"}}' class="list-group-item right-arrow">メールアドレス </a>
+          <a target="_blank" href='{{urlfor "LoginController.PasswordReset"}}' class="list-group-item right-arrow">パスワード </a>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+            <span class="glyphicon glyphicon-heart"></span> 履歴
+          </a>
+        </h4>
+      </div>
+      <div id="collapseFive" class="panel-collapse collapse">
+        <div class="list-group">
+          <a href="#" class="list-group-item">
+            <h4 class="list-group-item-heading">履歴がありません</h4>
+            <p class="list-group-item-text"></p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
