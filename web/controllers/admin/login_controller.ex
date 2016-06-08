@@ -5,7 +5,6 @@ defmodule Exantenna.Admin.LoginController do
   alias Exantenna.Endpoint
   alias Exantenna.Auth.Changeset, as: Authc
   alias Exantenna.SignupMailer
-  alias Exantenna.Router.Helpers
   alias Exantenna.Services
 
   def signup(conn, _params) do
@@ -22,7 +21,7 @@ defmodule Exantenna.Admin.LoginController do
       {:ok, model} ->
 
         SignupMailer.send_activation model.email,
-          Helpers.admin_login_url(Endpoint, :register_confirm, model.token)
+          admin_login_url(Endpoint, :register_confirm, model.token)
 
         msg = gettext("""
         Please make sure that created account successfly.
@@ -57,7 +56,7 @@ defmodule Exantenna.Admin.LoginController do
 
             conn
             |> put_flash(:info, gettext("Your media account created successfuly"))
-            |> redirect(to: Helpers.admin_auth_path(Endpoint, :login, "identity"))
+            |> redirect(to: admin_auth_path(Endpoint, :login, "identity"))
         end
     end
   end

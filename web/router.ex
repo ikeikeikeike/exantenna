@@ -38,7 +38,7 @@ defmodule Exantenna.Router do
     delete "/auth/logout", AuthController, :logout
 
     get  "/", UserController, :dashboard
-    get  "/blogs", UserController, :blogs
+    resources  "/blogs", BlogController
 
   end
 

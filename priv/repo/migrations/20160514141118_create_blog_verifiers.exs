@@ -4,7 +4,7 @@ defmodule Exantenna.Repo.Migrations.CreateBlogVerifier do
   def change do
     create table(:blog_verifiers) do
       add :name, :string
-      add :state, :integer
+      add :state, :integer # , default: 1
 
       add :blog_id, references(:blogs, on_delete: :nothing)
 

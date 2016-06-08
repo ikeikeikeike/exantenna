@@ -28,4 +28,9 @@ defmodule Exantenna.User do
     |> validate_format(:email, ~r/@/)
   end
 
+  def with_blogs(model) do
+    model
+    |> Repo.preload(blogs: :verifiers)
+  end
+
 end
