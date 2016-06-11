@@ -1,12 +1,11 @@
 defmodule Exantenna.Admin.UserController do
   use Exantenna.Web, :controller
-  alias Exantenna.User
 
   plug AuthPlug.LoginRequired
+  plug AdminPlug.AssignUser
 
   def dashboard(conn, _params) do
-    current_user = Guardian.Plug.current_resource(conn)
-    render conn, "dashboard.html", user: User.with_blogs(current_user)
+    render conn, "dashboard.html"
   end
 
 end

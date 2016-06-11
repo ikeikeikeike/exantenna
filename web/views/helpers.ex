@@ -28,7 +28,6 @@ defmodule Exantenna.Helpers do
     #
     Gettext.dngettext(Exantenna.Gettext, "errors", msg, msg, opts[:count] || 0, opts)
   end
-
   def translate_error(msg) do
     Gettext.dgettext(Exantenna.Gettext, "errors", msg)
   end
