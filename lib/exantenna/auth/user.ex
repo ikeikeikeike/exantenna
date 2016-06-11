@@ -22,4 +22,11 @@ defmodule Exantenna.Auth.User do
       {:error, :not_found}
   end
 
+  def auths(nil), do: []
+  def auths(%Exantenna.User{} = user) do
+    Ecto.Model.assoc(user, :authorizations)
+      |> Repo.all
+      |> Enum.map(&(&1.provider))
+  end
+
 end

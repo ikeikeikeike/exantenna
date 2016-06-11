@@ -35,6 +35,7 @@ defmodule Exantenna.Blog do
   def register_changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> unique_constraint(:rss)
     |> validate_required(~w(user_id rss mediatype contenttype)a)
     # |> validate_rss_format_and_connection  TODO:
     |> validate_format(:rss, ~r/^https?:\/\//)

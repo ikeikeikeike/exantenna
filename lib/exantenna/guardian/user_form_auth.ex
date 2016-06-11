@@ -39,8 +39,14 @@ defmodule Exantenna.Guardian.UserFromAuth do
   defp create_user_and_authorization(auth) do
     Repo.transaction fn ->
       case Repo.insert(%User{email: email_from_auth(auth)}) do
-        {:ok, user} -> create_authorization(auth, user)
-        {:error, reason} -> {:error, reason}
+        {:ok, user} ->
+          case create_authorization(auth, user) do
+            {:ok, _authorization} -> user
+            {:error, reason} -> Repo.rollback(reason)
+          end
+
+        {:error, reason} ->
+          Repo.rollback(reason)
       end
     end
   end

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Hello Exantenna!</title>
+  <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+</head>
+
+<body>
+
+  <%= if fmsg = get_flash(@conn, :info) do %>
+    <p class="alert alert-info" role="alert"><%= fmsg %></p>
+  <% end %>
+  <%= if fmsg = get_flash(@conn, :error) do %>
+    <p class="alert alert-danger" role="alert"><%= fmsg %></p>
+  <% end %>
+
+  <main role="main">
+    <%= render @view_module, @view_template, assigns %>
+  </main>
+
+  <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+</body>
+</html>

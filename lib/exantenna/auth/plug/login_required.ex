@@ -4,14 +4,14 @@ defmodule Exantenna.Auth.Plug.LoginRequired do
   def init(opts), do: opts
 
   def call(conn, opts) do
-    if current_user = already_login?(conn, opts) do
-      assign(conn, :current_user, current_user)
+    if user = current_user(conn, opts) do
+      assign(conn, :current_user, user)
     else
       redirect(conn, opts)
     end
   end
 
-  defp already_login?(conn, _ops) do
+  defp current_user(conn, _ops) do
     case Guardian.Plug.current_resource(conn) do
       %Exantenna.User{} = user -> user
       _ -> false

@@ -19,7 +19,7 @@ defmodule Exantenna.Repo.Migrations.CreateBlog do
       timestamps
     end
 
-    create index(:blogs, [:url], unique: true)
+    create unique_index(:blogs, [:rss])
     create index(:blogs, [:mediatype])
     create index(:blogs, [:contenttype])
     create index(:blogs, [:penalty])

@@ -4,18 +4,14 @@ defmodule Exantenna.Admin.AuthController do
   alias Exantenna.Auth.User, as: AuthUser
 
   plug Ueberauth
-
-  def login(conn, _params) do
-    current_user = Guardian.Plug.current_resource(conn)
-    render conn, "login.html", current_user: current_user, current_auths: auths(current_user)
-  end
+  plug :put_layout, {Exantenna.Admin.LayoutView, "app.html"}
 
   def callback(%Plug.Conn{assigns: %{ueberauth_failure: fails}} = conn, _params) do
     current_user = Guardian.Plug.current_resource(conn)
 
     conn
     |> put_flash(:error, hd(fails.errors).message)
-    |> render("login.html", current_user: current_user, current_auths: auths(current_user))
+    |> render("login.html", current_user: current_user, current_auths: AuthUser.auths(current_user))
   end
 
   def callback(%Plug.Conn{assigns: %{ueberauth_auth: auth}} = conn, _params) do
@@ -26,11 +22,11 @@ defmodule Exantenna.Admin.AuthController do
         conn
         |> put_flash(:info, gettext("Signed in as %{email}", email: user.email))
         |> Guardian.Plug.sign_in(user, :token, perms: %{default: Guardian.Permissions.max})
-        |> redirect(to: page_path(conn, :index))
+        |> redirect(to: admin_user_path(conn, :dashboard))
       {:error, reason} ->
         conn
         |> put_flash(:error, gettext("Could not authenticate. %{reason}", reason: reason))
-        |> render("login.html", current_user: current_user, current_auths: auths(current_user))
+        |> render("login.html", current_user: current_user, current_auths: AuthUser.auths(current_user))
     end
   end
 
@@ -49,7 +45,7 @@ defmodule Exantenna.Admin.AuthController do
       {:error, reason} ->
         conn
         |> put_flash(:error, gettext("Could not authenticate. %{reason}", reason: reason))
-        |> render("login.html", current_user: current_user, current_auths: auths(current_user))
+        |> render("login.html", current_user: current_user, current_auths: AuthUser.auths(current_user))
     end
   end
 
@@ -64,18 +60,12 @@ defmodule Exantenna.Admin.AuthController do
       # use tokens in two locations - :default and :admin - we need to load it (see above)
       |> Guardian.Plug.sign_out
       |> put_flash(:info, gettext("Signed out"))
-      |> redirect(to: "/")
+      |> redirect(to: admin_login_path(conn, :login))
     else
       conn
       |> put_flash(:info, gettext("Not logged in"))
-      |> redirect(to: "/")
+      |> redirect(to: admin_login_path(conn, :login))
     end
   end
 
-  defp auths(nil), do: []
-  defp auths(%Exantenna.User{} = user) do
-    Ecto.Model.assoc(user, :authorizations)
-      |> Repo.all
-      |> Enum.map(&(&1.provider))
-  end
 end

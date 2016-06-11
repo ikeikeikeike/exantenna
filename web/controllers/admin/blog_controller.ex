@@ -1,11 +1,13 @@
 defmodule Exantenna.Admin.BlogController do
   use Exantenna.Web, :controller
+
   alias Exantenna.User
   alias Exantenna.Blog
   alias Exantenna.BlogVerifier
 
   plug AuthPlug.LoginRequired
   plug AdminPlug.AssignUser
+  plug :put_layout, {Exantenna.Admin.LayoutView, "app.html"}
 
   def index(conn, _params) do
     render conn, "index.html"
