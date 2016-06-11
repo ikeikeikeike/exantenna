@@ -43,8 +43,8 @@ defmodule Exantenna.Tmpuser do
     |> put_change(:expires, Timex.shift(Timex.DateTime.now, days: 1))
   end
 
-  def register_confirmation_query(token) do
-    from q in __MODULE__,
+  def register_confirmation(model, token) do
+    from q in model,
     where: q.token == ^token
        and q.expires > ^Ecto.DateTime.utc
        and q.tokentype == "signup"

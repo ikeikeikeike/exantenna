@@ -40,7 +40,7 @@ defmodule Exantenna.Admin.LoginController do
   end
 
   def register_confirm(conn, %{"token" => token} = _params) do
-    case Repo.one(Tmpuser.register_confirmation_query(token)) do
+    case Repo.one(Tmpuser.register_confirmation(Tmpuser, token)) do
       nil -> text conn, gettext("Expires: Token was missing or it is older")
 
       tmpuser ->

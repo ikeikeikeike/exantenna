@@ -20,21 +20,15 @@ defmodule Exantenna.BlogVerifier do
     |> cast(params, @required_fields, @optional_fields)
   end
 
-  def blog_verifier(blog) do
-    query =
-      from q in __MODULE__,
-      where: q.blog_id == ^blog.id
-
-    Repo.all(query)
+  def blog_verifier(query, blog) do
+    from q in query,
+    where: q.blog_id == ^blog.id
   end
-  def blog_verifier(blog, name) do
-    query =
-      from q in __MODULE__,
-      limit: 1,
-      where: q.blog_id == ^blog.id
-         and q.name > ^name
-
-    Repo.one(query)
+  def blog_verifier(query, blog, name) do
+    from q in query,
+    limit: 1,
+    where: q.blog_id == ^blog.id
+       and q.name > ^name
   end
 
 end

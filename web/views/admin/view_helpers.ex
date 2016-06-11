@@ -4,6 +4,7 @@ defmodule Exantenna.Admin.Helpers do
 
   alias Exantenna.BlogVerifier
   alias Exantenna.Blog
+  alias Exantenna.Repo
 
   def mediatype_text(mediatype) do
     case mediatype do
@@ -19,8 +20,8 @@ defmodule Exantenna.Admin.Helpers do
     end
   end
 
-  def verify_link_tag(%Blog{} = blog, name), do: verify_link_tag BlogVerifier.blog_verifier(blog, "#{name}_link")
-  def verify_link_tag(%Blog{} = blog), do: verify_link_tag BlogVerifier.blog_verifier(blog, "link")
+  def verify_link_tag(%Blog{} = blog, name), do: verify_link_tag Repo.one(BlogVerifier.blog_verifier(BlogVerifier, blog, "#{name}_link"))
+  def verify_link_tag(%Blog{} = blog), do: verify_link_tag Repo.one(BlogVerifier.blog_verifier(BlogVerifier, blog, "link"))
   def verify_link_tag(verifier) do
     case verifier && verifier.state do
       state when state == 3 ->
@@ -40,8 +41,8 @@ defmodule Exantenna.Admin.Helpers do
     end
   end
 
-  def verify_rss_tag(%Blog{} = blog, name), do: verify_rss_tag BlogVerifier.blog_verifier(blog, "#{name}_rss")
-  def verify_rss_tag(%Blog{} = blog), do: verify_rss_tag BlogVerifier.blog_verifier(blog, "rss")
+  def verify_rss_tag(%Blog{} = blog, name), do: verify_rss_tag Repo.one(BlogVerifier.blog_verifier(BlogVerifier, blog, "#{name}_rss"))
+  def verify_rss_tag(%Blog{} = blog), do: verify_rss_tag Repo.one(BlogVerifier.blog_verifier(BlogVerifier, blog, "rss"))
   def verify_rss_tag(verifier) do
     case verifier && verifier.state do
       state when state == 3 ->
@@ -61,9 +62,8 @@ defmodule Exantenna.Admin.Helpers do
     end
   end
 
-  def verify_parts_tag(blog) do
-    verifier = BlogVerifier.blog_verifier(blog, "parts")
-
+  def verify_parts_tag(%Blog{} = blog), do: verify_parts_tag Repo.one(BlogVerifier.blog_verifier(BlogVerifier, blog, "parts"))
+  def verify_parts_tag(verifier) do
     case verifier && verifier.state do
       state when state == 3 ->
         content_tag(:span, title: gettext("Blog parts installation is complete"), data_toggle: "tooltip", data_placement: "top", data_container: "body") do
