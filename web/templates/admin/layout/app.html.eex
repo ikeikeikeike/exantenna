@@ -9,9 +9,43 @@
 
   <title>Hello Exantenna!</title>
   <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+
+  <!-- Load our fonts form Google -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Vollkorn:400italic,700italic,400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=PT+Serif:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Domine' rel='stylesheet' type='text/css'>
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=PT+Serif:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Vollkorn:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Vollkorn:400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Vollkorn:700italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Domine' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/static/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Load our stylesheet for IE9 -->
+  <!--[if IE 9]>
+  <link rel="stylesheet" type="text/css" href="/static/css/ie9.css" />
+  <![endif]-->
+
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/static/js/html5shiv.min.js"></script>
+  <script src="/static/js/respond.min.js"></script>
+  <![endif]-->
+
 </head>
 
-<body>
+<body id="home">
 
   <%= if fmsg = get_flash(@conn, :info) do %>
     <p class="alert alert-info" role="alert"><%= fmsg %></p>
@@ -20,9 +54,13 @@
     <p class="alert alert-danger" role="alert"><%= fmsg %></p>
   <% end %>
 
-  <main role="main">
+  <%= render "_header.html", assigns %>
+
+  <div id="wrap">
     <%= render @view_module, @view_template, assigns %>
-  </main>
+  </div> <!-- /container -->
+
+  <%= render "_footer.html", assigns %>
 
   <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
 </body>

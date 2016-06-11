@@ -18,12 +18,12 @@ defmodule Exantenna.Auth.Plug.LoginRequired do
     end
   end
 
-  defp default_path do
-    Exantenna.Router.Helpers.admin_auth_path(Exantenna.Endpoint, :login, "identity")
+  defp default_path(conn) do
+    Exantenna.Router.Helpers.admin_login_path(conn, :login)
   end
 
-  defp redirect(conn, []), do: redirect conn, to: default_path
-  defp redirect(conn, nil), do: redirect conn, to: default_path
+  defp redirect(conn, []), do: redirect conn, to: default_path(conn)
+  defp redirect(conn, nil), do: redirect conn, to: default_path(conn)
   defp redirect(conn, opts) do
     conn
     |> Phoenix.Controller.redirect(opts)

@@ -31,8 +31,8 @@ defmodule Exantenna.Router do
     get  "/auth/signup", LoginController, :signup
     post "/auth/register", LoginController, :register
     get  "/auth/register_confirm/:token", LoginController, :register_confirm
-    get  "/auth/signup", LoginController, :signup
 
+    get  "/auth/:provider", AuthController, :login
     get  "/auth/:provider/callback", AuthController, :callback
     post "/auth/:provider/callback", AuthController, :identity_callback
     delete "/auth/logout", AuthController, :logout
