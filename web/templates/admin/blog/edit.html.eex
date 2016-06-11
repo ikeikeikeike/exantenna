@@ -8,7 +8,7 @@
           <h3 class="panel-title"><%= @blog.name %></h3>
         </div>
         <div class="panel-body">
-          <%= render "_form.html", conn: @conn, changeset: @changeset, action: admin_blog_path(@conn, :edit), blog: @blog %>
+          <%= render "_form.html", conn: @conn, changeset: @changeset, action: admin_blog_path(@conn, :update, @blog), blog: @blog %>
         </div>
 
         <div class="panel-footer text-center clearfix"><a data-toggle="modal" data-target="#userTerminate" href='#'><%= gettext "Delete site" %></a></div>

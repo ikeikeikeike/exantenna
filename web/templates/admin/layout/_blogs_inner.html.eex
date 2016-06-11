@@ -4,7 +4,9 @@
       <h3 class="panel-title"><%= gettext "Registered sites as of now" %></h3>
     </div>
     <div class="panel-body">
+
       {{template "base/alerts/flashform.tpl" .}}
+
       <p>
         <code>1234</code><%= gettext "sites are registered currently" %>
       </p>

@@ -37,7 +37,7 @@ defmodule Exantenna.Helpers do
     Gettext.dngettext(Exantenna.Gettext, "default", msg, msg, opts[:count] || 0, opts)
   end
   def translate_default(msg) do
-    Gettext.dgettext(Exantenna.Gettext, "default", msg)
+    Gettext.dgettext(Exantenna.Gettext, "default", msg || "")
   end
 
 end

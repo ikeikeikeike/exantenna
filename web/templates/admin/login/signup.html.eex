@@ -1,8 +1,3 @@
-<%#
-{{append . "HeadStyles" "/static/css/admin/custom.css"}}
-{{append . "HeadStyles" "/static/css/admin/signup.css"}}
-%>
-
 <div class="container">
   <div class="row vertical-offset-50">
     <div class="col-md-6 col-md-offset-3">
@@ -18,7 +13,7 @@
             <%= render Exantenna.Admin.LayoutView, "_flash_errors.html", conn: @conn, form: f %>
 
             <div class="form-group">
-              <label for="tmpuser_rss" class="col-sm-3 control-label"><%= gettext "Site's RSS" %></label>
+              <%= label f, :rss, gettext("Site's RSS"), class: "col-sm-3 control-label" %>
               <div class="col-sm-9">
                 <%= url_input f, :rss, class: "form-control", placeholder: gettext("e.g. http://example.com/index.rdf"),
                   required: "required", autofocus: "autofocus" %>
@@ -35,7 +30,7 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="tmpuser_password" class="col-sm-3 control-label"><%= gettext "Password" %></label>
+              <%= label f, :password, gettext("Password"), class: "col-sm-3 control-label" %>
               <div class="col-sm-9">
                 <%= password_input f, :password, class: "form-control", placeholder: gettext("Please fill out password form"),
                   required: "required", pattern: ".{6,}", title: gettext("Please fill out password more than 6 letters") %>
@@ -47,7 +42,7 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="tmpuser_mediatype" class="col-sm-3 control-label"><%= gettext "Media Type" %></label>
+              <%= label f, :mediatype, gettext("Media Type"), class: "col-sm-3 control-label" %>
               <div class="col-sm-9">
                 <%= select f, :mediatype, %{
                     gettext("Images primarily") => "image",
@@ -60,7 +55,7 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="tmpuser_contenttype" class="col-sm-3 control-label"><%= gettext "Kind of Contents" %></label>
+              <%= label f, :contenttype, gettext("Kind of Contents"), class: "col-sm-3 control-label" %>
               <div class="col-sm-9">
                 <%= select f, :contenttype, %{
                     gettext("Anime or Commic primarily") => "second_dimension",

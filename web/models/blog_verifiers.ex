@@ -13,7 +13,9 @@ defmodule Exantenna.BlogVerifier do
   @required_fields ~w(name)
   @optional_fields ~w(state)
 
-  @names ~w(parts, rss, link, book_rss, book_link, video_rss, video_link)
+  @names ~w(parts rss link book_rss book_link video_rss video_link)
+  def names, do: @names
+  def named_structs, do: Enum.map @names, &(%__MODULE__{name: &1})
 
   def changeset(model, params \\ :empty) do
     model

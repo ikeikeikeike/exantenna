@@ -20,8 +20,8 @@ defmodule Exantenna.Blog do
     timestamps
   end
 
-  @required_fields ~w()
-  @optional_fields ~w(name url user_id rss penalty last_modified mediatype contenttype)
+  @required_fields ~w(rss mediatype contenttype)
+  @optional_fields ~w(name url user_id rss penalty last_modified)
 
   @mediatypes ~w(image movie)
   @contenttypes ~w(second_dimension third_dimention)
@@ -40,6 +40,12 @@ defmodule Exantenna.Blog do
     |> validate_format(:rss, ~r/^https?:\/\//)
     |> validate_inclusion(:mediatype, @mediatypes)
     |> validate_inclusion(:contenttype, @contenttypes)
+  end
+
+  def verifiers_changeset(model, params \\ :invalid) do
+    model
+    |> register_changeset(params)
+    |> cast_assoc(:verifiers, required: true)
   end
 
 end
