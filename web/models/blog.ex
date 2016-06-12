@@ -10,10 +10,12 @@ defmodule Exantenna.Blog do
     field :mediatype, :string
     field :contenttype, :string
 
-    field :penalty, :string, default: "beginning"
     field :last_modified, Timex.Ecto.DateTime
 
     belongs_to :user, Exantenna.User
+
+    has_one :thumb, {"blogs_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
+    has_one :penalty, {"blogs_penalties", Exantenna.Penalty}, foreign_key: :assoc_id
 
     has_many :verifiers, Exantenna.BlogVerifier
 
@@ -25,7 +27,6 @@ defmodule Exantenna.Blog do
 
   @mediatypes ~w(image movie)
   @contenttypes ~w(second_dimension third_dimention)
-  @penaltytypes ~w(beginning soft hard ban)
 
   def changeset(model, params \\ :invalid) do
     model
