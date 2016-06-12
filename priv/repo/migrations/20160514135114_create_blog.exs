@@ -11,7 +11,6 @@ defmodule Exantenna.Repo.Migrations.CreateBlog do
       add :mediatype, :string
       add :contenttype, :string
 
-      add :penalty, :string
       add :last_modified, :datetime
 
       add :user_id, references(:users, on_delete: :nothing)
@@ -22,7 +21,6 @@ defmodule Exantenna.Repo.Migrations.CreateBlog do
     create unique_index(:blogs, [:rss])
     create index(:blogs, [:mediatype])
     create index(:blogs, [:contenttype])
-    create index(:blogs, [:penalty])
     create index(:blogs, [:last_modified])
 
   end
