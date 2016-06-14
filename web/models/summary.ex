@@ -4,6 +4,8 @@ defmodule Exantenna.Summary do
   schema "summaries" do
     field :sort, :integer
 
+    has_one :antenna, Exantenna.Antenna
+
     timestamps
   end
 

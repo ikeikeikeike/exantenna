@@ -2,6 +2,7 @@ defmodule Exantenna.Entry do
   use Exantenna.Web, :model
 
   schema "entries" do
+    has_one :antenna, Exantenna.Antenna
 
     has_many :thumbs, {"entries_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
 

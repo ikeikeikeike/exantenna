@@ -19,6 +19,8 @@ defmodule Exantenna.Character do
     field :blood, :string
     field :birthday, Ecto.Date
 
+    has_one :thumb, {"characters_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
+
     timestamps
   end
 
