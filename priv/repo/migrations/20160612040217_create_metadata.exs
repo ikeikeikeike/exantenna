@@ -3,10 +3,10 @@ defmodule Exantenna.Repo.Migrations.CreateMetadata do
 
   def change do
     create table(:metadatas) do
-      add :url, :string
-      add :title, :string
+      add :url, :text
+      add :title, :text
       add :content, :text
-      add :seo_title, :string
+      add :seo_title, :text
       add :seo_content, :text
       add :creator, :string
       add :publisher, :string
