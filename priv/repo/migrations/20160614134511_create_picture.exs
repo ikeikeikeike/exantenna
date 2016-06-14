@@ -3,9 +3,11 @@ defmodule Exantenna.Repo.Migrations.CreatePicture do
 
   def change do
     create table(:pictures) do
+      add :anime_id, references(:animes, on_delete: :nothing)
 
       timestamps
     end
+    create index(:pictures, [:anime_id])
 
   end
 end

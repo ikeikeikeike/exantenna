@@ -10,7 +10,7 @@ defmodule Exantenna.Repo.Migrations.CreateCharacter do
       add :gyou, :string
 
       add :height, :integer
-      add :width, :integer
+      add :weight, :integer
 
       add :bust, :integer
       add :bracup, :string
