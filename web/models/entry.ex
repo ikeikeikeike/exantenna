@@ -4,7 +4,6 @@ defmodule Exantenna.Entry do
   schema "entries" do
 
     has_many :thumbs, {"entries_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
-    many_to_many :tags, Exantenna.Tag, join_through: "antennas_tags"
 
     timestamps
   end

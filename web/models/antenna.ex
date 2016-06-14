@@ -3,13 +3,15 @@ defmodule Exantenna.Antenna do
 
   schema "antennas" do
     belongs_to :metadata, Exantenna.Metadata
+
     belongs_to :blog, Exantenna.Blog
     belongs_to :entry, Exantenna.Entry
-    # belongs_to :video, Exantenna.Video
-    # belongs_to :picture, Exantenna.Picture
-    # belongs_to :summary, Exantenna.Summary
+    belongs_to :video, Exantenna.Video
+    belongs_to :picture, Exantenna.Picture
+    belongs_to :summary, Exantenna.Summary
 
     has_one :penalty, {"antennas_penalties", Exantenna.Penalty}, foreign_key: :assoc_id
+    many_to_many :tags, Exantenna.Tag, join_through: "antennas_tags"
 
     timestamps
   end
