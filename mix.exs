@@ -39,8 +39,8 @@ defmodule Exantenna.Mixfile do
     [
       {:phoenix, "~> 1.1"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_ecto, "~> 3.0.0-rc"},
-      {:phoenix_html, "~> 2.4"},
+      {:phoenix_ecto, "~> 3.0.0"},
+      {:phoenix_html, "~> 2.6"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, github: "elixir-lang/gettext", override: true},
       {:cowboy, "~> 1.0"},
