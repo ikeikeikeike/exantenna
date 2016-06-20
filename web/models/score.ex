@@ -4,7 +4,7 @@ defmodule Exantenna.Score do
   schema "scores" do
     field :assoc_id, :integer
     field :name, :string
-    field :count, :integer
+    field :count, :integer, default: 0
 
     timestamps
   end

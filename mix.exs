@@ -52,6 +52,7 @@ defmodule Exantenna.Mixfile do
       {:guardian, "~> 0.12"},
       {:comeonin, "~> 2.4"},
       {:mailgun, "~> 0.1"},
+      {:scrape, github: "Anonyfox/elixir-scrape"},
     ]
   end
 
