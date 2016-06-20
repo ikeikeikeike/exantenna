@@ -4,7 +4,7 @@ defmodule Exantenna.Services.Blog do
 
   require Logger
 
-  def update_by_channel(%Blog{} = blog) do
+  def update_by_feedmeta(%Blog{} = blog, feedmeta) do
 
   end
 

@@ -23,7 +23,7 @@ defmodule Exantenna.Mixfile do
         :phoenix, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex,
         :ueberauth, :ueberauth_identity, :ueberauth_google,
         :timex, :timex_ecto, :tzdata,
-        :comeonin,
+        :comeonin, :scrape,
       ]
     ]
   end

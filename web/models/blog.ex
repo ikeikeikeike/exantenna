@@ -30,6 +30,13 @@ defmodule Exantenna.Blog do
   @mediatypes ~w(image movie)
   @contenttypes ~w(second_dimension third_dimention)
 
+  @relational_fields ~w(user antenna thumb penalty scores verifiers)
+
+  def query do
+    from e in __MODULE__,
+    preload: ^@relational_fields
+  end
+
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
