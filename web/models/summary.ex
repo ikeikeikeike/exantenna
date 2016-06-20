@@ -5,6 +5,7 @@ defmodule Exantenna.Summary do
     field :sort, :integer
 
     has_one :antenna, Exantenna.Antenna
+    has_many :scores, {"summaries_scores", Exantenna.Score}, foreign_key: :assoc_id
 
     timestamps
   end
