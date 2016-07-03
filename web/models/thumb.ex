@@ -2,6 +2,8 @@ defmodule Exantenna.Thumb do
   use Exantenna.Web, :model
 
   schema "thumbs" do
+    field :assoc_id, :integer
+
     field :name, :string
     field :src, :string
     field :ext, :string

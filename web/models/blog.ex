@@ -25,12 +25,12 @@ defmodule Exantenna.Blog do
   end
 
   @required_fields ~w(rss mediatype contenttype)
-  @optional_fields ~w(name url user_id rss penalty last_modified)
+  @optional_fields ~w(name url user_id rss last_modified)
 
   @mediatypes ~w(image movie)
   @contenttypes ~w(second_dimension third_dimention)
 
-  @relational_fields ~w(user antenna thumb penalty scores verifiers)
+  @relational_fields ~w(user antenna thumb penalty scores verifiers)a
 
   def query do
     from e in __MODULE__,
