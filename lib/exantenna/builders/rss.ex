@@ -20,7 +20,7 @@ defmodule Exantenna.Builders.Rss do
 
           meta = []
 
-          case Services.Blog.update_by_feedmeta(b, meta) do
+          case Services.Blog.update_by_meta(b, meta) do
             {:ok, blog} -> blog
             {:ng, rson} -> warn("#{inspect b}: #{rson}")
           end

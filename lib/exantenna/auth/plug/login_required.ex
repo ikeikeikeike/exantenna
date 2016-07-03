@@ -19,7 +19,7 @@ defmodule Exantenna.Auth.Plug.LoginRequired do
   end
 
   defp default_path(conn) do
-    Exantenna.Router.Helpers.admin_login_path(conn, :login)
+    Exantenna.Router.Helpers.admin_auth_path(conn, :signin)
   end
 
   defp redirect(conn, []), do: redirect conn, to: default_path(conn)

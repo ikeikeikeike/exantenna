@@ -4,7 +4,7 @@ defmodule Exantenna.Services.Antenna do
 
   require Logger
 
-  def update_by_feed(feed) do
+  def add_by_feed(feed) do
 
   end
 

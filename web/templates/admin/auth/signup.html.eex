@@ -8,7 +8,7 @@
 
         <div class="panel-body">
 
-          <%= form_for @changeset, admin_login_path(@conn, :register), [role: "form", class: "form-horizontal"], fn f -> %>
+          <%= form_for @changeset, admin_auth_path(@conn, :register), [role: "form", class: "form-horizontal"], fn f -> %>
 
             <%= render Exantenna.Admin.LayoutView, "_flash_errors.html", conn: @conn, form: f %>
 

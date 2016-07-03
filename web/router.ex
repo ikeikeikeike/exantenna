@@ -27,17 +27,17 @@ defmodule Exantenna.Router do
   scope "/admin", Exantenna.Admin, as: "admin" do
     pipe_through [:browser, :browser_auth]
 
-    get  "/auth/login", LoginController, :login
-    get  "/auth/signup", LoginController, :signup
-    post "/auth/register", LoginController, :register
-    get  "/auth/register_confirm/:token", LoginController, :register_confirm
-
-    get  "/auth/:provider", AuthController, :login
-    get  "/auth/:provider/callback", AuthController, :callback
-    post "/auth/:provider/callback", AuthController, :identity_callback
+    get    "/auth/signin", AuthController, :signin
+    get    "/auth/signup", AuthController, :signup
     delete "/auth/logout", AuthController, :logout
+    post   "/auth/register", AuthController, :register
+    get    "/auth/register_confirm/:token", AuthController, :register_confirm
 
-    get  "/", UserController, :dashboard
+    get    "/auth/:provider", AuthController, :login
+    get    "/auth/:provider/callback", AuthController, :callback
+    post   "/auth/:provider/callback", AuthController, :identity_callback
+
+    get    "/", UserController, :dashboard
     resources  "/blogs", BlogController
 
   end
