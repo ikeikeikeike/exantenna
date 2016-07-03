@@ -31,7 +31,12 @@ config :logger, :console,
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
 
-config :exantenna, MyApp.Gettext, default_locale: "ja"
+config :exantenna, MyApp.Gettext,
+  default_locale: "ja"
+
+config :exantenna, :redises,
+  item: "redis://127.0.0.1:6379/1",
+  feed: "redis://127.0.0.1:6379/6"
 
 # Configure phoenix generators
 config :phoenix, :generators,

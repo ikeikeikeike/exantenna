@@ -23,7 +23,7 @@ defmodule Exantenna.Mixfile do
         :phoenix, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex,
         :ueberauth, :ueberauth_identity, :ueberauth_google,
         :timex, :timex_ecto, :tzdata,
-        :comeonin
+        :comeonin, :redix
       ]
     ]
   end
@@ -52,6 +52,7 @@ defmodule Exantenna.Mixfile do
       {:guardian, "~> 0.12"},
       {:comeonin, "~> 2.4"},
       {:mailgun, "~> 0.1"},
+      {:redix, ">= 0.0.0"},
     ]
   end
 
