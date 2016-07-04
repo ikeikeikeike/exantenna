@@ -10,11 +10,17 @@ defmodule Exantenna.Summary do
     timestamps
   end
 
-  @required_fields ~w(sort)
+  @required_fields ~w()
   @optional_fields ~w(sort)
 
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
+  def item_changeset(%Antenna{summary: summary} = _antenna, _item \\ :invalid) do
+    summary
+    |> changeset(%{})
+  end
+
 end

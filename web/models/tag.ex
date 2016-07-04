@@ -1,5 +1,6 @@
 defmodule Exantenna.Tag do
   use Exantenna.Web, :model
+  alias Exantenna.Antenna
 
   schema "tags" do
     field :name, :string
@@ -22,4 +23,12 @@ defmodule Exantenna.Tag do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
+  def item_changeset(%Antenna{tags: _tags} = _antenna, item \\ :invalid) do
+    Enum.map item[:tags], fn name ->
+      %__MODULE__{}
+      |> changeset(%{name: name})
+    end
+  end
+
 end

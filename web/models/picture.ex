@@ -16,4 +16,11 @@ defmodule Exantenna.Picture do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
+  def item_changeset(%Antenna{picture: picture} = _antenna, item \\ :invalid) do
+    picture
+    |> changeset(%{thumbs: item[:pictures]})
+    |> cast_assoc(:thumbs, required: true)
+  end
+
 end

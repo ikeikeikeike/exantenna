@@ -20,10 +20,8 @@ defmodule Exantenna.Entry do
   end
 
   def item_changeset(%Antenna{entry: entry} = _antenna, item \\ :invalid) do
-    params = %{thumbs: item[:images]}
-
     entry
-    |> changeset(params)
+    |> changeset(%{thumbs: item[:images]})
     |> cast_assoc(:thumbs, required: true)
   end
 end

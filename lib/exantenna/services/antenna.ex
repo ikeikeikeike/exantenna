@@ -13,13 +13,14 @@ defmodule Exantenna.Services.Antenna do
   alias Exantenna.Summary
   alias Exantenna.Tag
 
-  alias Exantenna.Services
-
   alias Exantenna.Redises.Item
 
   require Logger
 
   def add_by(%Blog{} = blog) do
+
+    item = Item.shift blog.rss
+    # TODO: seo title, seo content, etc..
 
     antenna = %Antenna{
       blog: blog,
@@ -28,11 +29,8 @@ defmodule Exantenna.Services.Antenna do
       video: %Video{},
       picture: %Picture{},
       summary: %Summary{},
-      tags: %Tag{},
+      tags: [],
     }
-
-    item = Item.shift blog.rss
-    # TODO: seo title, seo content, etc..
 
     case Repo.transaction(insert(antenna, item)) do
       {:ok, %{entry: entry, metadata: metadata, video: video, picture: picture, summary: summary, tags: tags}} ->
