@@ -22,4 +22,22 @@ defmodule Exantenna.Metadata do
     |> cast(params, @required_fields, @optional_fields)
     |> unique_constraint(:url)
   end
+
+  def item_changeset(%__MODULE__{} = model, item \\ :invalid) do
+    params = %{
+      url: item["url"],
+      title: item["title"],
+      content: item["explain"],
+      seo_title: item["seo_title"],
+      seo_content: item["seo_content"],
+      creator: item["url"],  # extract_domain(
+      publisher: "PERVERTING",
+      published_at: Ecto.DateTime.utc,
+    }
+
+    model
+    |> changeset(params)
+    |> cast_assoc(:thumbs, required: true)
+  end
+
 end

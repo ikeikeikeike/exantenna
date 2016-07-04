@@ -1,5 +1,6 @@
 defmodule Exantenna.Entry do
   use Exantenna.Web, :model
+  alias Exantenna.Antenna
 
   schema "entries" do
     has_one :antenna, Exantenna.Antenna
@@ -16,5 +17,13 @@ defmodule Exantenna.Entry do
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
+  end
+
+  def item_changeset(%Antenna{entry: entry} = _antenna, item \\ :invalid) do
+    params = %{thumbs: item[:images]}
+
+    entry
+    |> changeset(params)
+    |> cast_assoc(:thumbs, required: true)
   end
 end

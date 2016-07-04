@@ -1,37 +1,36 @@
 defmodule Exantenna.Builders.Rss do
   alias Exantenna.Repo
   alias Exantenna.Blog
-  alias Exantenna.Blank
   alias Exantenna.Services
 
-  import Logger, only: [warn: 1]
+  alias Exantenna.Redises.Feed
+
+  require Logger
 
   def feed_into do
-    blogs = Repo.all Blog.query
+    blogs =
+      Blog.query
+      |> Blog.available
+      |> Repo.all
 
-    Enum.each blogs, fn b ->
-      feed =
-        with true <- ! Blank.blank?(b.rss), feed = Scrape.feed(b.rss),
-             true <- ! Blank.blank?(feed), true <- length(feed) > 0,
-          do: feed
+    Enum.each blogs, fn blog ->
 
-      case feed do
-        [%{}] ->
+      blog =
+        blog
+        |> Blog.feed_changeset(Feed.get(blog.rss))
 
-          meta = []
+      blog =
+        case Repo.insert_or_update(blog) do
+          {:ok, blog} -> blog
+          {:error, cset} ->
+            Logger.warn("#{inspect blog}: #{inspect cset}")
+            blog
+        end
 
-          case Services.Blog.update_by_meta(b, meta) do
-            {:ok, blog} -> blog
-            {:ng, rson} -> warn("#{inspect b}: #{rson}")
-          end
-
-          case Services.Antenna.add_by_feed(feed) do
-            {:ok, antenna} -> antenna
-            {:ng, rson} -> warn("#{rson} by #{inspect b} and #{feed}")
-          end
-
-        _ ->
-          Logger.warn("Warn #{inspect b} rss feed was blank")
+      case Services.Antenna.add_by(blog) do
+        {:ok, antenna} -> antenna
+        {:error, reason} ->
+          Logger.warn("#{reason} by #{inspect blog}")
       end
 
     end

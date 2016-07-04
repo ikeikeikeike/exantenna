@@ -3,6 +3,7 @@ defmodule Exantenna.Blog do
 
   schema "blogs" do
     field :name, :string
+    # field :explain, :string
 
     field :url, :string
     field :rss, :string
@@ -37,6 +38,12 @@ defmodule Exantenna.Blog do
     preload: ^@relational_fields
   end
 
+  def available(query) do
+    from e in query,
+      where: e.rss != "" and
+             not is_nil(e.rss)
+  end
+
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
@@ -57,6 +64,17 @@ defmodule Exantenna.Blog do
     model
     |> register_changeset(params)
     |> cast_assoc(:verifiers, required: true)
+  end
+
+  def feed_changeset(model, feed \\ :invalid) do
+    params = %{
+      url: feed["host"],
+      name: feed["title"],
+      explain: feed["explain"]
+    }
+
+    model
+    |> Blog.changeset(params)
   end
 
 end

@@ -24,4 +24,20 @@ defmodule Exantenna.VideoMetadata do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
+  def item_changeset(metadata, viditem \\ :invalid) do
+
+    params = %{
+      url: viditem["url"],
+      title: viditem["title"],
+      content: viditem["content"],
+      embed_code: viditem["embed_code"],
+      duration: viditem["duration"],
+    }
+
+    metadata
+    |> changeset(params)
+    |> cast_assoc(:thumbs, required: true)
+  end
+
 end

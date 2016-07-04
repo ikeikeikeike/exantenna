@@ -4,6 +4,7 @@ defmodule Exantenna.Repo.Migrations.CreateBlog do
   def change do
     create table(:blogs) do
       add :name, :string
+      add :explain, :text
 
       add :url, :string
       add :rss, :string
