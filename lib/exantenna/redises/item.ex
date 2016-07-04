@@ -9,9 +9,16 @@ defmodule Exantenna.Redises.Item do
     end
   end
 
+  def shift(key) do
+    case Redix.command!(conn, ~w(LPOP #{key})) do
+      nil -> nil
+      val -> Poison.Parser.parse!(val)
+    end
+  end
+
   def all(key) do
-    items = Redix.command!(conn, ~w(LRANGE #{key} 0 -1))
-    Enum.map items, &Poison.Parser.parse! &1
+    Redix.command!(conn, ~w(LRANGE #{key} 0 -1))
+    |> Enum.map(&Poison.Parser.parse!(&1))
   end
 
 end
