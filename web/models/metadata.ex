@@ -24,6 +24,7 @@ defmodule Exantenna.Metadata do
   end
 
   def item_changeset(%__MODULE__{} = model, item \\ :invalid) do
+    require IEx; IEx.pry
     params = %{
       url: item["url"],
       title: item["title"],
@@ -35,9 +36,12 @@ defmodule Exantenna.Metadata do
       published_at: Ecto.DateTime.utc,
     }
 
+    abc =
     model
     |> changeset(params)
     |> cast_assoc(:thumbs, required: true)
+    require IEx; IEx.pry
+    abc
   end
 
 end

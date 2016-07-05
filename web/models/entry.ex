@@ -20,8 +20,11 @@ defmodule Exantenna.Entry do
   end
 
   def item_changeset(%Antenna{entry: entry} = _antenna, item \\ :invalid) do
+    abc =
     entry
-    |> changeset(%{thumbs: item[:images]})
+    |> changeset(%{thumbs: item["images"]})
     |> cast_assoc(:thumbs, required: true)
+    require IEx; IEx.pry
+    abc
   end
 end

@@ -1,5 +1,6 @@
 defmodule Exantenna.Picture do
   use Exantenna.Web, :model
+  alias Exantenna.Antenna
 
   schema "pictures" do
     has_one :antenna, Exantenna.Antenna
@@ -18,9 +19,12 @@ defmodule Exantenna.Picture do
   end
 
   def item_changeset(%Antenna{picture: picture} = _antenna, item \\ :invalid) do
+    abc =
     picture
-    |> changeset(%{thumbs: item[:pictures]})
+    |> changeset(%{thumbs: item["pictures"]})
     |> cast_assoc(:thumbs, required: true)
+    require IEx; IEx.pry
+    abc
   end
 
 end

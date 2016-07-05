@@ -74,7 +74,7 @@ defmodule Exantenna.Blog do
     }
 
     model
-    |> Blog.changeset(params)
+    |> changeset(params)
   end
 
 end

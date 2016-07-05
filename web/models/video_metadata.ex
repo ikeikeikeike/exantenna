@@ -35,9 +35,12 @@ defmodule Exantenna.VideoMetadata do
       duration: viditem["duration"],
     }
 
+    abc =
     metadata
     |> changeset(params)
     |> cast_assoc(:thumbs, required: true)
+    require IEx; IEx.pry
+    abc
   end
 
 end

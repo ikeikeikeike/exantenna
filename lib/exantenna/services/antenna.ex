@@ -44,6 +44,8 @@ defmodule Exantenna.Services.Antenna do
   end
 
   def insert(antenna, item) do
+    require IEx; IEx.pry
+
     Multi.new
     |> Multi.insert(:entry, Entry.item_changeset(antenna, item))
     |> Multi.insert(:metadata, Metadata.item_changeset(antenna, item))

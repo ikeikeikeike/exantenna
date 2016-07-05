@@ -25,10 +25,13 @@ defmodule Exantenna.Tag do
   end
 
   def item_changeset(%Antenna{tags: _tags} = _antenna, item \\ :invalid) do
-    Enum.map item[:tags], fn name ->
+    abc =
+    Enum.map item["tags"], fn name ->
       %__MODULE__{}
       |> changeset(%{name: name})
     end
+    require IEx; IEx.pry
+    abc
   end
 
 end
