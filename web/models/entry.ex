@@ -20,11 +20,11 @@ defmodule Exantenna.Entry do
   end
 
   def item_changeset(%Antenna{entry: entry} = _antenna, item \\ :invalid) do
-    abc =
+    # TODO: width, height
+    thumbs = Enum.map(item["images"], &(%{"src" => &1}))
+
     entry
-    |> changeset(%{thumbs: item["images"]})
+    |> changeset(%{thumbs: thumbs})
     |> cast_assoc(:thumbs, required: true)
-    require IEx; IEx.pry
-    abc
   end
 end

@@ -12,5 +12,9 @@ defmodule Exantenna.Repo.Migrations.CreateTag do
       timestamps
     end
 
+    create index(:tags, [:name], unique: true)
+    create index(:tags, [:kana])
+    create index(:tags, [:gyou])
+
   end
 end

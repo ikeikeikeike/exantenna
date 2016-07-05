@@ -8,15 +8,19 @@ defmodule Exantenna.Repo.Migrations.CreateAnime do
       add :kana, :string
       add :romaji, :string
       add :gyou, :string
+
       add :url, :string
+
       add :author, :string
       add :works, :string
+
       add :release_date, :datetime
+
       add :outline, :text
 
       timestamps
     end
-    create index(:animes, [:name])
+    create index(:animes, [:name], unique: true)
     create index(:animes, [:gyou])
     create index(:animes, [:release_date])
 

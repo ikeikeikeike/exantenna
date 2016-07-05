@@ -1,5 +1,6 @@
 defmodule Exantenna.Metadata do
   use Exantenna.Web, :model
+  alias Exantenna.Antenna
 
   schema "metadatas" do
     field :url, :string
@@ -14,8 +15,8 @@ defmodule Exantenna.Metadata do
     timestamps
   end
 
-  @required_fields ~w(url title content seo_title seo_content creator publisher)
-  @optional_fields ~w()
+  @required_fields ~w(url title content creator publisher)
+  @optional_fields ~w(seo_title seo_content)
 
   def changeset(model, params \\ :invalid) do
     model
@@ -23,25 +24,20 @@ defmodule Exantenna.Metadata do
     |> unique_constraint(:url)
   end
 
-  def item_changeset(%__MODULE__{} = model, item \\ :invalid) do
-    require IEx; IEx.pry
+  def item_changeset(%Antenna{metadata: metadata} = _antenna, item \\ :invalid) do
     params = %{
       url: item["url"],
       title: item["title"],
       content: item["explain"],
       seo_title: item["seo_title"],
       seo_content: item["seo_content"],
-      creator: item["url"],  # extract_domain(
+      creator: "",  # extract_domain(item["url"])
       publisher: "PERVERTING",
       published_at: Ecto.DateTime.utc,
     }
 
-    abc =
-    model
+    metadata
     |> changeset(params)
-    |> cast_assoc(:thumbs, required: true)
-    require IEx; IEx.pry
-    abc
   end
 
 end

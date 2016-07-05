@@ -22,15 +22,19 @@ defmodule Exantenna.Repo.Migrations.CreateDiva do
 
       timestamps
     end
-    create index(:divas, [:name])
+
+    create index(:divas, [:name], unique: true)
     create index(:divas, [:kana])
     create index(:divas, [:gyou])
+
     create index(:divas, [:bust])
     create index(:divas, [:hip])
     create index(:divas, [:bracup])
-    create index(:divas, [:blood])
+
     create index(:divas, [:height])
     create index(:divas, [:weight])
+
+    create index(:divas, [:blood])
     create index(:divas, [:birthday])
 
   end

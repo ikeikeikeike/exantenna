@@ -20,11 +20,8 @@ defmodule Exantenna.Summary do
   end
 
   def item_changeset(%Antenna{summary: summary} = _antenna, _item \\ :invalid) do
-    abc =
     summary
     |> changeset(%{})
-    require IEx; IEx.pry
-    abc
   end
 
 end

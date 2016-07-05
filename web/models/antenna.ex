@@ -11,7 +11,7 @@ defmodule Exantenna.Antenna do
     belongs_to :summary, Exantenna.Summary
 
     has_one :penalty, {"antennas_penalties", Exantenna.Penalty}, foreign_key: :assoc_id
-    many_to_many :tags, Exantenna.Tag, join_through: "antennas_tags"
+    many_to_many :tags, Exantenna.Tag, join_through: "antennas_tags" # , on_delete: :delete_all, on_replace: :delete
 
     timestamps
   end

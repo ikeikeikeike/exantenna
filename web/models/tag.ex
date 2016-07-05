@@ -11,7 +11,7 @@ defmodule Exantenna.Tag do
 
     has_one :thumb, {"tags_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
 
-    many_to_many :entries, Exantenna.Entry, join_through: "antennas_tags"
+    many_to_many :antennas, Exantenna.Entry, join_through: "antennas_tags"
 
     timestamps
   end
@@ -24,14 +24,14 @@ defmodule Exantenna.Tag do
     |> cast(params, @required_fields, @optional_fields)
   end
 
-  def item_changeset(%Antenna{tags: _tags} = _antenna, item \\ :invalid) do
-    abc =
-    Enum.map item["tags"], fn name ->
-      %__MODULE__{}
-      |> changeset(%{name: name})
-    end
-    require IEx; IEx.pry
-    abc
+  def item_changeset(%Antenna{tags: _tags} = antenna, item \\ :invalid) do
+    # TODO: find_or_create
+    tags =
+      Enum.map item["tags"], fn name ->
+        changeset(%__MODULE__{}, %{name: name})
+      end
+
+    put_assoc(change(antenna), :tags, tags)
   end
 
 end

@@ -29,8 +29,8 @@ defmodule Exantenna.Builders.Rss do
 
       case Services.Antenna.add_by(blog) do
         {:ok, antenna} -> antenna
-        {:error, reason} ->
-          Logger.warn("#{reason} by #{inspect blog}")
+        {:error, msg} ->
+          Logger.warn("#{msg} by #{inspect blog}")
       end
 
     end

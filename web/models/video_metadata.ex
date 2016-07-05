@@ -17,30 +17,12 @@ defmodule Exantenna.VideoMetadata do
     timestamps
   end
 
-  @required_fields ~w(url title)
-  @optional_fields ~w(content embed_code duration)
+  @required_fields ~w()
+  @optional_fields ~w(title url content embed_code duration)
 
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
-  end
-
-  def item_changeset(metadata, viditem \\ :invalid) do
-
-    params = %{
-      url: viditem["url"],
-      title: viditem["title"],
-      content: viditem["content"],
-      embed_code: viditem["embed_code"],
-      duration: viditem["duration"],
-    }
-
-    abc =
-    metadata
-    |> changeset(params)
-    |> cast_assoc(:thumbs, required: true)
-    require IEx; IEx.pry
-    abc
   end
 
 end

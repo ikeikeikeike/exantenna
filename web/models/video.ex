@@ -5,10 +5,10 @@ defmodule Exantenna.Video do
   alias Exantenna.VideoMetadata
 
   schema "videos" do
-    has_one :antenna, Exantenna.Antenna
+    has_one :antenna, Antenna
 
     # has_many :thumbs, {"videos_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
-    has_many :metadatas, Exantenna.VideoMetadata
+    has_many :metadatas, VideoMetadata
 
     timestamps
   end
@@ -23,8 +23,20 @@ defmodule Exantenna.Video do
 
   def item_changeset(%Antenna{video: video} = _antenna, item \\ :invalid) do
     metadatas =
-      Enum.map item[:videos], fn viditem ->
-        VideoMetadata.item_changeset %VideoMetadata{}, viditem
+      Enum.reduce item["videos"], [], fn tpl, result ->
+        r =
+          Enum.map elem(tpl, 1), fn vid ->
+            %{
+              content: vid["content"],
+              title: vid["title"],
+              url: vid["url"],
+              embed_code: vid["embed_code"],
+              duration: vid["duration"],
+              # TODO: site inserting
+            }
+          end
+
+        result ++ r
       end
 
     video

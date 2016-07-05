@@ -22,16 +22,18 @@ defmodule Exantenna.Repo.Migrations.CreateCharacter do
 
       timestamps
     end
-    create index(:characters, [:name])
+    create index(:characters, [:name], unique: true)
     create index(:characters, [:kana])
     create index(:characters, [:gyou])
+
     create index(:characters, [:bust])
     create index(:characters, [:hip])
     create index(:characters, [:bracup])
-    create index(:characters, [:blood])
+
     create index(:characters, [:height])
     create index(:characters, [:weight])
-    create index(:characters, [:birthday])
 
+    create index(:characters, [:blood])
+    create index(:characters, [:birthday])
   end
 end
