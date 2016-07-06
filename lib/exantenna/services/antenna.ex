@@ -6,8 +6,8 @@ defmodule Exantenna.Services.Antenna do
   alias Exantenna.Blog
   alias Exantenna.Antenna
 
-  alias Exantenna.Metadata
   alias Exantenna.Entry
+  alias Exantenna.Metadata
   alias Exantenna.Video
   alias Exantenna.Picture
   alias Exantenna.Summary
@@ -27,13 +27,8 @@ defmodule Exantenna.Services.Antenna do
     })
 
     antenna = %Antenna{
-      blog: blog,
-      entry: %Entry{},
-      metadata: %Metadata{},
-      video: %Video{},
-      picture: %Picture{},
-      summary: %Summary{},
-      tags: [],
+      blog: blog, entry: %Entry{}, metadata: %Metadata{},
+      video: %Video{}, picture: %Picture{}, summary: %Summary{}, tags: [],
     }
 
     case insert_with_transaction(antenna, item) do
@@ -53,8 +48,8 @@ defmodule Exantenna.Services.Antenna do
     end
   end
 
-  def insert_with_transaction(antenna, %{}), do: {:warn, "blank value"}
-  def insert_with_transaction(antenna, nil), do: {:warn, "blank value"}
+  def insert_with_transaction(_antenna, %{}), do: {:warn, "blank value"}
+  def insert_with_transaction(_antenna, nil), do: {:warn, "blank value"}
   def insert_with_transaction(antenna, item) do
     multi =
       Multi.new

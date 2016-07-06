@@ -1,4 +1,5 @@
 %{"base64url": {:hex, :base64url, "0.0.1", "36a90125f5948e3afd7be97662a1504b934dd5dac78451ca6e9abf85a10286be", [:rebar], []},
+  "bing_translator": {:hex, :bing_translator, "0.2.7", "d24adae333296b143bfd3b9cf63c0766984d449366c21c82841d17735a4fdc34", [:mix], [{:timex, "~> 2.0", [hex: :timex, optional: false]}, {:poison, "~> 1.5", [hex: :poison, optional: false]}, {:httpoison, "~> 0.8", [hex: :httpoison, optional: false]}, {:floki, "~> 0.7", [hex: :floki, optional: false]}]},
   "certifi": {:hex, :certifi, "0.4.0", "a7966efb868b179023618d29a407548f70c52466bf1849b9e8ebd0e34b7ea11f", [:rebar3], []},
   "codepagex": {:hex, :codepagex, "0.1.2", "584dad3a20204044d7ed5e2b15b5670421a7fdeec186a0724cb210df20c892c1", [:mix], []},
   "combine": {:hex, :combine, "0.8.0", "390fe5f632a8c890d378abc697ca7c4c52cd3e38bb232a5cad1677cd4af013df", [:mix], []},
