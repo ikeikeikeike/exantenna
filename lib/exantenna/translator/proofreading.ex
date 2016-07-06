@@ -1,5 +1,5 @@
 defmodule Exantenna.Translator.Proofreading do
-  alias Translator.Proofreading, as: Proof
+  alias Exantenna.Translator.Proofreading, as: Proof
 
   def tag(word) when "" ==  word,  do: word
   def tag(word) when is_nil(word), do: word

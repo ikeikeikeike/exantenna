@@ -4,7 +4,7 @@ defmodule Exantenna.Translator.Bing do
   # - Ascii will be translating.
   #
   def translate?(word) do
-    Imitation.String.is_ascii?(word) && word =~ ~r([A-Za-z]{4,})
+    Exantenna.Imitation.String.is_ascii?(word) && word =~ ~r([A-Za-z]{4,})
   end
 
   def translate(word, opts \\ [to: "ja"])
