@@ -13,24 +13,32 @@ defmodule Exantenna.Builders.Rss do
       |> Blog.available
       |> Repo.all
 
-    Enum.each blogs, fn blog ->
-
-      blog =
-        blog
-        |> Blog.feed_changeset(Feed.get(blog.rss))
+    Enum.map blogs, fn blog ->
+      blog = Blog.feed_changeset(blog, Feed.get(blog.rss))
 
       blog =
         case Repo.insert_or_update(blog) do
-          {:ok, blog} -> blog
+          {:ok, blog} ->
+            blog
+
           {:error, cset} ->
-            Logger.warn("#{inspect blog}: #{inspect cset}")
+            Logger.error("#{inspect cset}")
             blog
         end
 
       case Services.Antenna.add_by(blog) do
-        {:ok, antenna} -> antenna
+        {:ok, antenna} ->
+          {:ok, antenna}
+
+        # TODO: Move logger to kick module
+
+        {:warn, msg} ->
+          Logger.warn("#{msg} by #{blog.rss}")
+          {:warn, blog, msg}
+
         {:error, msg} ->
-          Logger.warn("#{msg} by #{inspect blog}")
+          Logger.error("#{inspect msg} by #{inspect blog}")
+          {:error, blog, msg}
       end
 
     end
