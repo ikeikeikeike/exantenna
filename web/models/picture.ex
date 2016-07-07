@@ -4,8 +4,7 @@ defmodule Exantenna.Picture do
 
   schema "pictures" do
     has_one :antenna, Exantenna.Antenna
-
-    has_many :thumbs, {"entries_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
+    has_many :thumbs, {"pictures_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
 
     timestamps
   end

@@ -15,8 +15,8 @@ defmodule Exantenna.Repo.Migrations.CreateMetadata do
       timestamps
     end
 
-    create index(:metadatas, [:published_at])
     create unique_index(:metadatas, [:url])
+    create index(:metadatas, [:published_at])
 
   end
 end

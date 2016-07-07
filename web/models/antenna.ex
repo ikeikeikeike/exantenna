@@ -10,7 +10,11 @@ defmodule Exantenna.Antenna do
     belongs_to :summary, Exantenna.Summary
 
     has_one :penalty, {"antennas_penalties", Exantenna.Penalty}, foreign_key: :assoc_id
+    has_many :scores, {"antennas_scores", Exantenna.Score}, foreign_key: :assoc_id
+
     many_to_many :tags, Exantenna.Tag, join_through: "antennas_tags" # , on_delete: :delete_all, on_replace: :delete
+    many_to_many :divas, Exantenna.Diva, join_through: "antennas_divas" # , on_delete: :delete_all, on_replace: :delete
+    many_to_many :animes, Exantenna.Anime, join_through: "antennas_animes" # , on_delete: :delete_all, on_replace: :delete
 
     timestamps
   end
@@ -29,13 +33,39 @@ defmodule Exantenna.Antenna do
     from e in __MODULE__,
     preload: [
       :metadata,
+      :scores,  # node in,out score
       :penalty,
-      blog: [:thumb, :penalty, :scores, :verifiers],
-      entry: [:thumbs, :scores],
-      video: :metadatas,
-      picture: :thumbs,
-      summary: :scores,
-      tags: :thumb,
+      :summary,
+      blog: [
+        :thumb,
+        :penalty,
+        :scores,  # domain score + in,out score
+        :verifiers
+      ],
+      entry: [
+        :thumbs
+      ],
+      video: [
+        metadatas: [
+          :thumb,
+          site: [:thumb],
+        ],
+      ],
+      picture: [
+        :thumbs
+      ],
+      tags: [
+        :thumb
+      ],
+      divas: [
+        :thumb
+      ],
+      animes: [
+        :thumb,
+        characters: [
+          :thumb
+        ],
+      ],
     ]
   end
 

@@ -3,15 +3,14 @@ defmodule Exantenna.Tag do
   alias Exantenna.Antenna
 
   schema "tags" do
+    has_one :thumb, {"tags_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
+    many_to_many :antennas, Exantenna.Antenna, join_through: "antennas_tags"
+
     field :name, :string
     field :kana, :string
     field :romaji, :string
     field :orig, :string
     field :gyou, :string
-
-    has_one :thumb, {"tags_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
-
-    many_to_many :antennas, Exantenna.Entry, join_through: "antennas_tags"
 
     timestamps
   end

@@ -9,8 +9,14 @@ defmodule Exantenna.Score do
     timestamps
   end
 
-  @required_fields ~w(assoc_id)
-  @optional_fields ~w(name count)
+  @required_fields ~w(assoc_id name)
+  @optional_fields ~w(count)
+
+  @names ~w(
+    domain
+    indaily  inweekly  inmonthly  inyearly  intotally
+    outdaily outweekly outmonthly outyearly outtotally
+  )
 
   def changeset(model, params \\ :invalid) do
     model

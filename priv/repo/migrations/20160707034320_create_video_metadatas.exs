@@ -3,6 +3,7 @@ defmodule Exantenna.Repo.Migrations.CreateVideoMetadata do
 
   def change do
     create table(:video_metadatas) do
+      add :site_id, references(:sites, on_delete: :nothing)
       add :video_id, references(:videos, on_delete: :nothing)
 
       add :url, :text
@@ -15,7 +16,9 @@ defmodule Exantenna.Repo.Migrations.CreateVideoMetadata do
 
       timestamps
     end
+    create index(:video_metadatas, [:site_id])
     create index(:video_metadatas, [:video_id])
+
     create index(:video_metadatas, [:duration])
 
   end

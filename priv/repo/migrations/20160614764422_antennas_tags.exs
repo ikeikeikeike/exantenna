@@ -6,8 +6,7 @@ defmodule Exantenna.Repo.Migrations.AntennasTags do
       add :antenna_id, references(:antennas)
       add :tag_id, references(:tags)
     end
-    create index(:antennas_tags,  [:antenna_id])
-    create index(:antennas_tags,  [:tag_id])
+    create index(:antennas_tags,  [:tag_id, :antenna_id], unique: true)
     create index(:antennas_tags,  [:antenna_id, :tag_id], unique: true)
 
   end

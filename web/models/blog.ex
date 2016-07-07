@@ -2,17 +2,6 @@ defmodule Exantenna.Blog do
   use Exantenna.Web, :model
 
   schema "blogs" do
-    field :name, :string
-    # field :explain, :string
-
-    field :url, :string
-    field :rss, :string
-
-    field :mediatype, :string
-    field :contenttype, :string
-
-    field :last_modified, Timex.Ecto.DateTime
-
     belongs_to :user, Exantenna.User
 
     has_one :antenna, Exantenna.Antenna
@@ -22,11 +11,22 @@ defmodule Exantenna.Blog do
     has_many :scores, {"blogs_scores", Exantenna.Score}, foreign_key: :assoc_id
     has_many :verifiers, Exantenna.BlogVerifier
 
+    field :name, :string
+    field :explain, :string
+
+    field :url, :string
+    field :rss, :string
+
+    field :mediatype, :string
+    field :contenttype, :string
+
+    field :last_modified, Timex.Ecto.DateTime
+
     timestamps
   end
 
   @required_fields ~w(rss mediatype contenttype)
-  @optional_fields ~w(name url user_id rss last_modified)
+  @optional_fields ~w(name url user_id rss last_modified explain)
 
   @mediatypes ~w(image movie)
   @contenttypes ~w(second_dimension third_dimention)

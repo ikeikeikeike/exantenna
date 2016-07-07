@@ -2,6 +2,9 @@ defmodule Exantenna.Diva do
   use Exantenna.Web, :model
 
   schema "divas" do
+    has_one :thumb, {"divas_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
+    many_to_many :antennas, Exantenna.Antenna, join_through: "antennas_divas"
+
     field :name, :string
     field :alias, :string
     field :kana, :string
@@ -18,8 +21,6 @@ defmodule Exantenna.Diva do
 
     field :blood, :string
     field :birthday, Ecto.Date
-
-    has_one :thumb, {"divas_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
 
     timestamps
   end

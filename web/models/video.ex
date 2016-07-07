@@ -6,8 +6,6 @@ defmodule Exantenna.Video do
 
   schema "videos" do
     has_one :antenna, Antenna
-
-    # has_many :thumbs, {"videos_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
     has_many :metadatas, VideoMetadata
 
     timestamps

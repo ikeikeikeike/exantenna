@@ -3,6 +3,8 @@ defmodule Exantenna.Repo.Migrations.CreateCharacter do
 
   def change do
     create table(:characters) do
+      add :anime_id, references(:animes, on_delete: :nothing)
+
       add :name, :string
       add :alias, :string
       add :kana, :string
@@ -22,6 +24,8 @@ defmodule Exantenna.Repo.Migrations.CreateCharacter do
 
       timestamps
     end
+    create index(:characters, [:anime_id])
+
     create index(:characters, [:name], unique: true)
     create index(:characters, [:kana])
     create index(:characters, [:gyou])

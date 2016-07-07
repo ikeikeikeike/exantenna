@@ -8,9 +8,7 @@ defmodule Exantenna.Repo.Migrations.BlogsPenalties do
 
       timestamps
     end
-
     create index(:blogs_penalties, [:assoc_id])
     create index(:blogs_penalties, [:penalty])
-    create index(:blogs_penalties, [:assoc_id, :penalty])
   end
 end

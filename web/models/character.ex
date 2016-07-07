@@ -2,6 +2,9 @@ defmodule Exantenna.Character do
   use Exantenna.Web, :model
 
   schema "characters" do
+    belongs_to :anime, Exantenna.Anime
+    has_one :thumb, {"characters_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
+
     field :name, :string
     field :alias, :string
     field :kana, :string
@@ -18,8 +21,6 @@ defmodule Exantenna.Character do
 
     field :blood, :string
     field :birthday, Ecto.Date
-
-    has_one :thumb, {"characters_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
 
     timestamps
   end

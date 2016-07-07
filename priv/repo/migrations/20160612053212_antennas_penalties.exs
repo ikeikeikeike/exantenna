@@ -11,7 +11,6 @@ defmodule Exantenna.Repo.Migrations.AntennasPenalties do
 
     create index(:antennas_penalties, [:assoc_id])
     create index(:antennas_penalties, [:penalty])
-    create index(:antennas_penalties, [:assoc_id, :penalty])
   end
 
 end
