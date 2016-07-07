@@ -32,13 +32,13 @@ defmodule Exantenna.Builders.Rss do
 
         # TODO: Move logger to kick module
 
-        {:warn, msg} ->
-          Logger.warn("#{msg} by #{blog.rss}")
-          {:warn, blog, msg}
-
         {:error, msg} ->
           Logger.error("#{inspect msg} by #{inspect blog}")
           {:error, blog, msg}
+
+        {:warn, msg} ->
+          {:warn, blog, msg}
+
       end
 
     end

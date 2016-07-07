@@ -35,11 +35,10 @@ defmodule Exantenna.Services.Antenna do
 
     case insert_with_transaction(antenna, item) do
       {:ok, map} ->
-        require IEx; IEx.pry
         map = Map.merge(map, %{
-          tags: map["tags"].tags,
-          divas: map["divas"].divas,
-          animes: map["animes"].animes,
+          tags: map.tags.tags,
+          divas: map.divas.divas,
+          animes: map.animes.animes,
         })
 
         {:ok, struct(antenna, map)}

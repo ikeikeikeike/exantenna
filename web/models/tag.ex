@@ -27,8 +27,8 @@ defmodule Exantenna.Tag do
     tags =
       Enum.reduce item["videos"], [], fn tpl, result ->
         r =
-          Enum.map elem(tpl, 1), fn vid ->
-            vid["tags"] ++ vid["divas"]
+          Enum.flat_map elem(tpl, 1), fn vid ->
+            (vid["tags"] || []) ++ (vid["divas"] || [])
           end
 
         result ++ r

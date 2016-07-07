@@ -1,5 +1,6 @@
 defmodule Exantenna.Anime do
   use Exantenna.Web, :model
+  import Exantenna.Filter, only: [right_name?: 2]
   alias Exantenna.Antenna
 
   schema "animes" do
@@ -32,15 +33,40 @@ defmodule Exantenna.Anime do
   end
 
   def item_changeset(%Antenna{animes: _animes} = antenna, item \\ :invalid) do
-    tags =
-      Enum.map item["tags"], fn name ->
-        case Repo.get_by(__MODULE__, name: name) do
-          nil -> changeset(%__MODULE__{}, %{name: name})
-          tag -> tag
-        end
-      end
+    filters = Application.get_env(:exantenna, :anime_filters)[:title]
 
-    put_assoc(change(antenna), :tags, tags)
+    names =
+      ConCache.get_or_store(:exantenna_cache, "animenamealias:all", fn ->
+        Enum.map Repo.all(__MODULE__), &([name: &1.name, alias: &1.alias])
+      end)
+      |> Enum.filter(fn anime ->
+        [name: name, alias: aka] = anime
+
+        # XXX: Consider detection from video info's map |> item["videos"]
+        cond do
+          ! (aka in filters) && right_name?(aka, item) -> true
+          ! (name in filters) && right_name?(name, item) -> true
+          true -> false
+        end
+      end)
+      |> Enum.map(fn anime ->
+        anime[:name]
+      end)
+
+    animes = get_or_changeset(names)
+
+    put_assoc(change(antenna), :animes, animes)
+  end
+
+  def get_or_changeset(names) when is_list(names),
+    do: Enum.map names, &get_or_changeset(&1)
+  def get_or_changeset(name) do
+    case Repo.get_by(__MODULE__, name: name) do
+      nil ->
+        changeset(%__MODULE__{}, %{name: name})
+      model ->
+        model
+    end
   end
 
 end

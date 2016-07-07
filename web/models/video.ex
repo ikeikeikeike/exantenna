@@ -22,7 +22,6 @@ defmodule Exantenna.Video do
   def item_changeset(%Antenna{video: video} = _antenna, item \\ :invalid) do
     metadatas =
       Enum.reduce item["videos"], [], fn tpl, result ->
-        require IEx; IEx.pry
         r =
           Enum.map elem(tpl, 1), fn vid ->
             %{
@@ -31,7 +30,9 @@ defmodule Exantenna.Video do
               url: vid["url"],
               embed_code: vid["embed_code"],
               duration: vid["duration"],
-              thumbs: Enum.map(vid["image_urls"], &(%{"src" => &1})),
+              thumbs: Enum.map(vid["image_urls"] || [], fn src ->
+                %{"src" => src}
+              end),
 
               # TODO: site inserting
             }
@@ -42,7 +43,7 @@ defmodule Exantenna.Video do
 
     video
     |> changeset(%{metadatas: metadatas})
-    |> cast_assoc(:metadatas, required: true)
+    |> cast_assoc(:metadatas, required: false)
   end
 
 end

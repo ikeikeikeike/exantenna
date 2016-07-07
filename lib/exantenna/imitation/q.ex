@@ -1,9 +1,9 @@
 defmodule Exantenna.Imitation.Q do
 
   def find_or_create(query, cset) do
-    case model = Exblur.Repo.one(query) do
+    case model = Exantenna.Repo.one(query) do
       nil ->
-        case Exblur.Repo.insert(cset) do
+        case Exantenna.Repo.insert(cset) do
           {:ok, model} ->
             {:new, model}
 
