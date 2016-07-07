@@ -1,5 +1,6 @@
 defmodule Exantenna.Anime do
   use Exantenna.Web, :model
+  alias Exantenna.Antenna
 
   schema "animes" do
     has_one :thumb, {"animes_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
