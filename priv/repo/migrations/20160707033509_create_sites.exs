@@ -10,8 +10,8 @@ defmodule Exantenna.Repo.Migrations.CreateSites do
 
       timestamps
     end
-    create index(:sites, [:url])
     create unique_index(:sites, [:domain, :rss])
+    create index(:sites, [:name])
 
   end
 end

@@ -52,9 +52,10 @@ defmodule Exantenna.Services.Antenna do
     end
   end
 
-  def insert_with_transaction(_antenna, %{}), do: {:warn, "blank value"}
-  def insert_with_transaction(_antenna, nil), do: {:warn, "blank value"}
-  def insert_with_transaction(antenna, item) do
+  def insert_with_transaction(antenna, %{
+    "url" => _, "title" => _, "explain" => _,
+    "images" => _, "tags" => _, "pictures" => _, "videos" => _} = item
+  ) do
     multi =
       Multi.new
       |> Multi.insert(:entry, Entry.item_changeset(antenna, item))
@@ -69,20 +70,19 @@ defmodule Exantenna.Services.Antenna do
 
     Repo.transaction(multi)
   end
+  def insert_with_transaction(_antenna, _), do: {:warn, "blank value"}
 
   defp additional_value(item) do
     title = HtmlSanitizeEx.strip_tags(item["title"])
     explain = HtmlSanitizeEx.strip_tags(item["explain"])
 
-    item = Map.merge(item || %{}, %{
+    Map.merge(item || %{}, %{
       # "seo_tags" => Enum.map(item["tags"], &Translator.tag(Translator.translate(&1))),
       "title" => title,
       "explain" => explain,
       "seo_title" => Translator.sentence(Translator.translate(title)),
       "seo_explain" => Translator.sentence(Translator.translate(explain)),
     })
-
-    item
   end
 
 end

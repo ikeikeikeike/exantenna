@@ -4,7 +4,9 @@ defmodule Exantenna.Site do
   schema "sites" do
     field :name, :string
 
+    field :url, :string
     field :domain, :string
+
     field :rss, :string
 
     has_one :video_metadata, Exantenna.VideoMetadata
@@ -14,7 +16,7 @@ defmodule Exantenna.Site do
   end
 
   @required_fields ~w(domain)
-  @optional_fields ~w(name rss)
+  @optional_fields ~w(name rss url)
 
   def changeset(model, params \\ :invalid) do
     model
