@@ -13,7 +13,7 @@ defmodule Exantenna.Character do
     field :gyou, :string
 
     field :height, :integer
-    field :width, :integer
+    field :weight, :integer
 
     field :bust, :integer
     field :bracup, :string
@@ -27,7 +27,7 @@ defmodule Exantenna.Character do
   end
 
   @required_fields ~w(name)
-  @optional_fields ~w(alias kana romaji gyou height width bust bracup waist hip blood birthday)
+  @optional_fields ~w(alias kana romaji gyou height weight bust bracup waist hip blood birthday)
 
   def changeset(model, params \\ :invalid) do
     model
