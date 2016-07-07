@@ -4,6 +4,7 @@ defmodule Exantenna.VideoMetadata do
   schema "video_metadatas" do
     belongs_to :site, Exantenna.Site
     belongs_to :video, Exantenna.Video
+    has_many :thumbs, {"video_metadatas_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
 
     field :url, :string
 
@@ -12,8 +13,6 @@ defmodule Exantenna.VideoMetadata do
     field :embed_code, :string
 
     field :duration, :integer
-
-    has_one :thumb, {"video_metadatas_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
 
     timestamps
   end

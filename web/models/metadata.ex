@@ -29,7 +29,7 @@ defmodule Exantenna.Metadata do
       url: item["url"],
       title: item["title"],
       content: item["explain"],
-      seo_title: item["seo_title"],
+      seo_title: item["seo_explain"],
       seo_content: item["seo_content"],
       creator: "",  # extract_domain(item["url"])
       publisher: "PERVERTING",

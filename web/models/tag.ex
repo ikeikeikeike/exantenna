@@ -25,12 +25,24 @@ defmodule Exantenna.Tag do
 
   def item_changeset(%Antenna{tags: _tags} = antenna, item \\ :invalid) do
     tags =
-      Enum.map item["tags"], fn name ->
+      Enum.reduce item["videos"], [], fn tpl, result ->
+        r =
+          Enum.map elem(tpl, 1), fn vid ->
+            vid["tags"] ++ vid["divas"]
+          end
+
+        result ++ r
+      end
+
+    tags =
+      tags ++ item["tags"]
+      |> Enum.uniq
+      |> Enum.map(fn name ->
         case Repo.get_by(__MODULE__, name: name) do
           nil -> changeset(%__MODULE__{}, %{name: name})
           tag -> tag
         end
-      end
+      end)
 
     put_assoc(change(antenna), :tags, tags)
   end

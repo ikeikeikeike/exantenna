@@ -30,6 +30,7 @@ defmodule Exantenna.Video do
               url: vid["url"],
               embed_code: vid["embed_code"],
               duration: vid["duration"],
+              thumbs: Enum.map(vid["image_urls"], &(%{"src" => &1})),
               # TODO: site inserting
             }
           end

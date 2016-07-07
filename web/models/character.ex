@@ -1,5 +1,6 @@
 defmodule Exantenna.Character do
   use Exantenna.Web, :model
+  alias Exantenna.Antenna
 
   schema "characters" do
     belongs_to :anime, Exantenna.Anime

@@ -23,7 +23,8 @@ defmodule Exantenna.Mixfile do
         :phoenix, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex,
         :ueberauth, :ueberauth_identity, :ueberauth_google,
         :timex, :timex_ecto, :tzdata,
-        :comeonin, :redix, :bing_translator
+        :comeonin, :bing_translator,
+        :con_cache, :redix
       ]
     ]
   end
@@ -54,6 +55,8 @@ defmodule Exantenna.Mixfile do
       {:mailgun, "~> 0.1"},
       {:redix, ">= 0.0.0"},
       {:bing_translator, "~> 0.2"},
+      {:html_sanitize_ex, "~> 1.0"},
+      {:con_cache, "~> 0.11"},
     ]
   end
 

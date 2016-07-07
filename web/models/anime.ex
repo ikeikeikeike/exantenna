@@ -29,4 +29,17 @@ defmodule Exantenna.Anime do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
+  def item_changeset(%Antenna{animes: _animes} = antenna, item \\ :invalid) do
+    tags =
+      Enum.map item["tags"], fn name ->
+        case Repo.get_by(__MODULE__, name: name) do
+          nil -> changeset(%__MODULE__{}, %{name: name})
+          tag -> tag
+        end
+      end
+
+    put_assoc(change(antenna), :tags, tags)
+  end
+
 end
