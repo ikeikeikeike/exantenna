@@ -4,6 +4,7 @@ defmodule Exantenna.Builders.Rss do
   alias Exantenna.Services
 
   alias Exantenna.Redises.Feed
+  alias Exantenna.Redises.Item
 
   require Logger
 
@@ -26,7 +27,9 @@ defmodule Exantenna.Builders.Rss do
             blog
         end
 
-      case Services.Antenna.add_by(blog) do
+      item = Item.shift(blog.rss)
+
+      case Services.Antenna.add_by(blog, item) do
         {:ok, antenna} ->
           {:ok, antenna}
 

@@ -16,22 +16,32 @@ defmodule Exantenna.Services.Antenna do
   alias Exantenna.Anime
 
   alias Exantenna.Translator
-  alias Exantenna.Redises.Item
 
   defp setup do
     Translator.configure
   end
 
-  def add_by(%Blog{} = blog) do
+  def add_by(%Blog{}, nil), do: {:warn, "blank value"}
+  def add_by(%Blog{}, %{"url" => url}) when is_nil(url),
+    do: {:warn, "blank value"}
+  def add_by(%Blog{} = blog, item) do
     setup
 
-    item = additional_value(Item.shift(blog.rss))
+    require IEx; IEx.pry
 
-    antenna = %Antenna{
-      blog: blog, entry: %Entry{}, metadata: %Metadata{},
-      video: %Video{}, picture: %Picture{}, summary: %Summary{},
-      tags: [], divas: [], animes: []
-    }
+    antenna =
+      Antenna.where_url(Antenna.query_full, item["url"])
+      |> Repo.one
+
+    require IEx; IEx.pry
+
+    unless antenna do
+      antenna = %Antenna{
+        blog: blog, entry: %Entry{}, metadata: %Metadata{},
+        video: %Video{}, picture: %Picture{}, summary: %Summary{},
+        tags: [], divas: [], animes: []
+      }
+    end
 
     case insert_with_transaction(antenna, item) do
       {:ok, map} ->
@@ -52,10 +62,12 @@ defmodule Exantenna.Services.Antenna do
     end
   end
 
-  def insert_with_transaction(antenna, %{
+  def insert_with_transaction(%Antenna{id: nil} = antenna, %{
     "url" => _, "title" => _, "explain" => _,
     "images" => _, "tags" => _, "pictures" => _, "videos" => _} = item
   ) do
+    item = additional_value(item)
+
     multi =
       Multi.new
       |> Multi.insert(:entry, Entry.item_changeset(antenna, item))
@@ -69,7 +81,10 @@ defmodule Exantenna.Services.Antenna do
 
     Repo.transaction(multi)
   end
-  def insert_with_transaction(_antenna, _), do: {:warn, "blank value"}
+  def insert_with_transaction(antenna, item) do
+    require IEx; IEx.pry
+    {:warn, {antenna, item, "Record has been already"}}
+  end
 
   defp additional_value(item) do
     title = HtmlSanitizeEx.strip_tags(item["title"])

@@ -1,5 +1,6 @@
 defmodule Exantenna.Antenna do
   use Exantenna.Web, :model
+  alias Exantenna.Metadata
 
   schema "antennas" do
     belongs_to :blog, Exantenna.Blog
@@ -73,8 +74,16 @@ defmodule Exantenna.Antenna do
   def query_entries, do: query_full
   def query_videos, do: query_full
 
+  def where_url(query, url) do
+    from q in query,
+      join: m in Metadata,
+        on: m.id == q.metadata_id,
+      where: m.url == ^url
+  end
+
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
 end
