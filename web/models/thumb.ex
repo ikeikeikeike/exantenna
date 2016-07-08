@@ -20,5 +20,6 @@ defmodule Exantenna.Thumb do
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> validate_required(~w(src)a)
   end
 end

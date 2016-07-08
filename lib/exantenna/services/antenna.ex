@@ -44,11 +44,11 @@ defmodule Exantenna.Services.Antenna do
         {:ok, struct(antenna, map)}
 
       {:error, failed_operation, failed_value, changes_so_far} ->
-        msg = {failed_operation, failed_value, changes_so_far}
+        msg = {failed_operation, failed_value, changes_so_far, item}
         {:error, msg}
 
       {:warn, msg} ->
-        {:warn, msg}
+        {:warn, {msg, item}}
     end
   end
 
@@ -60,7 +60,6 @@ defmodule Exantenna.Services.Antenna do
       Multi.new
       |> Multi.insert(:entry, Entry.item_changeset(antenna, item))
       |> Multi.insert(:metadata, Metadata.item_changeset(antenna, item))
-      |> Multi.insert(:video, Video.item_changeset(antenna, item))
       |> Multi.insert(:picture, Picture.item_changeset(antenna, item))
       |> Multi.insert(:summary, Summary.item_changeset(antenna, item))
       |> Multi.insert(:tags, Tag.item_changeset(antenna, item))

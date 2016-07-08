@@ -15,12 +15,14 @@ defmodule Exantenna.Metadata do
     timestamps
   end
 
-  @required_fields ~w(url title content creator publisher)
-  @optional_fields ~w(seo_title seo_content)
+  @required_fields ~w(url title content published_at)
+  @optional_fields ~w(seo_title seo_content creator publisher)
 
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> validate_required(~w(url title published_at)a)
+    |> validate_format(:url, ~r/^https?:\/\//)
     |> unique_constraint(:url)
   end
 
@@ -29,8 +31,8 @@ defmodule Exantenna.Metadata do
       url: item["url"],
       title: item["title"],
       content: item["explain"],
-      seo_title: item["seo_explain"],
-      seo_content: item["seo_content"],
+      seo_title: item["seo_title"],
+      seo_content: item["seo_explain"],
       creator: "",  # extract_domain(item["url"])
       publisher: "PERVERTING",
       published_at: Ecto.DateTime.utc,

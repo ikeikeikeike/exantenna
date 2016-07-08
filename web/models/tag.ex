@@ -21,6 +21,10 @@ defmodule Exantenna.Tag do
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> update_change(:kana, &String.replace(&1 || "", ~r/(-|_)/, ""))
+    |> update_change(:romaji, &String.replace(String.downcase(&1 || ""), ~r/(-|_)/, ""))
+    |> validate_required(~w(name)a)
+    |> validate_format(:romaji, ~r/^[a-z]\w+$/)
   end
 
   def item_changeset(%Antenna{tags: _tags} = antenna, item \\ :invalid) do
