@@ -1,8 +1,8 @@
-defmodule Exantenna.Repo.Migrations.CreateAnime do
+defmodule Exantenna.Repo.Migrations.CreateToon do
   use Ecto.Migration
 
   def change do
-    create table(:animes) do
+    create table(:toons) do
       add :name, :string
       add :alias, :string
       add :kana, :string
@@ -20,9 +20,9 @@ defmodule Exantenna.Repo.Migrations.CreateAnime do
 
       timestamps
     end
-    create index(:animes, [:name], unique: true)
-    create index(:animes, [:gyou])
-    create index(:animes, [:release_date])
+    create index(:toons, [:name], unique: true)
+    create index(:toons, [:gyou])
+    create index(:toons, [:release_date])
 
   end
 end

@@ -38,7 +38,7 @@
       <%= label f, :contenttype, gettext("Kind of Contents"), class: "col-sm-3 control-label" %>
       <div class="col-sm-9">
         <%= select f, :contenttype, %{
-            gettext("Anime or Commic primarily") => "second_dimension",
+            gettext("Toon or Commic primarily") => "second_dimension",
             gettext("Idol or Pornstar primarily") => "third_dimention"
           },
           prompt: gettext("Please choose one"),

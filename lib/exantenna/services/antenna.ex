@@ -13,7 +13,7 @@ defmodule Exantenna.Services.Antenna do
   alias Exantenna.Summary
   alias Exantenna.Tag
   alias Exantenna.Diva
-  alias Exantenna.Anime
+  alias Exantenna.Toon
 
   alias Exantenna.Translator
 
@@ -28,7 +28,7 @@ defmodule Exantenna.Services.Antenna do
       if antenna, do: antenna, else: %Antenna{
         blog: blog,      entry: %Entry{},     metadata: %Metadata{},
         video: %Video{}, picture: %Picture{}, summary: %Summary{},
-        tags: [],        divas: [],           animes: []
+        tags: [],        divas: [],           toons: []
       }
 
     insert_with_transaction(antenna, item)
@@ -55,14 +55,14 @@ defmodule Exantenna.Services.Antenna do
           |> Multi.update(:summary, Summary.item_changeset(antenna, item))
           |> Multi.update(:tags, Tag.item_changeset(antenna, item))
           |> Multi.update(:divas, Diva.item_changeset(antenna, item))
-          |> Multi.update(:animes, Anime.item_changeset(antenna, item))
+          |> Multi.update(:toons, Toon.item_changeset(antenna, item))
 
         case Repo.transaction(multi) do
           {:ok, map} ->
             map = Map.merge(map, %{
               tags: map.tags.tags,
               divas: map.divas.divas,
-              animes: map.animes.animes,
+              toons: map.toons.toons,
             })
             struct(antenna, map)
 

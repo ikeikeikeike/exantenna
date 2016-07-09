@@ -45,7 +45,7 @@ defmodule Exantenna.Diva do
     |> validate_format(:romaji, ~r/^[a-z]\w+$/)  # TODO: Make sure thats' blank value
   end
 
-  def item_changeset(%Antenna{animes: _animes} = antenna, item \\ :invalid) do
+  def item_changeset(%Antenna{toons: _toons} = antenna, item \\ :invalid) do
     filters =
       Enum.reduce item["videos"], [], fn tpl, result ->
         r =

@@ -15,7 +15,7 @@ defmodule Exantenna.Admin.Helpers do
 
   def contenttype_text(mediatype) do
     case mediatype do
-      "second_dimension" -> gettext("Anime or Commic primarily")
+      "second_dimension" -> gettext("Toon or Commic primarily")
       "third_dimention"  -> gettext("Idol or Pornstar primarily")
     end
   end

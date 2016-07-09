@@ -1,11 +1,11 @@
-defmodule Exantenna.Anime do
+defmodule Exantenna.Toon do
   use Exantenna.Web, :model
   import Exantenna.Filter, only: [right_name?: 2]
   alias Exantenna.Antenna
 
-  schema "animes" do
-    has_one :thumb, {"animes_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
-    has_many :characters, Exantenna.Character
+  schema "toons" do
+    has_one :thumb, {"toons_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
+    has_many :chars, Exantenna.Char
 
     field :name, :string
     field :alias, :string
@@ -37,15 +37,15 @@ defmodule Exantenna.Anime do
     |> validate_format(:url, ~r/^https?:\/\//)
   end
 
-  def item_changeset(%Antenna{animes: _animes} = antenna, item \\ :invalid) do
-    filters = Application.get_env(:exantenna, :anime_filters)[:title]
+  def item_changeset(%Antenna{toons: _toons} = antenna, item \\ :invalid) do
+    filters = Application.get_env(:exantenna, :toon_filters)[:title]
 
     names =
-      ConCache.get_or_store(:exantenna_cache, "animenamealias:all", fn ->
+      ConCache.get_or_store(:exantenna_cache, "toonnamealias:all", fn ->
         Enum.map Repo.all(__MODULE__), &([name: &1.name, alias: &1.alias])
       end)
-      |> Enum.filter(fn anime ->
-        [name: name, alias: aka] = anime
+      |> Enum.filter(fn toon ->
+        [name: name, alias: aka] = toon
 
         # XXX: Consider detection from video info's map |> item["videos"]
         cond do
@@ -54,13 +54,13 @@ defmodule Exantenna.Anime do
           true -> false
         end
       end)
-      |> Enum.map(fn anime ->
-        anime[:name]
+      |> Enum.map(fn toon ->
+        toon[:name]
       end)
 
-    animes = get_or_changeset(names)
+    toons = get_or_changeset(names)
 
-    put_assoc(change(antenna), :animes, animes)
+    put_assoc(change(antenna), :toons, toons)
   end
 
   def get_or_changeset(names) when is_list(names),

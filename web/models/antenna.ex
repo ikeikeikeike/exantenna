@@ -15,7 +15,7 @@ defmodule Exantenna.Antenna do
 
     many_to_many :tags, Exantenna.Tag, join_through: "antennas_tags" # , on_delete: :delete_all, on_replace: :delete
     many_to_many :divas, Exantenna.Diva, join_through: "antennas_divas" # , on_delete: :delete_all, on_replace: :delete
-    many_to_many :animes, Exantenna.Anime, join_through: "antennas_animes" # , on_delete: :delete_all, on_replace: :delete
+    many_to_many :toons, Exantenna.Toon, join_through: "antennas_toons" # , on_delete: :delete_all, on_replace: :delete
 
     timestamps
   end
@@ -52,9 +52,9 @@ defmodule Exantenna.Antenna do
       divas: [
         :thumb
       ],
-      animes: [
+      toons: [
         :thumb,
-        characters: [
+        chars: [
           :thumb
         ],
       ],

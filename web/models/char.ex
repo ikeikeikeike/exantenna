@@ -1,10 +1,9 @@
-defmodule Exantenna.Character do
+defmodule Exantenna.Char do
   use Exantenna.Web, :model
-  alias Exantenna.Antenna
 
-  schema "characters" do
-    belongs_to :anime, Exantenna.Anime
-    has_one :thumb, {"characters_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
+  schema "chars" do
+    belongs_to :toon, Exantenna.Toon
+    has_one :thumb, {"chars_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
 
     field :name, :string
     field :alias, :string
