@@ -39,7 +39,7 @@ defmodule Exantenna.Antenna do
       ],
       video: [
         metadatas: [
-          :thumb,
+          :thumbs,
           site: [:thumb],
         ],
       ],

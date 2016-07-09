@@ -9,12 +9,12 @@ defmodule Exantenna.Builders.Rss do
   require Logger
 
   def feed_into do
-    blogs = Repo.get Blog, 3
-      # Blog.query
-      # |> Blog.available
-      # |> Repo.all
+    blogs = # Repo.get Blog, 1
+      Blog.query
+      |> Blog.available
+      |> Repo.all
 
-    Enum.map [blogs], fn blog ->
+    Enum.map blogs, fn blog ->
       blog = Blog.feed_changeset(blog, Feed.get(blog.rss))
 
       blog =
