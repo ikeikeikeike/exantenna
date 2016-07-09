@@ -4,7 +4,7 @@ defmodule Exantenna.Mixfile do
   def project do
     [app: :exantenna,
      version: "0.0.1",
-     elixir: "~> 1.0",
+     elixir: "~> 1.2",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
@@ -20,7 +20,7 @@ defmodule Exantenna.Mixfile do
     [
       mod: {Exantenna, []},
       applications: [
-        :phoenix, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex,
+        :phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex,
         :ueberauth, :ueberauth_identity, :ueberauth_google,
         :timex, :timex_ecto, :tzdata,
         :comeonin, :bing_translator,
@@ -38,12 +38,13 @@ defmodule Exantenna.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.1"},
+      {:phoenix, "~> 1.2"},
+      {:phoenix_pubsub, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_ecto, "~> 3.0.0"},
+      {:phoenix_ecto, "~> 3.0"},
       {:phoenix_html, "~> 2.6"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:gettext, github: "elixir-lang/gettext", override: true},
+      {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:timex, "~> 2.1"},
       {:timex_ecto, github: "bitwalker/timex_ecto"},

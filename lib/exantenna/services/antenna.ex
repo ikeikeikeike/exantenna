@@ -21,19 +21,15 @@ defmodule Exantenna.Services.Antenna do
     Translator.configure
   end
 
-  def add_by(%Blog{}, nil), do: {:warn, "blank value"}
-  def add_by(%Blog{}, %{"url" => url}) when is_nil(url),
-    do: {:warn, "blank value"}
+  def add_by(%Blog{}, nil), do: {:warn, "nil value"}
+  def add_by(%Blog{}, %{"url" => url}) when is_nil(url), do: {:error, "Item's url was nil"}
+
   def add_by(%Blog{} = blog, item) do
     setup
-
-    require IEx; IEx.pry
 
     antenna =
       Antenna.where_url(Antenna.query_full, item["url"])
       |> Repo.one
-
-    require IEx; IEx.pry
 
     unless antenna do
       antenna = %Antenna{
@@ -42,6 +38,8 @@ defmodule Exantenna.Services.Antenna do
         tags: [], divas: [], animes: []
       }
     end
+
+    require IEx; IEx.pry
 
     case insert_with_transaction(antenna, item) do
       {:ok, map} ->
@@ -82,7 +80,6 @@ defmodule Exantenna.Services.Antenna do
     Repo.transaction(multi)
   end
   def insert_with_transaction(antenna, item) do
-    require IEx; IEx.pry
     {:warn, {antenna, item, "Record has been already"}}
   end
 

@@ -9,12 +9,12 @@ defmodule Exantenna.Builders.Rss do
   require Logger
 
   def feed_into do
-    blogs =
-      Blog.query
-      |> Blog.available
-      |> Repo.all
+    blogs = Repo.get Blog, 1
+      # Blog.query
+      # |> Blog.available
+      # |> Repo.all
 
-    Enum.map blogs, fn blog ->
+    Enum.map [blogs], fn blog ->
       blog = Blog.feed_changeset(blog, Feed.get(blog.rss))
 
       blog =
@@ -36,8 +36,12 @@ defmodule Exantenna.Builders.Rss do
         # TODO: Move logger to kick module
 
         {:error, reason} ->
-          Logger.error("#{inspect reason} by #{blog.rss}")
+          Logger.error("#{blog.rss}: #{inspect reason} by #{inspect item}")
           {:error, reason}
+
+        {:warn, msg} when is_bitstring(msg) ->
+          Logger.warn("#{blog.rss}: #{msg} by #{inspect item}")
+          {:warn, msg}
 
         {:warn, msg} ->
           {:warn, msg}

@@ -15,7 +15,7 @@
           <h3 class="panel-title"><%= gettext "About allow images" %></h3>
         </div>
         <div class="panel-body">
-            <%= gettext "We recommend that you should allow image's access from %{domain} book.%{domain} for your profitability.", sitename: "", domain: "" %><br/>
+            <%= gettext "We recommend that you should allow image's access from %{domain1} book.%{domain2} for your profitability.", domain1: "", domain2: "" %><br/>
             <%= gettext "The page which displaying a lot of images are going to help you. Because a lot of users will be come to your site if you would do that. Also improving SEO and user access into External Links." %>
         </div>
         <div class="panel-footer text-center clearfix"></div>

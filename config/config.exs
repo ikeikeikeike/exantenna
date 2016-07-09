@@ -5,20 +5,12 @@
 # is restricted to this project.
 use Mix.Config
 
-config :exantenna, Exantenna.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  database: "exantenna_repo",
-  username: "user",
-  password: "pass",
-  hostname: "localhost"
-
-
 # Configures the endpoint
 config :exantenna, Exantenna.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
   secret_key_base: "bk+quXQqzggSD8OlS2rMtSJW3KrYYPRhVMx1jev1tR03u3spLRHvFN6ZYV4P6/G3",
-  render_errors: [accepts: ~w(html json)],
+  render_errors: [view: Exantenna.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Exantenna.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
