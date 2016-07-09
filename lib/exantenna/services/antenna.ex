@@ -19,11 +19,7 @@ defmodule Exantenna.Services.Antenna do
 
   def add_by(%Blog{}, nil), do: {:warn, "nil value"}
   def add_by(%Blog{}, %{"url" => url}) when is_nil(url), do: {:error, "Item's url was nil"}
-  def add_by(%Blog{} = blog, %{
-    "url"    => _, "title" => _, "explain" => _,
-    "images" => _, "tags" => _, "pictures" => _, "videos" => _} = item
-  ) do
-
+  def add_by(%Blog{} = blog, item) do
     antenna =
       Antenna.where_url(Antenna.query_all, item["url"])
       |> Repo.one
@@ -35,6 +31,13 @@ defmodule Exantenna.Services.Antenna do
         tags: [],        divas: [],           animes: []
       }
 
+    insert_with_transaction(antenna, item)
+  end
+
+  def insert_with_transaction(%Antenna{id: nil} = antenna, %{
+    "url"    => _, "title" => _, "explain" => _,
+    "images" => _, "tags" => _, "pictures" => _, "videos" => _} = item
+  ) do
     Repo.transaction fn ->
       try do
         antenna =
@@ -75,8 +78,8 @@ defmodule Exantenna.Services.Antenna do
       end
     end
   end
-  def insert_with_transaction(antenna, item) do
-    {:warn, "Record has been already"}
+  def insert_with_transaction(antenna, _item) do
+    {:warn, "%Antenna{id: #{antenna.id}} record has been existed"}
   end
 
   defp additional_value(item) do
