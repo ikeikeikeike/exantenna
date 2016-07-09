@@ -17,73 +17,71 @@ defmodule Exantenna.Services.Antenna do
 
   alias Exantenna.Translator
 
-  defp setup do
-    Translator.configure
-  end
-
   def add_by(%Blog{}, nil), do: {:warn, "nil value"}
   def add_by(%Blog{}, %{"url" => url}) when is_nil(url), do: {:error, "Item's url was nil"}
-
-  def add_by(%Blog{} = blog, item) do
-    setup
-
-    antenna =
-      Antenna.where_url(Antenna.query_full, item["url"])
-      |> Repo.one
-
-    unless antenna do
-      antenna = %Antenna{
-        blog: blog, entry: %Entry{}, metadata: %Metadata{},
-        video: %Video{}, picture: %Picture{}, summary: %Summary{},
-        tags: [], divas: [], animes: []
-      }
-    end
-
-    require IEx; IEx.pry
-
-    case insert_with_transaction(antenna, item) do
-      {:ok, map} ->
-        map = Map.merge(map, %{
-          tags: map.tags.tags,
-          divas: map.divas.divas,
-          animes: map.animes.animes,
-        })
-
-        {:ok, struct(antenna, map)}
-
-      {:error, failed_operation, failed_value, changes_so_far} ->
-        msg = {failed_operation, failed_value, changes_so_far, item}
-        {:error, msg}
-
-      {:warn, msg} ->
-        {:warn, {msg, item}}
-    end
-  end
-
-  def insert_with_transaction(%Antenna{id: nil} = antenna, %{
-    "url" => _, "title" => _, "explain" => _,
+  def add_by(%Blog{} = blog, %{
+    "url"    => _, "title" => _, "explain" => _,
     "images" => _, "tags" => _, "pictures" => _, "videos" => _} = item
   ) do
-    item = additional_value(item)
 
-    multi =
-      Multi.new
-      |> Multi.insert(:entry, Entry.item_changeset(antenna, item))
-      |> Multi.insert(:metadata, Metadata.item_changeset(antenna, item))
-      |> Multi.insert(:picture, Picture.item_changeset(antenna, item))
-      |> Multi.insert(:summary, Summary.item_changeset(antenna, item))
-      |> Multi.insert(:tags, Tag.item_changeset(antenna, item))
-      |> Multi.insert(:divas, Diva.item_changeset(antenna, item))
-      |> Multi.insert(:animes, Anime.item_changeset(antenna, item))
-      # |> Multi.delete_all(:sessions, assoc(account, :sessions))
+    antenna =
+      Antenna.where_url(Antenna.query_all, item["url"])
+      |> Repo.one
 
-    Repo.transaction(multi)
+    antenna =
+      if antenna, do: antenna, else: %Antenna{
+        blog: blog,      entry: %Entry{},     metadata: %Metadata{},
+        video: %Video{}, picture: %Picture{}, summary: %Summary{},
+        tags: [],        divas: [],           animes: []
+      }
+
+    Repo.transaction fn ->
+      try do
+        antenna =
+          Repo.insert!(antenna)
+          |> Repo.preload(Antenna.full_relational_fields)
+
+        item = additional_value(item)
+
+        multi =
+          Multi.new
+          |> Multi.update(:entry, Entry.item_changeset(antenna, item))
+          |> Multi.update(:metadata, Metadata.item_changeset(antenna, item))
+          |> Multi.update(:video, Video.item_changeset(antenna, item))
+          |> Multi.update(:picture, Picture.item_changeset(antenna, item))
+          |> Multi.update(:summary, Summary.item_changeset(antenna, item))
+          |> Multi.update(:tags, Tag.item_changeset(antenna, item))
+          |> Multi.update(:divas, Diva.item_changeset(antenna, item))
+          |> Multi.update(:animes, Anime.item_changeset(antenna, item))
+
+        case Repo.transaction(multi) do
+          {:ok, map} ->
+            map = Map.merge(map, %{
+              tags: map.tags.tags,
+              divas: map.divas.divas,
+              animes: map.animes.animes,
+            })
+            struct(antenna, map)
+
+          {:error, failed_operation, failed_value, changes_so_far} ->
+            msg = {failed_operation, failed_value, changes_so_far, item}
+            Repo.rollback(msg)
+        end
+      rescue
+        reason in Postgrex.Error ->
+          Repo.rollback(reason)
+      # after
+        # nil
+      end
+    end
   end
   def insert_with_transaction(antenna, item) do
-    {:warn, {antenna, item, "Record has been already"}}
+    {:warn, "Record has been already"}
   end
 
   defp additional_value(item) do
+    Translator.configure
+
     title = HtmlSanitizeEx.strip_tags(item["title"])
     explain = HtmlSanitizeEx.strip_tags(item["explain"])
 

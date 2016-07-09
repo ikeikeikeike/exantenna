@@ -9,7 +9,7 @@ defmodule Exantenna.Builders.Rss do
   require Logger
 
   def feed_into do
-    blogs = Repo.get Blog, 1
+    blogs = Repo.get Blog, 3
       # Blog.query
       # |> Blog.available
       # |> Repo.all
@@ -33,8 +33,6 @@ defmodule Exantenna.Builders.Rss do
         {:ok, antenna} ->
           {:ok, antenna}
 
-        # TODO: Move logger to kick module
-
         {:error, reason} ->
           Logger.error("#{blog.rss}: #{inspect reason} by #{inspect item}")
           {:error, reason}
@@ -43,9 +41,10 @@ defmodule Exantenna.Builders.Rss do
           Logger.warn("#{blog.rss}: #{msg} by #{inspect item}")
           {:warn, msg}
 
-        {:warn, msg} ->
-          {:warn, msg}
+        msg ->
+          {:unkown, msg}
 
+        # TODO: Move logger to kick module
       end
 
     end

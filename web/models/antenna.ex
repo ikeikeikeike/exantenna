@@ -23,16 +23,7 @@ defmodule Exantenna.Antenna do
   @required_fields ~w()
   @optional_fields ~w()
   @relational_fields ~w(blog entry metadata video picture summary penalty tags)a
-
-  def query do
-    from e in __MODULE__,
-     select: e,
-    preload: ^@relational_fields
-  end
-
-  def query_full do
-    from e in __MODULE__,
-    preload: [
+  @full_relational_fields [
       :metadata,
       :scores,  # node in,out score
       :penalty,
@@ -68,22 +59,27 @@ defmodule Exantenna.Antenna do
         ],
       ],
     ]
+  def full_relational_fields, do: @full_relational_fields
+
+  def query do
+    from e in __MODULE__,
+    preload: ^@relational_fields
   end
 
-  def query_pictures, do: query_full
-  def query_entries, do: query_full
-  def query_videos, do: query_full
+  def query_all do
+    from e in __MODULE__,
+    preload: ^@full_relational_fields
+  end
+
+  def query_pictures, do: query_all
+  def query_entries, do: query_all
+  def query_videos, do: query_all
 
   def where_url(query, url) do
     from q in query,
       join: m in Metadata,
         on: m.id == q.metadata_id,
       where: m.url == ^url
-  end
-
-  def changeset(model, params \\ :invalid) do
-    model
-    |> cast(params, @required_fields, @optional_fields)
   end
 
 end

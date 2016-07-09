@@ -23,5 +23,6 @@ defmodule Exantenna.VideoMetadata do
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> validate_format(:url, ~r/^https?:\/\//)
   end
 end
