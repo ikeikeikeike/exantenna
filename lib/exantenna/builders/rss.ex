@@ -7,6 +7,7 @@ defmodule Exantenna.Builders.Rss do
   alias Exantenna.Redises.Item
 
   require Logger
+  # TODO: Move logger to kickking module like shell
 
   def feed_into do
     blogs = # Repo.get Blog, 1
@@ -44,7 +45,6 @@ defmodule Exantenna.Builders.Rss do
         msg ->
           {:unkown, msg}
 
-        # TODO: Move logger to kick module
       end
 
     end
