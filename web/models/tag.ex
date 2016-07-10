@@ -27,6 +27,7 @@ defmodule Exantenna.Tag do
     |> update_change(:romaji, &String.replace(String.downcase(&1 || ""), ~r/(-|_)/, ""))
     |> validate_required(~w(name)a)
     |> validate_format(:romaji, ~r/^[a-z]\w+$/)
+    |> unique_constraint(:name)
   end
 
   def item_changeset(%Antenna{tags: _tags} = antenna, item \\ :invalid) do

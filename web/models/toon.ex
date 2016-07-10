@@ -37,6 +37,7 @@ defmodule Exantenna.Toon do
     |> validate_required(~w(name)a)
     |> validate_format(:romaji, ~r/^[a-z]\w+$/)
     |> validate_format(:url, ~r/^https?:\/\//)
+    |> unique_constraint(:name, name: :toons_name_alias_index)
   end
 
   def item_changeset(%Antenna{toons: _toons} = antenna, item \\ :invalid) do

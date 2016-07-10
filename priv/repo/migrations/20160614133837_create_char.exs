@@ -22,7 +22,7 @@ defmodule Exantenna.Repo.Migrations.CreateChar do
 
       timestamps
     end
-    create unique_index(:divas, [:name, :alias])
+    create unique_index(:chars, [:name, :alias], name: :chars_name_alias_index)
 
     create index(:chars, [:name])
     create index(:chars, [:kana])

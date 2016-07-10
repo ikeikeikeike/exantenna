@@ -39,5 +39,6 @@ defmodule Exantenna.Char do
     |> update_change(:bracup, &String.replace(String.upcase(&1 || ""), ~r/(カップ|CUP| |\(|\))/iu, ""))
     |> validate_required(~w(name)a)
     |> validate_format(:romaji, ~r/^[a-z]\w+$/)
+    |> unique_constraint(:name, name: :chars_name_alias_index)
   end
 end

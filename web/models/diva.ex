@@ -43,6 +43,7 @@ defmodule Exantenna.Diva do
     |> update_change(:bracup, &String.replace(String.upcase(&1 || ""), ~r/(カップ|CUP| |\(|\))/iu, ""))
     |> validate_required(~w(name)a)
     |> validate_format(:romaji, ~r/^[a-z]\w+$/)  # TODO: Make sure that constains blank value
+    |> unique_constraint(:name, name: :divas_name_alias_index)
   end
 
   def item_changeset(%Antenna{toons: _toons} = antenna, item \\ :invalid) do

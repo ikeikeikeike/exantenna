@@ -24,8 +24,8 @@ defmodule Exantenna.User do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> validate_required(~w(email encrypted_password)a)
-    |> unique_constraint(:email)
     |> validate_format(:email, ~r/@/)
+    |> unique_constraint(:email)
   end
 
   def with_blogs(model) do
