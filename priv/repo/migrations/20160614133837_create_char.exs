@@ -3,8 +3,6 @@ defmodule Exantenna.Repo.Migrations.CreateChar do
 
   def change do
     create table(:chars) do
-      add :toon_id, references(:toons, on_delete: :nothing)
-
       add :name, :string
       add :alias, :string
       add :kana, :string
@@ -24,8 +22,7 @@ defmodule Exantenna.Repo.Migrations.CreateChar do
 
       timestamps
     end
-    create unique_index(:chars, [:toon_id, :name])
-    create index(:chars, [:toon_id])
+    create unique_index(:divas, [:name, :alias])
 
     create index(:chars, [:name])
     create index(:chars, [:kana])

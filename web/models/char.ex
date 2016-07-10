@@ -2,9 +2,10 @@ defmodule Exantenna.Char do
   use Exantenna.Web, :model
 
   schema "chars" do
-    belongs_to :toon, Exantenna.Toon
     has_one :thumb, {"chars_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
+
     many_to_many :tags, Exantenna.Tag, join_through: "chars_tags"
+    many_to_many :toons, Exantenna.Toon, join_through: "toons_chars"
 
     field :name, :string
     field :alias, :string

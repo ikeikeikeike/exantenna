@@ -5,8 +5,9 @@ defmodule Exantenna.Toon do
 
   schema "toons" do
     has_one :thumb, {"toons_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
-    has_many :chars, Exantenna.Char
+
     many_to_many :tags, Exantenna.Tag, join_through: "toons_tags"
+    many_to_many :chars, Exantenna.Toon, join_through: "toons_chars"
 
     field :name, :string
     field :alias, :string
