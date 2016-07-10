@@ -5,6 +5,8 @@ defmodule Exantenna.Tag do
   schema "tags" do
     has_one :thumb, {"tags_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
     many_to_many :antennas, Exantenna.Antenna, join_through: "antennas_tags"
+    many_to_many :chars, Exantenna.Antenna, join_through: "chars_tags"
+    many_to_many :toons, Exantenna.Antenna, join_through: "toons_tags"
 
     field :name, :string
     field :kana, :string

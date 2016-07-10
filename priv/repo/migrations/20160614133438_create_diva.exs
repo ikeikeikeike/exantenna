@@ -22,8 +22,9 @@ defmodule Exantenna.Repo.Migrations.CreateDiva do
 
       timestamps
     end
+    create unique_index(:divas, [:name, :alias])
 
-    create index(:divas, [:name], unique: true)
+    create index(:divas, [:name])
     create index(:divas, [:kana])
     create index(:divas, [:gyou])
 

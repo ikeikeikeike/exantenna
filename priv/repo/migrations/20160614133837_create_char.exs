@@ -24,9 +24,10 @@ defmodule Exantenna.Repo.Migrations.CreateChar do
 
       timestamps
     end
+    create unique_index(:chars, [:toon_id, :name])
     create index(:chars, [:toon_id])
 
-    create index(:chars, [:name], unique: true)
+    create index(:chars, [:name])
     create index(:chars, [:kana])
     create index(:chars, [:gyou])
 
