@@ -20,7 +20,9 @@ defmodule Exantenna.Repo.Migrations.CreateToon do
 
       timestamps
     end
-    create index(:toons, [:name], unique: true)
+    create unique_index(:toons, [:name, :alias])
+
+    create index(:toons, [:name])
     create index(:toons, [:gyou])
     create index(:toons, [:release_date])
 
