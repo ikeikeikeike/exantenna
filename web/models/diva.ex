@@ -5,7 +5,7 @@ defmodule Exantenna.Diva do
   alias Exantenna.Antenna
 
   schema "divas" do
-    has_one :thumb, {"divas_thumbs", Thumb}, foreign_key: :assoc_id
+    has_many :thumbs, {"divas_thumbs", Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
     many_to_many :antennas, Antenna, join_through: "antennas_divas"
 
     field :name, :string

@@ -5,7 +5,7 @@ defmodule Exantenna.Entry do
   schema "entries" do
     has_one :antenna, Exantenna.Antenna
 
-    has_many :thumbs, {"entries_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
+    has_many :thumbs, {"entries_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
 
     timestamps
   end

@@ -5,9 +5,9 @@ defmodule Exantenna.Blog do
     belongs_to :user, Exantenna.User
 
     has_one :antenna, Exantenna.Antenna
-    has_one :thumb, {"blogs_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
     has_one :penalty, {"blogs_penalties", Exantenna.Penalty}, foreign_key: :assoc_id
 
+    has_many :thumbs, {"blogs_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
     has_many :scores, {"blogs_scores", Exantenna.Score}, foreign_key: :assoc_id
     has_many :verifiers, Exantenna.BlogVerifier
 

@@ -10,7 +10,7 @@ defmodule Exantenna.Site do
     field :rss, :string
 
     has_one :video_metadata, Exantenna.VideoMetadata
-    has_one :thumb, {"sites_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id
+    has_many :thumbs, {"sites_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
 
     timestamps
   end
