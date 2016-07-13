@@ -1,5 +1,6 @@
 defmodule Exantenna.Toon do
   use Exantenna.Web, :model
+
   import Exantenna.Filter, only: [right_name?: 2]
   alias Exantenna.Antenna
 
@@ -77,13 +78,11 @@ defmodule Exantenna.Toon do
     end
   end
 
-  def esindex(name \\ nil) do
-    [type: Es.Index.name_type(__MODULE__), index: name || Es.Index.name_index(__MODULE__)]
-  end
+  use Exantenna.Es
 
   def search_data(model) do
     [
-      _type: Es.name_type(__MODULE__),
+      _type: estype,
       _id: model.id,
       name: model.name,
       kana: model.kana,
@@ -100,7 +99,7 @@ defmodule Exantenna.Toon do
     Tirexs.DSL.define(fn ->
       use Tirexs.Mapping
 
-      index = esindex(name)
+      index = [type: estype, index: esindex(name)]
 
       settings do
         analysis do
@@ -117,7 +116,7 @@ defmodule Exantenna.Toon do
         indexes "romaji", type: "string", analyzer: "ngram_analyzer"
       end
 
-      Es.ppdebug(index)
+      Es.Logger.ppdebug(index)
 
     index end)
   end

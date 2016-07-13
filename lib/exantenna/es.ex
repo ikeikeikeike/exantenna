@@ -1,11 +1,14 @@
 defmodule Exantenna.Es do
+  defmacro __using__(opts) do
+    quote do
 
-  require Logger
+      alias Exantenna.Es
 
-  def ppdebug(query) do
-    json = JSX.encode!(query)
-    Logger.debug JSX.prettify!(json)
-    Logger.debug json
+      @__using_resource__ unquote(opts)
+
+      def estype, do: Es.Index.name_type(__MODULE__)
+      def esindex(name \\ nil), do: name || Es.Index.name_index(__MODULE__)
+
+    end
   end
-
 end

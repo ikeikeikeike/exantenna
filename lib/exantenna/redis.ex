@@ -1,4 +1,4 @@
-defmodule Exantenna.Redises.Redis do
+defmodule Exantenna.Redis do
   defmacro __using__(opts) do
     quote do
 

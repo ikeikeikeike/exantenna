@@ -1,7 +1,7 @@
-defmodule Exantenna.Redises.Feed do
+defmodule Exantenna.Redis.Feed do
 
-  use Exantenna.Redises.Redis,
-    uri: Application.get_env(:exantenna, :redises)[:feed]
+  use Exantenna.Redis,
+    uri: Application.get_env(:exantenna, :redis)[:feed]
 
   def get(key) do
     case Redix.command!(pid, ~w(GET #{key})) do

@@ -6,9 +6,11 @@ defmodule Exantenna.Es.Document do
   def put_document([%{}] = model, name) do
     mod = model.__struct__
 
+    idx = [type: mod.estype, index: mod.esindex(name)]
+
     payload =
       bulk do
-        index mod.esindex(name), Enum.map(model, &mod.search_data(&1))
+        index idx, Enum.map(model, &mod.search_data(&1))
       end
 
     Tirexs.bump!(payload)._bulk
@@ -20,9 +22,11 @@ defmodule Exantenna.Es.Document do
   def delete_document([%{}] = model, name) do
     mod = model.__struct__
 
+    idx = [type: mod.estype, index: mod.esindex(name)]
+
     payload =
       bulk do
-        delete mod.esindex(name), Enum.map(model, &mod.search_data(&1))
+        delete idx, Enum.map(model, &mod.search_data(&1))
       end
 
     Tirexs.bump!(payload)._bulk

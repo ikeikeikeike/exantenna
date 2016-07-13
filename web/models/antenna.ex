@@ -1,7 +1,6 @@
 defmodule Exantenna.Antenna do
   use Exantenna.Web, :model
 
-  alias Exantenna.Es
   alias Exantenna.Metadata
 
   schema "antennas" do
@@ -84,8 +83,27 @@ defmodule Exantenna.Antenna do
       where: m.url == ^url
   end
 
-  def esindex(name \\ nil) do
-    [type: Es.Index.name_type(__MODULE__), index: name || Es.Index.name_index(__MODULE__)]
+  use Exantenna.Es
+
+  def essearch(word \\ nil) do
+    Tirexs.DSL.define fn ->
+      import Tirexs.Search
+
+      search_fields = [:title, :tags, :divas]
+
+      search [index: esindex, fields: []] do
+        if word do
+          query do
+            multi_match word, search_fields # , cutoff_frequency: 0.001, boost: 10, use_dis_max: false, operator: "and"
+          end
+        else
+          query do
+            match_all([])
+          end
+        end
+      end
+
+    end
   end
 
   def search_data(model) do
@@ -95,7 +113,7 @@ defmodule Exantenna.Antenna do
     toons = model.toons
 
     [
-      _type: Es.name_type(__MODULE__),
+      _type: estype,
       _id: model.id,
       title: meta.name,
       published_at: (case Timex.Ecto.DateTime.cast(meta.published_at) do
@@ -115,7 +133,7 @@ defmodule Exantenna.Antenna do
     Tirexs.DSL.define(fn ->
       use Tirexs.Mapping
 
-      index = esindex(name)
+      index = [type: estype, index: esindex(name)]
 
       settings do
         analysis do
@@ -142,7 +160,7 @@ defmodule Exantenna.Antenna do
         indexes "chars",          type: "string", index: "not_analyzed"
       end
 
-      Es.ppdebug(index)
+      Es.Logger.ppdebug(index)
 
     index end)
   end

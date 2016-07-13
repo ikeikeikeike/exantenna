@@ -3,8 +3,8 @@ defmodule Exantenna.Builders.Rss do
   alias Exantenna.Blog
   alias Exantenna.Services
 
-  alias Exantenna.Redises.Feed
-  alias Exantenna.Redises.Item
+  alias Exantenna.Redis.Feed
+  alias Exantenna.Redis.Item
 
   require Logger
   # TODO: Move logger to kickking module like shell

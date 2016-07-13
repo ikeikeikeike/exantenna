@@ -1,7 +1,7 @@
-defmodule Exantenna.Redises.Item do
+defmodule Exantenna.Redis.Item do
 
-  use Exantenna.Redises.Redis,
-    uri: Application.get_env(:exantenna, :redises)[:item]
+  use Exantenna.Redis,
+    uri: Application.get_env(:exantenna, :redis)[:feed]
 
   def shift(key) do
     case Redix.command!(pid, ~w(LPOP #{key})) do

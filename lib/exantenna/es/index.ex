@@ -43,7 +43,7 @@ defmodule Exantenna.Es.Index do
             add index: newidx, alias: index
           end
 
-        Es.ppdebug aliasquery
+        Es.Logger.ppdebug aliasquery
         Resources.bump(aliasquery)._aliases
     end
 
@@ -66,7 +66,7 @@ defmodule Exantenna.Es.Index do
         remove index: old_index, alias: index
         add    index: new_index, alias: index
       end)
-    Es.ppdebug aliasquery
+    Es.Logger.ppdebug aliasquery
     Resources.bump(aliasquery)._aliases
 
     # remove old index

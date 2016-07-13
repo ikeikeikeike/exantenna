@@ -26,7 +26,7 @@ import_config "#{Mix.env}.exs"
 config :exantenna, MyApp.Gettext,
   default_locale: "ja"
 
-config :exantenna, :redises,
+config :exantenna, :redis,
   item: "redis://127.0.0.1:6379/1",
   feed: "redis://127.0.0.1:6379/6"
 
