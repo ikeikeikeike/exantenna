@@ -58,6 +58,7 @@ defmodule Exantenna.Mixfile do
       {:bing_translator, "~> 0.2"},
       {:html_sanitize_ex, "~> 1.0"},
       {:con_cache, "~> 0.11"},
+      {:tirexs, "~> 0.8"},
     ]
   end
 

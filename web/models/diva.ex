@@ -1,6 +1,7 @@
 defmodule Exantenna.Diva do
   use Exantenna.Web, :model
 
+  alias Exantenna.Es
   alias Exantenna.Thumb
   alias Exantenna.Antenna
 
@@ -80,6 +81,32 @@ defmodule Exantenna.Diva do
       model ->
         model
     end
+  end
+
+  def create_esindex(name \\ "diva") do
+    Tirexs.DSL.define(fn ->
+      use Tirexs.Mapping
+
+      index = [type: Es.name_type(__MODULE__), index: name]  # to be chaging index to alias
+
+      settings do
+        analysis do
+          tokenizer "ngram_tokenizer", type: "nGram",  min_gram: "2", max_gram: "3", token_chars: ["letter", "digit"]
+          analyzer  "default",         type: "custom", tokenizer: "ngram_tokenizer"
+          analyzer  "ngram_analyzer",                  tokenizer: "ngram_tokenizer"
+        end
+      end
+
+      mappings do
+        indexes "name",   type: "string", analyzer: "ngram_analyzer"
+        indexes "alias",  type: "string", analyzer: "ngram_analyzer"
+        indexes "kana",   type: "string", analyzer: "ngram_analyzer"
+        indexes "romaji", type: "string", analyzer: "ngram_analyzer"
+      end
+
+      Es.pprint(index)
+
+    index end)
   end
 
 end
