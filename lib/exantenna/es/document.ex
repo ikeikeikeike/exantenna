@@ -1,7 +1,8 @@
 defmodule Exantenna.Es.Document do
   import Tirexs.Bulk
+  alias Exantenna.Es
 
-  def put_document(model), do: put_document model, Es.name_index(model.__struct__)
+  def put_document(model), do: put_document model, Es.Index.name_index(model.__struct__)
   def put_document(%{} = model, name), do: put_document [model], name
   def put_document([%{}] = model, name) do
     mod = model.__struct__
@@ -17,7 +18,7 @@ defmodule Exantenna.Es.Document do
   end
   def put_document([], _name), do: :error
 
-  def delete_document(model), do: delete_document model, Es.name_index(model.__struct__)
+  def delete_document(model), do: delete_document model, Es.Index.name_index(model.__struct__)
   def delete_document(%{} = model, name), do: delete_document [model], name
   def delete_document([%{}] = model, name) do
     mod = model.__struct__

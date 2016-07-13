@@ -61,7 +61,7 @@ defmodule Exantenna.Tag do
 
   def search_data(model) do
     [
-      _type: Es.name_type(__MODULE__),
+      _type: estype,
       _id: model.id,
       name: model.name,
       kana: model.kana,

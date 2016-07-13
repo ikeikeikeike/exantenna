@@ -62,9 +62,7 @@ defmodule Exantenna.Diva do
         Enum.map Repo.all(__MODULE__), &(&1.name)
       end)
       |> Exantenna.Filter.right_names(item)
-      |> Enum.filter(fn name ->
-        ! (name in filters)
-      end)
+      |> Enum.filter(fn name -> ! (name in filters) end)
 
     divas = get_or_changeset(filters) ++ get_or_changeset(names)
 
