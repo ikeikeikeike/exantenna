@@ -31,7 +31,7 @@ defmodule Exantenna.Blog do
   @mediatypes ~w(image movie)
   @contenttypes ~w(second_dimension third_dimention)
 
-  @relational_fields ~w(user antenna thumb penalty scores verifiers)a
+  @relational_fields ~w(user antenna thumbs penalty scores verifiers)a
 
   def query do
     from e in __MODULE__,

@@ -30,7 +30,7 @@ defmodule Exantenna.Antenna do
       :penalty,
       :summary,
       blog: [
-        :thumb,
+        :thumbs,
         :penalty,
         :scores,  # domain score + in,out score
         :verifiers
@@ -41,22 +41,22 @@ defmodule Exantenna.Antenna do
       video: [
         metadatas: [
           :thumbs,
-          site: [:thumb],
+          site: [:thumbs],
         ],
       ],
       picture: [
         :thumbs
       ],
       tags: [
-        :thumb
+        :thumbs
       ],
       divas: [
-        :thumb
+        :thumbs
       ],
       toons: [
-        :thumb,
+        :thumbs,
         chars: [
-          :thumb
+          :thumbs
         ],
       ],
     ]
