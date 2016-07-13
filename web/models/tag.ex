@@ -56,11 +56,28 @@ defmodule Exantenna.Tag do
     put_assoc(change(antenna), :tags, tags)
   end
 
-  def create_esindex(name \\ "tag") do
+  def esindex(name \\ nil) do
+    [type: Es.Index.name_type(__MODULE__), index: name || Es.Index.name_index(__MODULE__)]
+  end
+
+  def esreindex, do: Es.Index.reindex __MODULE__
+
+  def search_data(model) do
+    [
+      _type: Es.name_type(__MODULE__),
+      _id: model.id,
+      name: model.name,
+      kana: model.kana,
+      orig: model.orig,
+      romaji: model.romaji,
+    ]
+  end
+
+  def create_esindex(name \\ nil) do
     Tirexs.DSL.define(fn ->
       use Tirexs.Mapping
 
-      index = [type: Es.name_type(__MODULE__), index: name]  # to be chaging index to alias
+      index = esindex(name)
 
       settings do
         analysis do
@@ -77,7 +94,7 @@ defmodule Exantenna.Tag do
         indexes "romaji", type: "string", analyzer: "ngram_analyzer"
       end
 
-      Es.pprint(index)
+      Es.ppdebug(index)
 
     index end)
   end
