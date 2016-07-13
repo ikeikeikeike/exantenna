@@ -155,9 +155,6 @@ defmodule Exantenna.Antenna do
 
   def search_data(model) do
     meta = model.metadata
-    tags = model.tags
-    chars = model.chars
-    toons = model.toons
 
     published_at =
       case Timex.Ecto.DateTime.cast(meta.published_at) do
@@ -165,14 +162,19 @@ defmodule Exantenna.Antenna do
         _ -> meta.published_at
       end
 
+    toons = Enum.map(model.toons, &(&1.name))
+    chars = Enum.flat_map toons, fn toon ->
+      Enum.map toon.chars, &(&1.name)
+    end
+
     [
-      _type: estype,
-      _id: model.id,
-      title: meta.name,
+      id: model.id,
+      title: meta.title,
       published_at: published_at,
-      tags: [],
-      toons: [],
-      chars: [],
+      tags: Enum.map(model.tags, &(&1.name)),
+      divas: Enum.map(model.divas, &(&1.name)),
+      toons: toons,
+      chars: chars,
     ]
   end
 
@@ -205,6 +207,7 @@ defmodule Exantenna.Antenna do
         # indexes "video_duration", type: "long"
         # indexes "sites",          type: "string", index: "not_analyzed"
         indexes "tags",         type: "string", index: "not_analyzed"
+        indexes "divas",        type: "string", index: "not_analyzed"
         indexes "toons",        type: "string", index: "not_analyzed"
         indexes "chars",        type: "string", index: "not_analyzed"
       end

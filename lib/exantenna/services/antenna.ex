@@ -15,6 +15,7 @@ defmodule Exantenna.Services.Antenna do
   alias Exantenna.Diva
   alias Exantenna.Toon
 
+  alias Exantenna.Es
   alias Exantenna.Translator
 
   def add_by(%Blog{}, nil), do: {:warn, "nil value"}
@@ -64,7 +65,10 @@ defmodule Exantenna.Services.Antenna do
               divas: map.divas.divas,
               toons: map.toons.toons,
             })
-            struct(antenna, map)
+            antenna = struct(antenna, map)
+
+            Es.Document.put_document(antenna)
+            antenna
 
           {:error, failed_operation, failed_value, changes_so_far} ->
             msg = {failed_operation, failed_value, changes_so_far, item}
@@ -73,6 +77,10 @@ defmodule Exantenna.Services.Antenna do
       rescue
         reason in Postgrex.Error ->
           Repo.rollback(reason)
+      # catch
+        # what, value ->
+          # reason = "Caught #{inspect what} #{inspect value}"
+          # Repo.rollback(reason)
       # after
         # nil
       end

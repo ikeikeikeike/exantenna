@@ -1,5 +1,4 @@
 defmodule Exantenna.Builders.Rss do
-  alias Exantenna.Es
   alias Exantenna.Repo
   alias Exantenna.Blog
   alias Exantenna.Antenna
@@ -32,29 +31,20 @@ defmodule Exantenna.Builders.Rss do
 
       item = Item.shift(blog.rss)
 
-      antenna =
-        case Services.Antenna.add_by(blog, item) do
-          {:ok, antenna} ->
-            {:ok, antenna}
-
-          {:error, reason} ->
-            Logger.error("#{blog.rss}: #{inspect reason} by #{inspect item}")
-            {:error, reason}
-
-          {:warn, msg} when is_bitstring(msg) ->
-            {:warn, msg}
-
-          msg ->
-            {:unkown, msg}
-
-        end
-
-      case antenna do
-        %Antenna{} = antenna ->
-          Es.Document.put_document(antenna)
+      case Services.Antenna.add_by(blog, item) do
+        {:ok, antenna} ->
           {:ok, antenna}
+
+        {:error, reason} ->
+          Logger.error("#{blog.rss}: #{inspect reason} by #{inspect item}")
+          {:error, reason}
+
+        {:warn, msg} when is_bitstring(msg) ->
+          {:warn, msg}
+
         msg ->
-          msg
+          {:unkown, msg}
+
       end
     end
   end

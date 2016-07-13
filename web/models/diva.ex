@@ -86,8 +86,7 @@ defmodule Exantenna.Diva do
 
   def search_data(model) do
     [
-      _type: estype,
-      _id: model.id,
+      id: model.id,
       name: model.name,
       kana: model.kana,
       alias: model.alias,

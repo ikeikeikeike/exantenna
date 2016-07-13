@@ -26,7 +26,7 @@ defmodule Exantenna.Es.Index do
     |> Enum.join("_")
   end
 
-  def reindex(mod), do: reindex(mod, [])
+  def reindex(mod), do: reindex(mod, nil)
   def reindex(mod, data) do
 
     index = name_index(mod)
@@ -57,7 +57,7 @@ defmodule Exantenna.Es.Index do
     #
     # Send data to es
     #
-    Es.Document.put_document(data, new_index)
+    if data, do: Es.Document.put_document(data, new_index)
 
     # change alias
     #
