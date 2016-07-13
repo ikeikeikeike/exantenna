@@ -98,7 +98,7 @@ defmodule Exantenna.Diva do
     ]
   end
 
-  def esreindex, do: Es.Index.reindex __MODULE__
+  def esreindex, do: Es.Index.reindex __MODULE__, Repo.all(__MODULE__)
 
   def create_esindex(name \\ nil) do
     Tirexs.DSL.define(fn ->

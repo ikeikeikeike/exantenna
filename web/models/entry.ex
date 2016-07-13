@@ -26,4 +26,5 @@ defmodule Exantenna.Entry do
     |> changeset(%{thumbs: thumbs})
     |> cast_assoc(:thumbs, required: false)
   end
+
 end

@@ -5,7 +5,6 @@ defmodule Exantenna.Es.Index do
   alias Tirexs.Resources
   alias Tirexs.Resources.Indices
 
-  alias Exantenna.Repo
   alias Exantenna.Es
 
   def name_index(mod) do
@@ -27,7 +26,8 @@ defmodule Exantenna.Es.Index do
     |> Enum.join("_")
   end
 
-  def reindex(mod) do
+  def reindex(mod), do: reindex(mod, [])
+  def reindex(mod, data) do
 
     index = name_index(mod)
 
@@ -57,9 +57,7 @@ defmodule Exantenna.Es.Index do
     #
     # Send data to es
     #
-    mod
-    |> Repo.all
-    |> Es.Document.put_document(new_index)
+    Es.Document.put_document(data, new_index)
 
     # change alias
     #

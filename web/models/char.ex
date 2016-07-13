@@ -8,8 +8,8 @@ defmodule Exantenna.Char do
     many_to_many :toons, Exantenna.Toon, join_through: "toons_chars"
 
     field :name, :string
-    field :alias, :string
     field :kana, :string
+    field :alias, :string
     field :romaji, :string
     field :gyou, :string
 
@@ -41,4 +41,50 @@ defmodule Exantenna.Char do
     |> validate_format(:romaji, ~r/^[a-z]\w+$/)
     |> unique_constraint(:name, name: :chars_name_alias_index)
   end
+
+  def esindex(name \\ nil) do
+    [type: Es.Index.name_type(__MODULE__), index: name || Es.Index.name_index(__MODULE__)]
+  end
+
+  def search_data(model) do
+    [
+      _type: Es.name_type(__MODULE__),
+      _id: model.id,
+      name: model.name,
+      kana: model.kana,
+      alias: model.alias,
+      romaji: model.romaji,
+      tags: [],
+      toons: [],
+    ]
+  end
+
+  def esreindex, do: Es.Index.reindex __MODULE__, Repo.all(__MODULE__)
+
+  def create_esindex(name \\ nil) do
+    Tirexs.DSL.define(fn ->
+      use Tirexs.Mapping
+
+      index = esindex(name)
+
+      settings do
+        analysis do
+          tokenizer "ngram_tokenizer", type: "nGram",  min_gram: "2", max_gram: "3", token_chars: ["letter", "digit"]
+          analyzer  "default",         type: "custom", tokenizer: "ngram_tokenizer"
+          analyzer  "ngram_analyzer",                  tokenizer: "ngram_tokenizer"
+        end
+      end
+
+      mappings do
+        indexes "name",   type: "string", analyzer: "ngram_analyzer"
+        indexes "alias",  type: "string", analyzer: "ngram_analyzer"
+        indexes "kana",   type: "string", analyzer: "ngram_analyzer"
+        indexes "romaji", type: "string", analyzer: "ngram_analyzer"
+      end
+
+      Es.ppdebug(index)
+
+    index end)
+  end
+
 end

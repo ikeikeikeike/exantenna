@@ -60,7 +60,7 @@ defmodule Exantenna.Tag do
     [type: Es.Index.name_type(__MODULE__), index: name || Es.Index.name_index(__MODULE__)]
   end
 
-  def esreindex, do: Es.Index.reindex __MODULE__
+  def esreindex, do: Es.Index.reindex __MODULE__, Repo.all(__MODULE__)
 
   def search_data(model) do
     [
