@@ -42,6 +42,8 @@ defmodule Exantenna.Char do
     |> unique_constraint(:name, name: :chars_name_alias_index)
   end
 
+  # for autocomplete below.
+
   def esindex(name \\ nil) do
     [type: Es.Index.name_type(__MODULE__), index: name || Es.Index.name_index(__MODULE__)]
   end
@@ -54,8 +56,6 @@ defmodule Exantenna.Char do
       kana: model.kana,
       alias: model.alias,
       romaji: model.romaji,
-      tags: [],
-      toons: [],
     ]
   end
 

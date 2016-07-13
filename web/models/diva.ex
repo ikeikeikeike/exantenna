@@ -83,6 +83,8 @@ defmodule Exantenna.Diva do
     end
   end
 
+  # for autocomplete below.
+
   def esindex(name \\ nil) do
     [type: Es.Index.name_type(__MODULE__), index: name || Es.Index.name_index(__MODULE__)]
   end

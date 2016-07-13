@@ -1,5 +1,7 @@
 defmodule Exantenna.Antenna do
   use Exantenna.Web, :model
+
+  alias Exantenna.Es
   alias Exantenna.Metadata
 
   schema "antennas" do
