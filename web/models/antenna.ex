@@ -88,21 +88,68 @@ defmodule Exantenna.Antenna do
   def essearch(word \\ nil) do
     Tirexs.DSL.define fn ->
       import Tirexs.Search
+      import Tirexs.Query
 
-      search_fields = [:title, :tags, :divas]
+      # How can I change query of part when word is not nil, like this.
+      #
+      #   ```elixir
+      #   if word, do: multi_match([word, search_fields]), else: match_all([])
+      #   ```
+      #
+      # Still it doesn't seem like changing from previous version.
+      #
 
-      search [index: esindex, fields: []] do
-        if word do
-          query do
-            multi_match word, search_fields # , cutoff_frequency: 0.001, boost: 10, use_dis_max: false, operator: "and"
-          end
-        else
+      q =
+        search [index: esindex, fields: []] do
           query do
             match_all([])
           end
+
+          # filter do
+          #   _and [_cache: true] do
+          #     filters do
+          #       terms "review",  [true]
+          #       # terms "divas"  # TODO: specified search
+          #     end
+          #   end
+          # end
+
+          aggs do
+            tags do
+              terms field: "tags",  size: 20, order: [_count: "desc"]
+            end
+            toons do
+              terms field: "toons", size: 20, order: [_count: "desc"]
+            end
+            chars do
+              terms field: "chars", size: 20, order: [_count: "desc"]
+              # facet_filter do
+              #   _and [_cache: true] do
+              #     filters do
+              #       terms "review",  [true]
+              #     end
+              #   end
+              # end
+            end
+          end
+
+          sort do
+            [published_at: [order: "desc"]]
+          end
+
         end
+
+      # https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html
+      if word do
+        s = Keyword.delete(q[:search], :query) ++ Tirexs.Query.query do
+          multi_match word, ~w(title tags toons chars)
+        end
+        q = Keyword.put(q, :search, s)
       end
 
+      Es.Logger.ppdebug(q)
+
+      q
     end
   end
 
@@ -112,15 +159,17 @@ defmodule Exantenna.Antenna do
     chars = model.chars
     toons = model.toons
 
+    published_at =
+      case Timex.Ecto.DateTime.cast(meta.published_at) do
+        {:ok, at} -> Timex.format!(at, "{ISO}")
+        _ -> meta.published_at
+      end
+
     [
       _type: estype,
       _id: model.id,
       title: meta.name,
-      published_at: (case Timex.Ecto.DateTime.cast(meta.published_at) do
-        {:ok, at} ->
-          Timex.format!(at, "{ISO}")
-        _ -> meta.published_at
-      end),
+      published_at: published_at,
       tags: [],
       toons: [],
       chars: [],
@@ -137,27 +186,27 @@ defmodule Exantenna.Antenna do
 
       settings do
         analysis do
-          filter    "ja_posfilter",     type: "kuromoji_neologd_part_of_speech", stoptags: ["助詞-格助詞-一般", "助詞-終助詞"]
-          filter    "edge_ngram",       type: "edgeNGram", min_gram: 1, max_gram: 15
+          filter "ja_posfilter", type: "kuromoji_neologd_part_of_speech", stoptags: ["助詞-格助詞-一般", "助詞-終助詞"]
+          filter "edge_ngram", type: "edgeNGram", min_gram: 1, max_gram: 15
 
-          tokenizer "ja_tokenizer",     type: "kuromoji_neologd_tokenizer"
-          tokenizer "ngram_tokenizer",  type: "nGram",  min_gram: "2", max_gram: "3", token_chars: ["letter", "digit"]
+          tokenizer "ja_tokenizer", type: "kuromoji_neologd_tokenizer"
+          tokenizer "ngram_tokenizer", type: "nGram",  min_gram: "2", max_gram: "3", token_chars: ["letter", "digit"]
 
-          # analyzer  "default",          type: "custom", tokenizer: "ja_tokenizer", filter: ["kuromoji_neologd_baseform", "ja_posfilter", "cjk_width"]
-          analyzer  "ja_analyzer",      type: "custom", tokenizer: "ja_tokenizer", filter: ["kuromoji_neologd_baseform", "ja_posfilter", "cjk_width"]
-          analyzer  "ngram_analyzer",                   tokenizer: "ngram_tokenizer"
+          # analyzer "default",  type: "custom", tokenizer: "ja_tokenizer", filter: ["kuromoji_neologd_baseform", "ja_posfilter", "cjk_width"]
+          analyzer "ja_analyzer", type: "custom", tokenizer: "ja_tokenizer", filter: ["kuromoji_neologd_baseform", "ja_posfilter", "cjk_width"]
+          analyzer "ngram_analyzer", tokenizer: "ngram_tokenizer"
         end
       end
 
       mappings do
-        indexes "title",          type: "string", analyzer: "ja_analyzer"
-        indexes "published_at",   type: "date",   format: "dateOptionalTime"
+        indexes "title",        type: "string", analyzer: "ja_analyzer"
+        indexes "published_at", type: "date",   format: "dateOptionalTime"
         # indexes "video_title",    type: "string", analyzer: "ja_analyzer"
         # indexes "video_duration", type: "long"
         # indexes "sites",          type: "string", index: "not_analyzed"
-        indexes "tags",           type: "string", index: "not_analyzed"
-        indexes "toons",          type: "string", index: "not_analyzed"
-        indexes "chars",          type: "string", index: "not_analyzed"
+        indexes "tags",         type: "string", index: "not_analyzed"
+        indexes "toons",        type: "string", index: "not_analyzed"
+        indexes "chars",        type: "string", index: "not_analyzed"
       end
 
       Es.Logger.ppdebug(index)
