@@ -85,7 +85,9 @@ defmodule Exantenna.Antenna do
 
   use Exantenna.Es
 
-  def essearch(word \\ nil, options \\ []) do
+  def essearch(word), do: essearch(word, [])
+  def essearch("", options), do: essearch(nil, options)
+  def essearch(word, options) do
     result =
       Tirexs.DSL.define fn ->
         import Tirexs.Search
