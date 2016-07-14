@@ -1,0 +1,18 @@
+<footer class="padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <a href="/" title="Columbia"><img src="/static/img/f-logo.png" alt="Add alt tag"></a>
+        <p>Believe in what you know</p>
+        <small>&copy; Copyright 2014-{{datenow "2006"}} {{.Meta.Copyright}}. All rights reserved.</small>
+        <hr class="mini central light-grey-dk">
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid text-left">
+    <div class="clearfix">
+      <%= render "_footer-inner.html", assigns %>
+    </div>
+  </div>
+</footer>

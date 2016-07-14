@@ -1,0 +1,71 @@
+<section id="entries-list" class="container-fluid list-styles" style='background-color: #F9F9F9;'>
+  <%= for {an, index} <- Enum.with_index(@antennas.entries) do %>
+    <% thumb = better_thumb an, :entry %>
+
+    <div class="col-md-3 nopadding wow fadeInUp item" data-wow-delay="0.<%= index %>s">
+        <div class="thumbnail news-entries">
+
+            <a href="{{urlfor "EntriesController.Show" ":id" $eId ":title" $e.SeoTitle }}">
+                <%# {{if eq $image.Name "fallback"}}<div class="img-fallback"><span class="plus">SAMPLE IMAGE<br />NO IMAGE</span></div>{{end}} %>
+
+                <img class="mfade {{if $e.Blog.IsPenalty}}mosaic{{end}}" src="<%= thumb && thumb.src %>"
+                     alt="<%= truncate an.metadata.seo_title, length: 50 %> | <%= truncate an.metadata.seo_content, length: 500 %>"
+                     onerror='this.onerror = null; this.src="<%= static_path @conn, "/images/no-image.jpg" %>"'
+                     style='<%#= if thumb && thumb.width < 380, do: "width: 405px;" %>'
+                />
+            </a>
+
+            <div class="caption">
+                <a href="{{urlfor "EntriesController.Show" ":id" $eId ":title" $e.SeoTitle }}">
+                  <h3><%= truncate an.metadata.seo_title, length: 100 %></h3>
+                </a>
+                <br class="mini mini-hack white">
+                <span style='color: #686B61;' class="media-small-font"><%= human_datetime an.metadata.published_at %></span>:
+                <%= time_ago_in_words an.metadata.published_at %>
+                <span style='color: #D8D8D8;' class="media-small-font"> -</span>
+                <span style='color: #686B61;' class="media-small-font"><%= gettext "views" %>: <%#= number_with_delimiter an.pageview %></span>
+
+                <%= if false do %>
+                  <hr class="mini mini-hack white">
+                  <code class="media-font"><%= human_datetime an.metadata.published_at %></code>
+                <% end %>
+            </div>
+
+            <ul class="list-group" style='margin-bottom: 0px;'>
+              <%#= unless blank?(an.picture) do %><%# end %>
+              <%#= unless blank?(an.video) do %><%# end %>
+              <%#= unless blank?(an.entry) do %><%# end %>
+
+              <%= for toon <- an.toons do %>
+                <a href="{{urlfor "AnimesController.Show" ":name" ($anime.Name|qescape)}}" class="list-group-item" style='padding: 3px 15px;'
+                   title="<%= gettext "show the %{toonname} in xxx", toonname: toon.name %>" rel="category tag">
+                  <span class="glyphicon glyphicon-film"><%= toon.name %></span>&nbsp;&nbsp;
+                </a>
+
+                <%= for char <- toon.chars do %>
+                  <a href="{{urlfor "CharactersController.Show" ":name" ($character.Name|qescape)}}" class="list-group-item" style='padding: 3px 15px;'
+                     title="<%= gettext "show the %{charname} in xxx", charname: char.name %>" rel="category tag">
+                    <span class="glyphicon glyphicon-heart-empty"><%= char.name %></span>&nbsp;&nbsp;
+                  </a>
+                <% end %>
+              <% end %>
+
+              <%= for diva <- an.divas do %>
+                <a href="{{urlfor "DivasController.Show" ":name" ($diva.Name|qescape)}}" class="list-group-item" style='padding: 3px 15px;'
+                   title  ="<%= gettext "show the %{divaname} in xxx", divaname: diva.name %>" rel="category tag">
+                  <span class="glyphicon glyphicon-heart"><%= diva.name %></span>&nbsp;&nbsp;
+                </a>
+              <% end %>
+
+              <%= for tag <- an.tags do %>
+                <a href='{{urlfor "TagsController.Show" ":name" ($tag.Name|qescape)}}' class="list-group-item" style='padding: 3px 15px;'
+                   title="<%= gettext "show the %{tagname} in xxx", tagname: tag.name %>" rel="category tag">
+                  <span class="glyphicon glyphicon-tag"><%= tag.name %></span>&nbsp;&nbsp;
+                </a>
+              <% end %>
+
+            </ul>
+        </div>
+    </div>
+  <% end %>
+</section>

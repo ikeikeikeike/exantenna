@@ -24,7 +24,10 @@ defmodule Exantenna.Mixfile do
         :ueberauth, :ueberauth_identity, :ueberauth_google,
         :timex, :timex_ecto, :tzdata,
         :comeonin, :bing_translator,
-        :con_cache, :redix
+        :con_cache, :redix,
+        :phoenix_html_simplified_helpers,
+      ],
+      included_applications: [
       ]
     ]
   end
@@ -46,8 +49,8 @@ defmodule Exantenna.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:timex, "~> 2.1"},
-      {:timex_ecto, github: "bitwalker/timex_ecto"},
+      {:timex, "~> 3.0"},
+      {:timex_ecto, "~> 3.0"},
       {:ueberauth, "~> 0.2"},
       {:ueberauth_google, "~> 0.2"},
       {:ueberauth_identity, "~> 0.2"},
@@ -55,10 +58,11 @@ defmodule Exantenna.Mixfile do
       {:comeonin, "~> 2.4"},
       {:mailgun, "~> 0.1"},
       {:redix, ">= 0.0.0"},
-      {:bing_translator, "~> 0.2"},
+      {:bing_translator, "~> 0.3"},
       {:html_sanitize_ex, "~> 1.0"},
       {:con_cache, "~> 0.11"},
       {:tirexs, "~> 0.8"},
+      {:phoenix_html_simplified_helpers, "~> 0.5"},
     ]
   end
 

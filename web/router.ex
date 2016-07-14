@@ -21,7 +21,8 @@ defmodule Exantenna.Router do
   scope "/", Exantenna do
     pipe_through [:browser, :browser_auth]
 
-    get "/", PageController, :index
+    get "/", EntryController, :index
+    get "/orig", PageController, :index
   end
 
   scope "/admin", Exantenna.Admin, as: "admin" do

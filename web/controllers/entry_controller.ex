@@ -9,11 +9,11 @@ defmodule Exantenna.EntryController do
   def index(conn, params) do
     words = params["search"]
 
-    entries =
+    antennas =
       Antenna.essearch(words, params)
-      |> Es.Paginator.paginate(params)
+      |> Es.Paginator.paginate(Antenna.query_all, params)
 
-    render(conn, "index.html", entries: entries, diva: Q.fuzzy_find(Diva, words))
+    render(conn, "index.html", antennas: antennas, diva: Q.fuzzy_find(Diva, words))
   end
 
 end

@@ -1,0 +1,71 @@
+#portfolio-item .item a img {
+    min-height: 330px;
+    max-height: 330px;
+}
+
+#entries-list h3, .list-styles h3 {
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif ;
+  font-weight: 700 ;
+  text-transform: uppercase ;
+  line-height: 1.1 ;
+  margin-bottom: -10px;
+}
+
+#entries-list a, .list-styles a {
+  text-decoration: none;
+}
+
+#entries-list .mfade, .list-styles .mfade {
+    -webkit-transition: 0.5s ease-in-out;
+       -moz-transition: 0.5s ease-in-out;
+         -o-transition: 0.5s ease-in-out;
+            transition: 0.5s ease-in-out;
+}
+
+#entries-list .mfade:hover, .list-styles .mfade:hover {
+    filter: alpha(opacity=70);
+    -moz-opacity:0.70;
+    opacity:0.70;
+}
+
+.list-styles .carousel.slide .carousel-inner {
+    min-height: 330px;
+    max-height: 330px;
+    background-color: #333;
+}
+
+.list-styles .carousel.slide .carousel-inner .item {
+    min-height: 330px;
+    max-height: 330px;
+    position: relative; 
+}
+
+.list-styles .carousel.slide .carousel-inner .titlemeta {
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    padding: 0 0 60px 10px; 
+    color: #eee;
+}
+
+.list-styles .carousel.slide .carousel-inner a:hover {
+    opacity: 0.60;
+}
+
+.list-styles .carousel.slide .carousel-inner a {
+    display: block;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+    -khtml-opacity: .3;
+    -moz-opacity: .3;
+    opacity: .3;
+    -webkit-transition: opacity .1s ease-in-out;
+    -moz-transition: opacity .1s ease-in-out;
+    -ms-transition: opacity .1s ease-in-out;
+    -o-transition: opacity .1s ease-in-out;
+    transition: opacity .1s ease-in-out;
+}
+
+.list-styles .carousel.slide .carousel-inner a img {
+    min-height: 330px;
+    max-height: 330px;
+}

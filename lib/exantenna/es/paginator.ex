@@ -7,7 +7,7 @@ defmodule Exantenna.Es.Paginator do
 
   defstruct [:entries, :page_number, :page_size, :total_entries, :total_pages, :tirexs]
 
-  def paginate(tirexs, options \\ []) do
+  def paginate(tirexs, query, options \\ []) do
     opt = Es.Params.pager_option(options)
 
     page = opt[:page]
@@ -17,7 +17,7 @@ defmodule Exantenna.Es.Paginator do
     %__MODULE__{
       page_size: options[:page_size],
       page_number: page,
-      entries: entries(tirexs[:hits][:hits], options[:query]),
+      entries: entries(tirexs[:hits][:hits], query),
       total_entries: tirexs[:hits][:total],
       total_pages: total_pages(tirexs[:hits][:total], page_size),
       tirexs: tirexs,
