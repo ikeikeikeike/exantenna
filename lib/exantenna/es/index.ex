@@ -5,6 +5,7 @@ defmodule Exantenna.Es.Index do
   alias Tirexs.Resources
   alias Tirexs.Resources.Indices
 
+  alias Exantenna.Blank
   alias Exantenna.Es
 
   def name_index(mod) do
@@ -57,7 +58,7 @@ defmodule Exantenna.Es.Index do
     #
     # Send data to es
     #
-    if data, do: Es.Document.put_document(data, new_index)
+    unless Blank.blank?(data), do: Es.Document.put_document(data, new_index)
 
     # change alias
     #
@@ -85,7 +86,7 @@ defmodule Exantenna.Es.Index do
 
   defp get_aliase(index) do
     case HTTP.get(Indices._aliases(index)) do
-      {:ok, 200, map} ->
+      {:ok, _, map} ->
         alias =
           map
           |> Dict.keys

@@ -85,71 +85,84 @@ defmodule Exantenna.Antenna do
 
   use Exantenna.Es
 
-  def essearch(word \\ nil) do
-    Tirexs.DSL.define fn ->
-      import Tirexs.Search
-      import Tirexs.Query
+  def essearch(word \\ nil, options \\ []) do
+    result =
+      Tirexs.DSL.define fn ->
+        import Tirexs.Search
+        import Tirexs.Query
 
-      # How can I change query of part when word is not nil, like this.
-      #
-      #   ```elixir
-      #   if word, do: multi_match([word, search_fields]), else: match_all([])
-      #   ```
-      #
-      # Still it doesn't seem like changing from previous version.
-      #
+        opt = Es.Params.pager_option(options)
 
-      q =
-        search [index: esindex, fields: []] do
-          query do
-            match_all([])
+        # pagination
+        # page = opt[:page]
+        offset = opt[:offset]
+        per_page = opt[:per_page]
+
+        # How can I change query of part when word is not nil, like this.
+        #
+        #   ```elixir
+        #   if word, do: multi_match([word, search_fields]), else: match_all([])
+        #   ```
+        #
+        # Still it doesn't seem like changing from previous version.
+        #
+
+        q =
+          search [index: esindex, fields: [], from: offset, size: per_page] do
+            query do
+              match_all([])
+            end
+
+            # filter do
+            #   _and [_cache: true] do
+            #     filters do
+            #       terms "review",  [true]
+            #       # terms "divas"  # TODO: specified search
+            #     end
+            #   end
+            # end
+
+            aggs do
+              tags do
+                terms field: "tags",  size: 20, order: [_count: "desc"]
+              end
+              toons do
+                terms field: "toons", size: 20, order: [_count: "desc"]
+              end
+              chars do
+                terms field: "chars", size: 20, order: [_count: "desc"]
+                # facet_filter do
+                #   _and [_cache: true] do
+                #     filters do
+                #       terms "review",  [true]
+                #     end
+                #   end
+                # end
+              end
+            end
+
+            sort do
+              [published_at: [order: "desc"]]
+            end
+
           end
 
-          # filter do
-          #   _and [_cache: true] do
-          #     filters do
-          #       terms "review",  [true]
-          #       # terms "divas"  # TODO: specified search
-          #     end
-          #   end
-          # end
-
-          aggs do
-            tags do
-              terms field: "tags",  size: 20, order: [_count: "desc"]
-            end
-            toons do
-              terms field: "toons", size: 20, order: [_count: "desc"]
-            end
-            chars do
-              terms field: "chars", size: 20, order: [_count: "desc"]
-              # facet_filter do
-              #   _and [_cache: true] do
-              #     filters do
-              #       terms "review",  [true]
-              #     end
-              #   end
-              # end
-            end
+        # https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html
+        if word do
+          s = Keyword.delete(q[:search], :query) ++ Tirexs.Query.query do
+            multi_match word, ~w(title tags toons chars)
           end
-
-          sort do
-            [published_at: [order: "desc"]]
-          end
-
+          q = Keyword.put(q, :search, s)
         end
 
-      # https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html
-      if word do
-        s = Keyword.delete(q[:search], :query) ++ Tirexs.Query.query do
-          multi_match word, ~w(title tags toons chars)
-        end
-        q = Keyword.put(q, :search, s)
+        Es.Logger.ppdebug(q)
+
+        q
       end
 
-      Es.Logger.ppdebug(q)
-
-      q
+    case result do
+      {_, _, map} -> map
+      r -> r
     end
   end
 
@@ -194,7 +207,7 @@ defmodule Exantenna.Antenna do
           tokenizer "ja_tokenizer", type: "kuromoji_neologd_tokenizer"
           tokenizer "ngram_tokenizer", type: "nGram",  min_gram: "2", max_gram: "3", token_chars: ["letter", "digit"]
 
-          # analyzer "default",  type: "custom", tokenizer: "ja_tokenizer", filter: ["kuromoji_neologd_baseform", "ja_posfilter", "cjk_width"]
+          analyzer "default", type: "custom", tokenizer: "ja_tokenizer", filter: ["kuromoji_neologd_baseform", "ja_posfilter", "cjk_width"]
           analyzer "ja_analyzer", type: "custom", tokenizer: "ja_tokenizer", filter: ["kuromoji_neologd_baseform", "ja_posfilter", "cjk_width"]
           analyzer "ngram_analyzer", tokenizer: "ngram_tokenizer"
         end
