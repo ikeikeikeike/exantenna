@@ -28,7 +28,8 @@ config :exantenna, MyApp.Gettext,
 
 config :exantenna, :redis,
   item: "redis://127.0.0.1:6379/1",
-  feed: "redis://127.0.0.1:6379/6"
+  feed: "redis://127.0.0.1:6379/6",
+  imginfo: "redis://127.0.0.1:6379/9"
 
 # Configure phoenix generators
 config :phoenix, :generators,
