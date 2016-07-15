@@ -21,22 +21,26 @@ defmodule Exantenna.Router do
   scope "/", Exantenna do
     pipe_through [:browser, :browser_auth]
 
-    get "/", EntryController, :index
+    get "/", EntryController, :home
+
+    get "/elog/:id", EntryController, :show
+    get "/elog/:id/:title", EntryController, :show
+
     get "/orig", PageController, :index
   end
 
   scope "/admin", Exantenna.Admin, as: "admin" do
     pipe_through [:browser, :browser_auth]
 
-    get    "/auth/signin", AuthController, :signin
-    get    "/auth/signup", AuthController, :signup
+    get "/auth/signin", AuthController, :signin
+    get "/auth/signup", AuthController, :signup
     delete "/auth/logout", AuthController, :logout
-    post   "/auth/register", AuthController, :register
-    get    "/auth/register_confirm/:token", AuthController, :register_confirm
+    post "/auth/register", AuthController, :register
+    get "/auth/register_confirm/:token", AuthController, :register_confirm
 
-    get    "/auth/:provider", AuthController, :login
-    get    "/auth/:provider/callback", AuthController, :callback
-    post   "/auth/:provider/callback", AuthController, :identity_callback
+    get "/auth/:provider", AuthController, :login
+    get "/auth/:provider/callback", AuthController, :callback
+    post "/auth/:provider/callback", AuthController, :identity_callback
 
     get    "/", UserController, :dashboard
     resources  "/blogs", BlogController

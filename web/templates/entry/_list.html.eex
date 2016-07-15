@@ -3,11 +3,13 @@
     <% thumb = better_thumb an, :entry %>
 
     <div class="pin">
-      <img class="<%# {{if $e.Blog.IsPenalty}}mosaic{{end}} %>" src="<%= thumb && thumb.src %>"
-           alt="<%= truncate an.metadata.seo_title, length: 50 %> | <%= truncate an.metadata.seo_content, length: 500 %>"
-           onerror='this.onerror = null; this.src="<%= static_path @conn, "/images/no-image.jpg" %>"'
-           style='<%#= if thumb && thumb.width < 380, do: "width: 405px;" %>'
-      />
+      <a href="<%= entry_path @conn, :show, an.id %>">
+        <img class="<%# {{if $e.Blog.IsPenalty}}mosaic{{end}} %>" src="<%= thumb && thumb.src %>"
+             alt="<%= truncate an.metadata.seo_title, length: 50 %> | <%= truncate an.metadata.seo_content, length: 500 %>"
+             onerror='this.onerror = null; this.src="<%= static_path @conn, "/images/no-image.jpg" %>"'
+             style='<%#= if thumb && thumb.width < 380, do: "width: 405px;" %>'
+        />
+      </a>
       <p>
         <strong><%= truncate an.metadata.seo_title, length: 100 %></strong><br />
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -27,10 +29,10 @@
     <div class="col-md-3 nopadding wow fadeInUp item" data-wow-delay="0.<%= index %>s">
         <div class="thumbnail news-entries">
 
-            <a href="{{urlfor "EntriesController.Show" ":id" $eId ":title" $e.SeoTitle }}">
+            <a href="<%= entry_path @conn, :show, an.id %>">
                 <%# {{if eq $image.Name "fallback"}}<div class="img-fallback"><span class="plus">SAMPLE IMAGE<br />NO IMAGE</span></div>{{end}} %>
                 <img class="<%# {{if $e.Blog.IsPenalty}}mosaic{{end}} %>" src="<%= thumb && thumb.src %>"
-                     alt="<%= truncate an.metadata.seo_title, length: 50 %> | <%= truncate an.metadata.seo_content, length: 500 %>"
+                     alt="<%= truncate an.metadata.seo_title, length: 50 %> | <%= truncate an.metadata.seo_content, length: 100 %>"
                      onerror='this.onerror = null; this.src="<%= static_path @conn, "/images/no-image.jpg" %>"'
                      style='<%#= if thumb && thumb.width < 380, do: "width: 405px;" %>'
                 />

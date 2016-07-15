@@ -1,0 +1,373 @@
+<% thumb = better_thumb @antenna, :entry %>
+
+<style>
+#showEmbedVideo span:hover, #showEmbedVideo span:focus, #showEmbedVideo span:active, #showEmbedVideo span.active {
+    color: white;
+    background-color: #ccd1d9;
+    border-color: #ccd1d9;
+    outline: none !important;
+}
+.tooltip-inner { font-size: 12px; padding: 5px; }
+.show-dic img {
+  margin-top: -2px;
+  width: 19px;
+}
+</style>
+
+<!-- ============================ Start the page content ============================ -->
+
+<!-- Leading Page Container -->
+<!-- Always keep all page content wrapped in this div, with id="wrapper" and class="page-content" -->
+<div id="wrapper" class="page-content">
+
+  <div id="html-top" class="container-fluid titlebar">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2 class="pull-left title-bar-font <%# {{if $isPenalty}}mosaic{{end}} %>"><%= truncate @antenna.metadata.seo_title, length: 100 %></h2>
+        <h3 class="pull-right"><a href="javascript:history.back();" class="back" title="Back">Back <span class="icon-undo2"></span></a></h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ Section one: hero ============================ -->
+
+  <div class="container-fluid titlebar show-remove-mobile">
+    <ol class="breadcrumb">
+      <li><a href="/">{{.Meta.SiteName}}</a></li>
+      <li><a href="{{urlfor "BlogsController.Show" ":id" .Entry.Blog.IdStr ":title" .Entry.Blog.Name }}"><%= truncate @antenna.blog.name, length: 100 %></a></li>
+      <li class="active <%# {{if $isPenalty}}mosaic{{end}} %>"><%= truncate @antenna.metadata.seo_title, length: 100 %></li>
+    </ol>
+  </div>
+
+  <!-- ============================ Section right: list-items ============================ -->
+
+  <div class="container-fluid white">
+    <div class="row">
+      <div class="<%= if thumb.width < 600, do: "col-md-5", else: "col-md-6" %>">
+        <a target='_blank' href="<%= @antenna.metadata.url %>">
+          <%# {{if eq $image.Name "fallback"}}<div class="img-fallback"><span class="plus">SAMPLE IMAGE<br />NO IMAGE</span></div>{{end}} %>
+          <img src="<%= thumb && thumb.src %>" class="img-center show-img-mobile img-responsive element-img <%# {{if $isPenalty}}mosaic{{end}} %>"
+               alt="<%= truncate @antenna.metadata.seo_title, length: 50 %> | <%= truncate @antenna.metadata.seo_content, length: 100 %>"
+               onerror='this.onerror = null; this.src="<%= static_path @conn, "/images/no-image.jpg" %>"'
+          />
+        </a>
+        <p class="text-center">
+          <a target='_blank' href="<%= @antenna.metadata.url %>" class="label label-default">
+            <span class="glyphicon glyphicon-search"></span>
+            <strong>続きを<%= truncate @antenna.blog.name, length: 100 %>で見る</strong>
+          </a>
+        </p>
+
+      </div>
+
+      <div class="<%= if thumb.width < 600, do: "col-md-7", else: "col-md-6" %> text-padding textpadding wow fadeInLeft" data-wow-delay="0.5s">
+
+        <%= for diva <- @antenna.divas do %>
+          <a href="<%# {{urlfor "DivasController.Show" ":name" $name}} %>" title="<%= gettext "show the %{divaname} xxx category", divaname: diva.name %>" rel="category tag">
+            <span class="glyphicon glyphicon-heart"><%= diva.name %></span>
+          </a>
+          <a target='_blank' href="<%# {{$g.Meta.DicURL}}/d/{{$diva.Name}}?category=diva&image={{$image.Src|cleanurl}} %>" class='show-dic'
+             data-toggle="tooltip" data-placement="top" data-container="body" title="<%= gettext "read relevant %{name}", name: diva.name %>">
+                <img src='<%= static_path @conn, "/siteicon/favicon-32x32.png" %>' />
+          </a>
+        <% end %>
+
+        <%= for toon <- @antenna.toons do %>
+          <a href="<%# {{urlfor "AnimesController.Show" ":name" $name}} %>" title="<%= gettext "show the %{toonname} xxx category", toonname: toon.name %>" rel="category tag">
+            <span class="glyphicon glyphicon-film"><%= toon.name %></span>
+          </a>
+          <a target='_blank' href="<%# {{$g.Meta.DicURL}}/d/{{$anime.Name}}?category=anime&image={{$image.Src|cleanurl}} %>" class='show-dic'
+             data-toggle="tooltip" data-placement="top" data-container="body" title="<%= gettext "read relevant %{name}", name: toon.name %>">
+                <img src='<%= static_path @conn, "/siteicon/favicon-32x32.png" %>' />
+          </a>
+
+          <%= for char <- toon.chars do %>
+            <a href="<%# {{urlfor "AnimesController.Show" ":name" $name}} %>" title="<%= gettext "show the %{charname} xxx category", charname: char.name %>" rel="category tag">
+              <span class="glyphicon glyphicon-film"><%= char.name %></span>
+            </a>
+            <a target='_blank' href="<%# {{$g.Meta.DicURL}}/d/{{$anime.Name}}?category=anime&image={{$image.Src|cleanurl}} %>" class='show-dic'
+               data-toggle="tooltip" data-placement="top" data-container="body" title="<%= gettext "read relevant %{name}", name: char.name %>">
+                  <img src='<%= static_path @conn, "/siteicon/favicon-32x32.png" %>' />
+            </a>
+          <% end %>
+        <% end %>
+
+        <%= for tag <- @antenna.tags do %>
+          <a href="<%# {{urlfor "DivasController.Show" ":name" $name}} %>" title="<%= gettext "show the %{tagname} xxx category", tagname: tag.name %>" rel="category tag">
+            <span class="glyphicon glyphicon-heart"><%= tag.name %></span>
+          </a>
+          <a target='_blank' href="<%# {{$g.Meta.DicURL}}/d/{{$diva.Name}}?category=diva&image={{$image.Src|cleanurl}} %>" class='show-dic'
+             data-toggle="tooltip" data-placement="top" data-container="body" title="<%= gettext "read relevant %{name}", name: tag.name %>">
+                <img src='<%= static_path @conn, "/siteicon/favicon-32x32.png" %>' />
+          </a>
+        <% end %>
+
+        <blockquote>
+          <p class='media-font <%# {{if $isPenalty}}mosaic{{end}} %>'><%= truncate @antenna.metadata.seo_content, length: 300 %></p>
+          <small><%= @antenna.metadata.publisher %>: <%= @antenna.metadata.creator %></small>
+        </blockquote>
+
+        <hr class="mini" style='margin-bottom: 5px;'>
+
+        <p class="pull-left">
+          <a href="{{urlfor "BlogsController.Show" ":id" .Entry.Blog.IdStr ":title" .Entry.Blog.Name }}">
+            <img src="<%#= @antenna.blog.thumbs %>" class="favicon" alt="<%= truncate @antenna.blog.name, length: 100 %>"
+                 onerror='this.onerror = null; this.src="<%= static_path @conn, "/icons/r18starndard.png" %>"'
+            /><%= truncate @antenna.blog.name, length: 100 %>
+          </a>
+        </p>
+
+        <p class="pull-right pd-right blogroll-meta"><span class="icon-clock"></span> <a href="#"><%= human_datetime @antenna.metadata.published_at %></a></p>
+
+        <br />
+        <p class="pull-right pd-right">
+          <a href="mailto:<%= gettext "%{email}?subject=subject&amp;body=ID: MCDSv%{id}%0d%0a%0d%0amessage%0d%0a---", email: "", id: @antenna.id %>"
+             class="readmore nowrap">
+                <%= gettext "Report violation content" %>
+          </a>
+        </p>
+        <br />
+
+        {{/*
+        <ul class="list">
+          <li><span class="icon-radio-checked"></span> {{truncate .Entry.Content 200}}</li>
+          <li><span class="icon-radio-checked"></span> {{.Entry.Content}}</li>
+        </ul>
+        */}}
+
+      </div>
+    </div>
+  </div>
+
+  {{if .Entry.Picture}}
+  {{template "base/pictures/images.tpl" .}}
+  {{end}}
+
+  {{if gt (len .Summaries) 0}}
+  {{append . "HeadBullets" "related-tags"}}
+  <div id="related-tags">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2 class='title-bar-font'>
+          この記事を見た人はこんな記事を見ています
+        </h2>
+      </div>
+    </div>
+  </div>
+  {{template "base/summaries/list.tpl" .}}
+  {{end}}
+
+  {{append . "HeadBullets" "related-blog"}}
+  <div id="related-blog" style="background-color: #e6e9ed;">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2 class='title-bar-font'>
+          新着の<a href="{{urlfor "BlogsController.Show" ":id" .Entry.Blog.IdStr ":title" .Entry.Blog.Name }}">{{.Entry.Blog.Name}}</a>の記事
+        </h2>
+      </div>
+    </div>
+  </div>
+
+  {{template "base/entries/list.tpl" (.Entry.Blog|loadrelated)}}
+
+
+  {{if or (gt (len .Divas) 0) (gt (len .Animes) 0) (gt (len .Characters) 0)}}
+  {{append . "HeadBullets" "multiple-tags"}}
+  <div id="multiple-tags"  style='background-color: #393939;'>
+    <div class="row">
+      <div class="col-xs-12">
+        <h2 class='title-bar-font'>
+          関係している人物・作品
+        </h2>
+      </div>
+    </div>
+  </div>
+  <section id="multiple-list" class="container-fluid list-styles" style='background-color: #F9F9F9;'>
+    {{if (gt (len .Divas) 0)}}
+    {{range $i, $v := .Divas}}
+    {{$val := $v|loadrelated}}
+
+    <div class="col-md-3 nopadding wow fadeInUp item" data-wow-delay="0.{{$i}}s">
+      <a class="thumbnail" href="{{urlfor "DivasController.Show" ":name" $val.Name }}">
+        <!-- <div class="img-fallback"><span class="plus">SAMPLE IMAGE</span></div> -->
+
+        <img class="mfade" src="{{$val.Icon.Src|cleanurl}}" alt="{{$val.Name}} | {{truncate $val.Name 100}}"
+        onerror='this.onerror = null; this.src="/static/img/no-image.jpg"' />
+
+        <div class="caption">
+          <h3>
+            {{truncate $val.Name 100}}
+            <span class="glyphicon glyphicon-heart"></span>
+            <span class='pull-right c848484'>総出演数: <code>{{$val.VideosCount}}</code></span>
+          </h3>
+        </div>
+      </a>
+    </div>
+    {{end}}
+    {{end}}
+    {{if (gt (len .Animes) 0)}}
+    {{range $i, $v := .Animes}}
+    {{$val := $v|loadrelated}}
+    <div class="col-md-3 nopadding wow fadeInUp item" data-wow-delay="0.{{$i}}s">
+      <a class="thumbnail" href="{{urlfor "AnimesController.Show" ":name" $val.Name }}">
+        <img class="mfade" src="{{($val.Icon|imgNoimage).Src|cleanurl}}" alt="{{$val.Name}} | {{truncate $val.Name 100}}"
+        onerror='this.onerror = null; this.src="/static/img/no-image.jpg"' />
+
+        <div class="caption">
+          <h3>
+            {{truncate $val.Name 100}}
+            <span class="glyphicon glyphicon-heart-empty"></span>
+            <span class='pull-right c848484'>総出演数: <code>{{$val.PicturesCount}}</code></span>
+          </h3>
+        </div>
+      </a>
+    </div>
+    {{end}}
+    {{end}}
+    {{if (gt (len .Characters) 0)}}
+    {{range $i, $v := .Characters}}
+    {{$val := $v|loadrelated}}
+
+    <div class="col-md-3 nopadding wow fadeInUp item" data-wow-delay="0.{{$i}}s">
+      <a class="thumbnail" href="{{urlfor "CharactersController.Show" ":name" $val.Name }}">
+        <img class="mfade" src="{{($val.Icon|imgNoimage).Src|cleanurl}}" alt="{{$val.Name}} | {{truncate $val.Name 100}}"
+        onerror='this.onerror = null; this.src="/static/img/no-image.jpg"' />
+
+        <div class="caption">
+          <h3>
+            {{truncate $val.Name 100}}
+            <span class="glyphicon glyphicon-heart-empty"></span>
+            <span class='pull-right c848484'>総出演数: <code>{{$val.PicturesCount}}</code></span>
+          </h3>
+        </div>
+      </a>
+    </div>
+    {{end}}
+    {{end}}
+  </section>
+  {{end}}
+
+
+  <!-- ============================ Section six: ordered list-items ============================ -->
+
+  <section id="three" class="red-lt">
+    <div class="container">
+      <div class="row padding">
+        <div class="col-sm-6 wow fadeInLeft" data-wow-delay="0.3s">
+          <h3><span class="number">01.</span> Systems Config</h3>
+          <br>
+          <p>We design and build complex security systems for global corporations.</p>
+
+          <br>
+
+          <h3><span class="number">02.</span> Account Management</h3>
+          <br>
+          <p>We design and build complex security systems for global corporations.</p>
+        </div>
+        <div class="col-sm-6 wow fadeInRight" data-wow-delay="0.3s">
+          <h3><span class="number">03.</span> Data Analysis</h3>
+          <br>
+          <p>We design and build complex security systems for global corporations.</p>
+
+          <br>
+
+          <h3><span class="number">04.</span> Startup Consultation</h3>
+          <br>
+          <p>We design and build complex security systems for global corporations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- / END page #wrapper -->
+</div>
+
+
+{{append . "HeadScripts" "/static/js/wow.min.js"}}<!-- WoW animations -->
+{{append . "HeadScripts" "/static/js/jquery.nav.js"}}<!-- Left-hand bullet navigation -->
+{{append . "HeadScripts" "/static/js/jquery.nicescroll.min.js"}}<!-- Scrollbars for whole page and main navigation -->
+{{append . "HeadScripts" "/static/js/jquery.counterup.min.js"}}<!-- counterup plugin for increasing page stats -->
+{{append . "HeadScripts" "/static/js/waypoints.min.js"}}<!-- Waypoints, needed for 'counterup' plugin -->
+{{append . "HeadScripts" "/static/js/jquery.fitvids.js"}}<!-- Fitvids plugin, (responsive videos) -->
+{{append . "HeadScripts" "/static/js/jquery.flexslider-min.js"}}<!-- Flexslider -->
+{{append . "HeadScripts" "/static/js/jquery.easing.min.js"}}<!-- Easing plugin, for opacity fade on menu background images -->
+{{append . "HeadScripts" "/static/js/scripts.js"}}<!-- Custom JS functions - always load last -->
+
+{{append . "HeadScripts" "/static/bower/masonry/dist/masonry.pkgd.min.js"}}
+{{append . "HeadScripts" "/static/bower/imagesloaded/imagesloaded.pkgd.min.js"}}
+
+{{append . "HeadScripts" "/static/bower/bookmarkhub/bookmarkhub.js"}}
+{{append . "HeadScripts" "/static/js/bookmarkhub.js"}}
+
+<script>
+  $(function(){
+    var $summaries = $('#portfolio-item');
+    $summaries.imagesLoaded(function(){
+      $summaries.masonry({itemSelector: '.item', isAnimated: true}).masonry('unbindResize');
+    });
+
+    var $entries = $('#entries-list');
+    $entries.imagesLoaded(function(){
+      $entries.masonry({itemSelector: '.item', isAnimated: true}).masonry('unbindResize');
+    });
+
+    var $pictures = $('#pictures-list');
+    $pictures.imagesLoaded(function(){
+      $pictures.masonry({itemSelector: '.item', isAnimated: true}).masonry('unbindResize');
+    });
+
+    var $multiple = $('#multiple-list');
+    $multiple.imagesLoaded(function(){
+      $multiple.masonry({itemSelector: '.item', isAnimated: true}).masonry('unbindResize');
+    });
+
+  });
+
+</script>
+
+<!-- Page-specific JS functions - these are functions that only occur on this specific page, so we DON'T want these placed in our scripts.js file as this file is loaded on every page for global site functions.  -->
+<!-- Initialize CounterUp plugin for rounding up/animated statistics -->
+<script>
+  jQuery(document).ready(function($) {
+    $('.counter').counterUp({
+      delay: 10,
+      time: 1000
+    });
+  });
+</script>
+
+<!-- Initialize fitvids.js plugin for responsive videos -->
+<script>
+  $(document).ready(function(){
+    $(".fitvids").fitVids();
+  });
+</script>
+
+<!-- Teamimonials Carousel -->
+<script>
+  $(document).ready(function(){
+    $('#testo-carousel').carousel({
+      pauseOnHover: true,
+      interval: 4000,
+    });
+    });
+  </script>
+
+  <!-- Initialize flexslider for blogfeed slider -->
+  <script>
+    // second-flexslider
+    $(window).load(function() {
+      $('#blogslider').flexslider({
+        animation: "slide",
+        directionNav: false,
+        controlNav: false,
+        touch: false,
+        slideshow: false
+      });
+    });
+    $('.prev, .next').on('click', function() {
+      var href = $(this).attr('href');
+      $('#blogslider').flexslider(href)
+      return false;
+    })
+  </script>
