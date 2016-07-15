@@ -5,9 +5,18 @@ defmodule Exantenna.Es.Paginator do
 
   import Ecto.Query
 
-  defstruct [:entries, :page_number, :page_size, :total_entries, :total_pages, :tirexs]
+  defstruct [
+    entries: [],
+    tirexs: [],
+    page_number: 0,
+    page_size: 0,
+    total_entries: 0,
+    total_pages: 0,
+  ]
 
-  def paginate(tirexs, query, options \\ []) do
+  def paginate(tirexs, query), do: paginate tirexs, query, []
+  def paginate(%{error: _}, _query, _options), do: %__MODULE__{}
+  def paginate(tirexs, query, options) do
     opt = Es.Params.pager_option(options)
 
     page = opt[:page]
