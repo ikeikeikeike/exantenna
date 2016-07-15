@@ -1,3 +1,25 @@
+<div id="columns">
+  <%= for {an, index} <- Enum.with_index(@antennas.entries) do %>
+    <% thumb = better_thumb an, :entry %>
+
+    <div class="pin">
+      <img class="<%# {{if $e.Blog.IsPenalty}}mosaic{{end}} %>" src="<%= thumb && thumb.src %>"
+           alt="<%= truncate an.metadata.seo_title, length: 50 %> | <%= truncate an.metadata.seo_content, length: 500 %>"
+           onerror='this.onerror = null; this.src="<%= static_path @conn, "/images/no-image.jpg" %>"'
+           style='<%#= if thumb && thumb.width < 380, do: "width: 405px;" %>'
+      />
+      <p>
+        <strong><%= truncate an.metadata.seo_title, length: 100 %></strong><br />
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Sed feugiat consectetur pellentesque. Nam ac elit risus,
+        ac blandit dui. Duis rutrum porta tortor ut convallis.
+        Duis rutrum porta tortor ut convallis.
+      </p>
+    </div>
+
+  <% end %>
+</div>
+
 <section id="entries-list" class="container-fluid list-styles" style='background-color: #F9F9F9;'>
   <%= for {an, index} <- Enum.with_index(@antennas.entries) do %>
     <% thumb = better_thumb an, :entry %>
@@ -7,8 +29,7 @@
 
             <a href="{{urlfor "EntriesController.Show" ":id" $eId ":title" $e.SeoTitle }}">
                 <%# {{if eq $image.Name "fallback"}}<div class="img-fallback"><span class="plus">SAMPLE IMAGE<br />NO IMAGE</span></div>{{end}} %>
-
-                <img class="mfade {{if $e.Blog.IsPenalty}}mosaic{{end}}" src="<%= thumb && thumb.src %>"
+                <img class="<%# {{if $e.Blog.IsPenalty}}mosaic{{end}} %>" src="<%= thumb && thumb.src %>"
                      alt="<%= truncate an.metadata.seo_title, length: 50 %> | <%= truncate an.metadata.seo_content, length: 500 %>"
                      onerror='this.onerror = null; this.src="<%= static_path @conn, "/images/no-image.jpg" %>"'
                      style='<%#= if thumb && thumb.width < 380, do: "width: 405px;" %>'
@@ -67,5 +88,6 @@
             </ul>
         </div>
     </div>
+
   <% end %>
 </section>
