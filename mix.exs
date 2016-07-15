@@ -49,8 +49,8 @@ defmodule Exantenna.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:timex, "~> 3.0"},
-      {:timex_ecto, "~> 3.0"},
+      {:timex, "~> 2.2"},
+      {:timex_ecto, "~> 1.1"},
       {:ueberauth, "~> 0.2"},
       {:ueberauth_google, "~> 0.2"},
       {:ueberauth_identity, "~> 0.2"},
@@ -62,7 +62,7 @@ defmodule Exantenna.Mixfile do
       {:html_sanitize_ex, "~> 1.0"},
       {:con_cache, "~> 0.11"},
       {:tirexs, "~> 0.8"},
-      {:phoenix_html_simplified_helpers, "~> 0.5"},
+      {:phoenix_html_simplified_helpers, "~> 0.4"},
     ]
   end
 
