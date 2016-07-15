@@ -18,12 +18,9 @@ defmodule Exantenna.Picture do
   end
 
   def item_changeset(%Antenna{picture: picture} = _antenna, item \\ :invalid) do
-    # TODO: width, height
-    thumbs = Enum.map(item["pictures"], &(%{"src" => &1}))
-
     picture
-    |> changeset(%{thumbs: thumbs})
-    |> cast_assoc(:thumbs, required: false)
+    |> changeset
+    |> Exantenna.Ecto.Changeset.thumbs_changeset(item["pictures"])
   end
 
 end

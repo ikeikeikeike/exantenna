@@ -4,6 +4,8 @@ defmodule Exantenna.Ecto.Changeset do
   import Ecto.Changeset
   # import Ecto.Query, only: [from: 1, from: 2]
 
+  alias Exantenna.Redis.Imginfo
+
   # for profile
   def profile_changeset(changeset) do
     changeset
@@ -19,6 +21,19 @@ defmodule Exantenna.Ecto.Changeset do
     |> update_change(:kana, &String.replace(&1 || "", ~r/(-|_)/, ""))
     |> update_change(:romaji, &String.replace(String.downcase(&1 || ""), ~r/(-|_)/, ""))
     |> validate_format(:romaji, ~r/^[a-z]\w+$/)
+  end
+
+  def thumbs_changeset(changeset, srcs) do
+    thumbs = Enum.map(srcs, fn src ->
+      case Imginfo.get(src) do
+        nil -> %{"src" => src}
+        inf -> inf
+      end
+    end)
+
+    changeset
+    |> update_change(:thumbs, thumbs)
+    |> cast_assoc(:thumbs, required: false)
   end
 
 end

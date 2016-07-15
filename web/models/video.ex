@@ -3,6 +3,7 @@ defmodule Exantenna.Video do
 
   alias Exantenna.Antenna
   alias Exantenna.VideoMetadata
+  alias Exantenna.Redis.Imginfo
 
   schema "videos" do
     has_one :antenna, Antenna
@@ -31,7 +32,10 @@ defmodule Exantenna.Video do
               embed_code: vid["embed_code"],
               duration: vid["duration"],
               thumbs: Enum.map(vid["image_urls"] || [], fn src ->
-                %{"src" => src}
+                case Imginfo.get(src) do
+                  nil -> %{"src" => src}
+                  inf -> inf
+                end
               end),
 
               # TODO: site inserting
