@@ -42,7 +42,7 @@ defmodule Exantenna.Ecto.Changeset do
   def get_or_changeset(mod, name) do
     case Repo.get_by(mod, name: name) do
       nil ->
-        change(mod.__struct__, %{name: name})
+        apply mod, :changeset, [mod.__struct__, %{name: name}]
       model ->
         model
     end

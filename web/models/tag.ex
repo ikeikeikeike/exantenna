@@ -41,15 +41,12 @@ defmodule Exantenna.Tag do
         result ++ r
       end
 
-    tags =
+    adding =
       tags ++ item["tags"]
       |> Enum.uniq
-      |> Enum.map(fn name ->
-        case Repo.get_by(__MODULE__, name: name) do
-          nil -> changeset(%__MODULE__{}, %{name: name})
-          tag -> tag
-        end
-      end)
+
+    tags =
+      Exantenna.Ecto.Changeset.get_or_changeset(__MODULE__, adding)
 
     put_assoc(change(antenna), :tags, tags)
   end

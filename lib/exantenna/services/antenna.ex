@@ -64,7 +64,7 @@ defmodule Exantenna.Services.Antenna do
             map = Map.merge(map, %{
               tags: map.tags.tags,
               divas: map.divas.divas,
-              toons: map.toons.toons,
+              toons: Repo.preload(map.toons.toons, [chars: :thumbs]),
             })
 
             antenna =

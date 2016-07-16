@@ -191,7 +191,6 @@ defmodule Exantenna.Antenna do
 
     chars =
       Enum.flat_map model.toons, fn toon ->
-        require IEx; IEx.pry
         Enum.map toon.chars, &(&1.name)
       end
 
