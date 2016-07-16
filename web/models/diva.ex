@@ -1,5 +1,6 @@
 defmodule Exantenna.Diva do
   use Exantenna.Web, :model
+  use Exantenna.Es
 
   alias Exantenna.Thumb
   alias Exantenna.Antenna
@@ -60,25 +61,14 @@ defmodule Exantenna.Diva do
       |> Exantenna.Filter.right_names(item)
       |> Enum.filter(fn name -> ! (name in filters) end)
 
-    divas = get_or_changeset(filters) ++ get_or_changeset(names)
+    divas =
+      Exantenna.Ecto.Changeset.get_or_changeset(__MODULE__, filters) ++
+      Exantenna.Ecto.Changeset.get_or_changeset(__MODULE__, names)
 
     put_assoc(change(antenna), :divas, divas)
   end
 
-  def get_or_changeset(names) when is_list(names),
-    do: Enum.map names, &get_or_changeset(&1)
-  def get_or_changeset(name) do
-    case Repo.get_by(__MODULE__, name: name) do
-      nil ->
-        changeset(%__MODULE__{}, %{name: name})
-      model ->
-        model
-    end
-  end
-
   # for autocomplete below.
-
-  use Exantenna.Es
 
   def search_data(model) do
     [
@@ -100,9 +90,14 @@ defmodule Exantenna.Diva do
 
       settings do
         analysis do
-          tokenizer "ngram_tokenizer", type: "nGram",  min_gram: "2", max_gram: "3", token_chars: ["letter", "digit"]
-          analyzer "default", type: "custom", tokenizer: "ngram_tokenizer"
-          analyzer "ngram_analyzer", tokenizer: "ngram_tokenizer"
+          tokenizer "ngram_tokenizer",
+            type: "nGram",  min_gram: "2", max_gram: "3",
+              token_chars: ["letter", "digit"]
+
+          analyzer "default",
+            type: "custom", tokenizer: "ngram_tokenizer"
+          analyzer "ngram_analyzer",
+            tokenizer: "ngram_tokenizer"
         end
       end
 

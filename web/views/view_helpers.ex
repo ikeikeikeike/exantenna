@@ -19,41 +19,56 @@ defmodule Exantenna.ViewHelpers do
   # def better(thumbs) when is_list(thumbs), do: List.first thumbs
 
   def choose_thumb(%Antenna{} = antenna, :entry) do
-    thumb = List.first antenna.entry.thumbs
-    unless thumb, do: thumb = choose_thumb(antenna)
-
-    thumb
+    choose_thumb(antenna)
   end
   def choose_thumb(%Antenna{} = antenna, :picture) do
     thumb = List.first antenna.picture.thumbs
+
+    unless thumb, do: thumb = models_thumb(thumb, antenna.toons)
+    unless thumb, do: thumb = models_thumb(thumb, antenna.toons, [:chars])
     unless thumb, do: thumb = choose_thumb(antenna)
 
     thumb
   end
   def choose_thumb(%Antenna{} = antenna, :video) do
-    choose_thumb antenna, :picture
+    thumb = List.first antenna.picture.thumbs
+    unless thumb, do: thumb = models_thumb(thumb, antenna.divas)
+    unless thumb, do: thumb = choose_thumb(antenna)
+
+    thumb
   end
   def choose_thumb(%Antenna{} = antenna) do
     thumb = List.first antenna.entry.thumbs
-
     unless thumb, do: thumb = List.first antenna.picture.thumbs
-    unless thumb, do: thumb = List.first antenna.toons.thumbs
-    unless thumb, do: thumb = List.first antenna.divas.thumbs
+
+    thumb =
+      thumb
+      |> models_thumb(antenna.toons)
+      |> models_thumb(antenna.toons, [:chars])
+      |> models_thumb(antenna.divas)
+      |> models_thumb(antenna.video.metadatas)
+      |> models_thumb(antenna.tags)
+  end
+
+  def models_thumb(%Thumb{} = thumb, _models), do: thumb
+  def models_thumb(thumb, models) do
     unless thumb do
-      if toon = List.first antenna.toons do
-        if char = List.first toon.chars do
-          thumb = List.first char.thumbs
+      if model = List.first models do
+        thumb = List.first model.thumbs
+      end
+    end
+
+    thumb
+  end
+  def models_thumb(thumb, _models, []), do: thumb
+  def models_thumb(thumb, models, [h|tail]) do
+    unless thumb do
+      if model = List.first models do
+        if blank?(tail) do
+          thumb = List.first model.thumbs
+        else
+          thumb = models_thumb(thumb, Map.get(model, h), tail)
         end
-      end
-    end
-    unless thumb do
-      if meta = List.first antenna.video.metadatas do
-        thumb = List.first meta.thumbs
-      end
-    end
-    unless thumb do
-      if tag = List.first antenna.tags do
-        thumb = List.first tag.thumbs
       end
     end
 

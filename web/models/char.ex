@@ -62,9 +62,13 @@ defmodule Exantenna.Char do
 
       settings do
         analysis do
-          tokenizer "ngram_tokenizer", type: "nGram",  min_gram: "2", max_gram: "3", token_chars: ["letter", "digit"]
-          analyzer "default", type: "custom", tokenizer: "ngram_tokenizer"
-          analyzer "ngram_analyzer", tokenizer: "ngram_tokenizer"
+          tokenizer "ngram_tokenizer",
+            type: "nGram",  min_gram: "2", max_gram: "3", token_chars: ["letter", "digit"]
+
+          analyzer "default",
+            type: "custom", tokenizer: "ngram_tokenizer"
+          analyzer "ngram_analyzer",
+            tokenizer: "ngram_tokenizer"
         end
       end
 

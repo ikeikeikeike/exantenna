@@ -1,9 +1,7 @@
 defmodule Exantenna.Ecto.Changeset do
-  # alias Exantenna.Repo
-  # import Ecto
   import Ecto.Changeset
-  # import Ecto.Query, only: [from: 1, from: 2]
 
+  alias Exantenna.Repo
   alias Exantenna.Redis.Imginfo
 
   # for profile
@@ -31,9 +29,23 @@ defmodule Exantenna.Ecto.Changeset do
       end
     end)
 
-    changeset
-    |> update_change(:thumbs, thumbs)
-    |> cast_assoc(:thumbs, required: false)
+    mergeset =
+      changeset.data
+      |> cast(%{"thumbs" => thumbs}, [])
+      |> cast_assoc(:thumbs, required: false)
+
+    merge(changeset, mergeset)
+  end
+
+  def get_or_changeset(mod, names) when is_list(names),
+    do: Enum.map names, &get_or_changeset(mod, &1)
+  def get_or_changeset(mod, name) do
+    case Repo.get_by(mod, name: name) do
+      nil ->
+        change(mod.__struct__, %{name: name})
+      model ->
+        model
+    end
   end
 
 end

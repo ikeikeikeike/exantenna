@@ -189,10 +189,10 @@ defmodule Exantenna.Antenna do
         _ -> meta.published_at
       end
 
-    toons = Enum.map(model.toons, &(&1.name))
-    chars = Enum.flat_map toons, fn toon ->
-      Enum.map toon.chars, &(&1.name)
-    end
+    chars =
+      Enum.flat_map model.toons, fn toon ->
+        Enum.map toon.chars, &(&1.name)
+      end
 
     [
       id: model.id,
@@ -200,7 +200,7 @@ defmodule Exantenna.Antenna do
       published_at: published_at,
       tags: Enum.map(model.tags, &(&1.name)),
       divas: Enum.map(model.divas, &(&1.name)),
-      toons: toons,
+      toons: Enum.map(model.toons, &(&1.name)),
       chars: chars,
       summray: !!model.summary,
     ]
@@ -216,30 +216,41 @@ defmodule Exantenna.Antenna do
 
       settings do
         analysis do
-          filter "ja_posfilter", type: "kuromoji_neologd_part_of_speech", stoptags: ["助詞-格助詞-一般", "助詞-終助詞"]
-          filter "edge_ngram", type: "edgeNGram", min_gram: 1, max_gram: 15
+          filter "ja_posfilter",
+            type: "kuromoji_neologd_part_of_speech",
+            stoptags: ["助詞-格助詞-一般", "助詞-終助詞"]
+          filter "edge_ngram",
+            type: "edgeNGram", min_gram: 1, max_gram: 15
 
-          tokenizer "ja_tokenizer", type: "kuromoji_neologd_tokenizer"
-          tokenizer "ngram_tokenizer", type: "nGram",  min_gram: "2", max_gram: "3", token_chars: ["letter", "digit"]
+          tokenizer "ja_tokenizer",
+            type: "kuromoji_neologd_tokenizer"
+          tokenizer "ngram_tokenizer",
+            type: "nGram", min_gram: "2", max_gram: "3",
+            token_chars: ["letter", "digit"]
 
-          analyzer "default", type: "custom", tokenizer: "ja_tokenizer", filter: ["kuromoji_neologd_baseform", "ja_posfilter", "cjk_width"]
-          analyzer "ja_analyzer", type: "custom", tokenizer: "ja_tokenizer", filter: ["kuromoji_neologd_baseform", "ja_posfilter", "cjk_width"]
-          analyzer "ngram_analyzer", tokenizer: "ngram_tokenizer"
+          analyzer "default",
+            type: "custom", tokenizer: "ja_tokenizer",
+            filter: ["kuromoji_neologd_baseform", "ja_posfilter", "cjk_width"]
+          analyzer "ja_analyzer",
+            type: "custom", tokenizer: "ja_tokenizer",
+            filter: ["kuromoji_neologd_baseform", "ja_posfilter", "cjk_width"]
+          analyzer "ngram_analyzer",
+            tokenizer: "ngram_tokenizer"
         end
       end
 
       mappings do
-        indexes "title",        type: "string", analyzer: "ja_analyzer"
+        indexes "title", type: "string", analyzer: "ja_analyzer"
         indexes "published_at", type: "date",   format: "dateOptionalTime"
         # indexes "video_title",    type: "string", analyzer: "ja_analyzer"
         # indexes "video_duration", type: "long"
         # indexes "sites",          type: "string", index: "not_analyzed"
-        indexes "tags",         type: "string", index: "not_analyzed"
-        indexes "divas",        type: "string", index: "not_analyzed"
-        indexes "toons",        type: "string", index: "not_analyzed"
-        indexes "chars",        type: "string", index: "not_analyzed"
+        indexes "tags", type: "string", index: "not_analyzed"
+        indexes "divas", type: "string", index: "not_analyzed"
+        indexes "toons", type: "string", index: "not_analyzed"
+        indexes "chars", type: "string", index: "not_analyzed"
 
-        indexes "summary",      type: "boolean"
+        indexes "summary", type: "boolean"
       end
 
       Es.Logger.ppdebug(index)

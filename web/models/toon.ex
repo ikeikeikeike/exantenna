@@ -1,11 +1,13 @@
 defmodule Exantenna.Toon do
   use Exantenna.Web, :model
+  use Exantenna.Es
 
   import Exantenna.Filter, only: [right_name?: 2]
   alias Exantenna.Antenna
 
   schema "toons" do
-    has_many :thumbs, {"toons_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
+    has_many :thumbs, {"toons_thumbs", Exantenna.Thumb},
+      foreign_key: :assoc_id, on_delete: :delete_all
 
     many_to_many :tags, Exantenna.Tag, join_through: "toons_tags"
     many_to_many :chars, Exantenna.Toon, join_through: "toons_chars"
@@ -49,7 +51,7 @@ defmodule Exantenna.Toon do
       |> Enum.filter(fn toon ->
         [name: name, alias: aka] = toon
 
-        # XXX: Consider detection from video info's map |> item["videos"]
+        # XXX: Consider add detectioning more from video info's map |> item["videos"]
         cond do
           ! (aka in filters) && right_name?(aka, item) -> true
           ! (name in filters) && right_name?(name, item) -> true
@@ -60,23 +62,12 @@ defmodule Exantenna.Toon do
         toon[:name]
       end)
 
-    toons = get_or_changeset(names)
+    toons =
+      __MODULE__
+      |> Exantenna.Ecto.Changeset.get_or_changeset(names)
 
     put_assoc(change(antenna), :toons, toons)
   end
-
-  def get_or_changeset(names) when is_list(names),
-    do: Enum.map names, &get_or_changeset(&1)
-  def get_or_changeset(name) do
-    case Repo.get_by(__MODULE__, name: name) do
-      nil ->
-        changeset(%__MODULE__{}, %{name: name})
-      model ->
-        model
-    end
-  end
-
-  use Exantenna.Es
 
   def search_data(model) do
     [
@@ -85,8 +76,8 @@ defmodule Exantenna.Toon do
       kana: model.kana,
       alias: model.alias,
       romaji: model.romaji,
-      tags: [],
-      chars: [],
+      # tags: [],
+      # chars: [],
     ]
   end
 
@@ -100,9 +91,14 @@ defmodule Exantenna.Toon do
 
       settings do
         analysis do
-          tokenizer "ngram_tokenizer", type: "nGram",  min_gram: "2", max_gram: "3", token_chars: ["letter", "digit"]
-          analyzer "default", type: "custom", tokenizer: "ngram_tokenizer"
-          analyzer "ngram_analyzer", tokenizer: "ngram_tokenizer"
+          tokenizer "ngram_tokenizer",
+            type: "nGram",  min_gram: "2", max_gram: "3",
+            token_chars: ["letter", "digit"]
+
+          analyzer "default",
+            type: "custom", tokenizer: "ngram_tokenizer"
+          analyzer "ngram_analyzer",
+            tokenizer: "ngram_tokenizer"
         end
       end
 
