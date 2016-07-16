@@ -4,7 +4,8 @@ defmodule Exantenna.Tag do
   alias Exantenna.Antenna
 
   schema "tags" do
-    has_many :thumbs, {"tags_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
+    has_many :thumbs, {"tags_thumbs", Exantenna.Thumb},
+      foreign_key: :assoc_id, on_delete: :delete_all
     many_to_many :antennas, Exantenna.Antenna, join_through: "antennas_tags"
     many_to_many :chars, Exantenna.Antenna, join_through: "chars_tags"
     many_to_many :toons, Exantenna.Antenna, join_through: "toons_tags"
@@ -77,9 +78,13 @@ defmodule Exantenna.Tag do
 
       settings do
         analysis do
-          tokenizer "ngram_tokenizer", type: "nGram",  min_gram: "2", max_gram: "3", token_chars: ["letter", "digit"]
-          analyzer  "default",         type: "custom", tokenizer: "ngram_tokenizer"
-          analyzer  "ngram_analyzer",                  tokenizer: "ngram_tokenizer"
+          tokenizer "ngram_tokenizer",
+            type: "nGram",  min_gram: "2", max_gram: "3", token_chars: ["letter", "digit"]
+
+          analyzer  "default",
+            type: "custom", tokenizer: "ngram_tokenizer"
+          analyzer  "ngram_analyzer",
+            tokenizer: "ngram_tokenizer"
         end
       end
 

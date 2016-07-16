@@ -2,7 +2,7 @@ defmodule Exantenna.Toon do
   use Exantenna.Web, :model
   use Exantenna.Es
 
-  import Exantenna.Filter, only: [right_name?: 2]
+  alias Exantenna.Char
   alias Exantenna.Antenna
 
   schema "toons" do
@@ -41,7 +41,7 @@ defmodule Exantenna.Toon do
     |> unique_constraint(:name, name: :toons_name_alias_index)
   end
 
-  def item_changeset(%Antenna{toons: _toons} = antenna, item \\ :invalid) do
+  def item_changeset(%Antenna{toons: toons} = antenna, item \\ :invalid) do
     filters = Application.get_env(:exantenna, :toon_filters)[:title]
 
     names =
@@ -49,14 +49,7 @@ defmodule Exantenna.Toon do
         Enum.map Repo.all(__MODULE__), &([name: &1.name, alias: &1.alias])
       end)
       |> Enum.filter(fn toon ->
-        [name: name, alias: aka] = toon
-
-        # XXX: Consider add detectioning more from video info's map |> item["videos"]
-        cond do
-          ! (aka in filters) && right_name?(aka, item) -> true
-          ! (name in filters) && right_name?(name, item) -> true
-          true -> false
-        end
+        Exantenna.Filter.right_name?(toon, item, filters)
       end)
       |> Enum.map(fn toon ->
         toon[:name]

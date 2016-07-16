@@ -1,5 +1,8 @@
 defmodule Exantenna.Char do
   use Exantenna.Web, :model
+  use Exantenna.Es
+
+  alias Exantenna.Antenna
 
   schema "chars" do
     has_many :thumbs, {"chars_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
@@ -38,9 +41,33 @@ defmodule Exantenna.Char do
     |> unique_constraint(:name, name: :chars_name_alias_index)
   end
 
-  # for autocomplete below.
+  def item_changeset(%Antenna{toons: toons} = antenna, item \\ :invalid) do
+    filters = Application.get_env(:exantenna, :char_filters)[:name]
 
-  use Exantenna.Es
+    names =
+      ConCache.get_or_store(:exantenna_cache, "charnamealias:all", fn ->
+        Enum.map Repo.all(__MODULE__), &([name: &1.name, alias: &1.alias || ""])
+      end)
+      |> Enum.filter(fn char ->
+        Exantenna.Filter.right_name?(char, item, filters)
+      end)
+      |> Enum.map(fn char ->
+        char[:name]
+      end)
+
+    chars =
+      __MODULE__
+      |> Exantenna.Ecto.Changeset.get_or_changeset(names)
+
+    toons =
+      Enum.map toons, fn toon ->
+        put_assoc(change(toon), :chars, chars)
+      end
+
+    put_assoc(change(antenna), :toons, toons)
+  end
+
+  # for autocomplete below.
 
   def search_data(model) do
     [

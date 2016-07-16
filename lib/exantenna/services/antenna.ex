@@ -14,6 +14,7 @@ defmodule Exantenna.Services.Antenna do
   alias Exantenna.Tag
   alias Exantenna.Diva
   alias Exantenna.Toon
+  alias Exantenna.Char
 
   alias Exantenna.Es
   alias Exantenna.Translator
@@ -65,7 +66,11 @@ defmodule Exantenna.Services.Antenna do
               divas: map.divas.divas,
               toons: map.toons.toons,
             })
-            antenna = struct(antenna, map)
+
+            antenna =
+              struct(antenna, map)
+              |> Char.item_changeset(item)
+              |> Repo.update!
 
             Es.Document.put_document(antenna)
             antenna
