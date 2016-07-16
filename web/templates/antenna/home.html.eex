@@ -1,4 +1,3 @@
-
 <!-- ============================ Start the page content ============================ -->
 
 <!-- Leading Page Container -->
@@ -184,7 +183,7 @@
     </ol>
   </section>
 
-  <%= render "_list.html", assigns %>
+  <%= render Exantenna.LayoutView, "_pinterest.html", assigns %>
 
   <h3 class='text-center'>
     <a href='{{urlfor "EntriesController.News"}}{{linkQ .Ctx.Request "p=2"}}'><%= gettext "read latest entries more" %></a>

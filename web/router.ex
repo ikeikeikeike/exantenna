@@ -21,7 +21,9 @@ defmodule Exantenna.Router do
   scope "/", Exantenna do
     pipe_through [:browser, :browser_auth]
 
-    get "/", EntryController, :home
+    get "/", AntennaController, :home
+    get "/news", EntryController, :index
+    get "/news.html", EntryController, :index
 
     get "/elog/:id", EntryController, :show
     get "/elog/:id/:title", EntryController, :show

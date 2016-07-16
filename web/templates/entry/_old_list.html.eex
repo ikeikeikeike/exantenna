@@ -22,6 +22,7 @@
   <% end %>
 </div>
 
+<!--
 <section id="entries-list" class="container-fluid list-styles" style='background-color: #F9F9F9;'>
   <%= for {an, index} <- Enum.with_index(@antennas.entries) do %>
     <% thumb = choose_thumb an, :entry %>
@@ -93,3 +94,4 @@
 
   <% end %>
 </section>
+-->

@@ -28,7 +28,7 @@ defmodule Exantenna.Services.Antenna do
     antenna =
       if antenna, do: antenna, else: %Antenna{
         blog: blog,      entry: %Entry{},     metadata: %Metadata{},
-        video: %Video{}, picture: %Picture{}, summary: %Summary{},
+        video: %Video{}, picture: %Picture{}, # summary: %Summary{},
         tags: [],        divas: [],           toons: []
       }
 
@@ -53,7 +53,7 @@ defmodule Exantenna.Services.Antenna do
           |> Multi.update(:metadata, Metadata.item_changeset(antenna, item))
           |> Multi.update(:video, Video.item_changeset(antenna, item))
           |> Multi.update(:picture, Picture.item_changeset(antenna, item))
-          |> Multi.update(:summary, Summary.item_changeset(antenna, item))
+          # |> Multi.update(:summary, Summary.item_changeset(antenna, item))
           |> Multi.update(:tags, Tag.item_changeset(antenna, item))
           |> Multi.update(:divas, Diva.item_changeset(antenna, item))
           |> Multi.update(:toons, Toon.item_changeset(antenna, item))

@@ -6,7 +6,7 @@ defmodule Exantenna.EntryController do
   alias Exantenna.Antenna
   alias Exantenna.Ecto.Q
 
-  def home(conn, params) do
+  def index(conn, params) do
     words = params["search"]
 
     antennas =
@@ -14,7 +14,7 @@ defmodule Exantenna.EntryController do
       |> Es.Paginator.paginate(Antenna.query_all, params)
 
     #  diva: Q.fuzzy_find(Diva, words)
-    render(conn, "home.html", antennas: antennas)
+    render(conn, "index.html", antennas: antennas)
   end
 
   def show(conn, %{"id" => _id, "title" => _title} = params) do
@@ -30,7 +30,5 @@ defmodule Exantenna.EntryController do
 
     render(conn, "show.html", antenna: antenna, antennas: antennas)
   end
-
-
 
 end

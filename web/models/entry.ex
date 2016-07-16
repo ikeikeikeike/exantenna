@@ -20,7 +20,7 @@ defmodule Exantenna.Entry do
 
   def item_changeset(%Antenna{entry: entry} = _antenna, item \\ :invalid) do
     entry
-    |> changeset
+    |> changeset(%{})
     |> Exantenna.Ecto.Changeset.thumbs_changeset(item["images"])
   end
 

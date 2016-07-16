@@ -92,6 +92,7 @@ defmodule Exantenna.Antenna do
       Tirexs.DSL.define fn ->
         import Tirexs.Search
         import Tirexs.Query
+        require Tirexs.Query.Filter
 
         opt = Es.Params.pager_option(options)
 
@@ -118,7 +119,7 @@ defmodule Exantenna.Antenna do
             # filter do
             #   _and [_cache: true] do
             #     filters do
-            #       terms "review",  [true]
+            #       terms "summary",  []
             #       # terms "divas"  # TODO: specified search
             #     end
             #   end
@@ -154,8 +155,19 @@ defmodule Exantenna.Antenna do
           s = Keyword.delete(q[:search], :query) ++ Tirexs.Query.query do
             multi_match word, ~w(title tags toons chars)
           end
-          q = Keyword.put(q, :search, s)
+          q = Keyword.put q, :search, s
         end
+
+        # if opt[:f][:summary] do
+        #   f = Keyword.delete(q[:search], :filter) ++ Tirexs.Query.Filter.filter do
+        #     _and [_cache: true] do
+        #       filters do
+        #         terms "summary",  [true]
+        #       end
+        #     end
+        #   end
+        #   q = Keyword.put q, :search, f
+        # end
 
         Es.Logger.ppdebug(q)
 
@@ -190,6 +202,7 @@ defmodule Exantenna.Antenna do
       divas: Enum.map(model.divas, &(&1.name)),
       toons: toons,
       chars: chars,
+      summray: !!model.summary,
     ]
   end
 
@@ -225,6 +238,8 @@ defmodule Exantenna.Antenna do
         indexes "divas",        type: "string", index: "not_analyzed"
         indexes "toons",        type: "string", index: "not_analyzed"
         indexes "chars",        type: "string", index: "not_analyzed"
+
+        indexes "summary",      type: "boolean"
       end
 
       Es.Logger.ppdebug(index)

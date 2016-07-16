@@ -147,7 +147,7 @@
     </div>
   </div>
 
-  <%= render "_list.html", assigns %>
+  <%= render Exantenna.LayoutView, "_pinterest.html", assigns %>
 
   <%= if ! blank?(@antenna.divas) || ! blank?(@antenna.toons) do %>
     <%# TODO: need to set 'HeadBullets' sharp link like this {{append . "HeadBullets" "multiple-tags"}}  %>
@@ -163,9 +163,9 @@
     </div>
 
     <section id="multiple-list" class="container-fluid list-styles" style='background-color: #F9F9F9;'>
-      <%= render "_starring_list.html", models: @antenna.divas %>
-      <%= render "_starring_list.html", models: @antenna.toons %>
-      <%= for toon <- @antenna.toons do %><%= render "_starring_list.html", models: toon.chars %><% end %>
+      <%= render "_starring_list.html", conn: @conn, models: @antenna.divas %>
+      <%= render "_starring_list.html", conn: @conn, models: @antenna.toons %>
+      <%= for toon <- @antenna.toons do %><%= render "_starring_list.html", conn: @conn, models: toon.chars %><% end %>
     </section>
   <% end %>
 

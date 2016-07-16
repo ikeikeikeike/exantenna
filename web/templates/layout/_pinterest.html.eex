@@ -1,0 +1,23 @@
+<div id="columns">
+  <%= for {an, index} <- Enum.with_index(@antennas.entries) do %>
+    <% thumb = choose_thumb an, :entry %>
+
+    <div class="pin">
+      <a href="<%= entry_path @conn, :show, an.id %>">
+        <img class="<%# {{if $e.Blog.IsPenalty}}mosaic{{end}} %>" src="<%= thumb && thumb.src %>"
+             alt="<%= truncate an.metadata.title, length: 50 %>"
+             onerror='this.onerror = null; this.src="<%= static_path @conn, "/images/no-image.jpg" %>"'
+             style='<%#= if thumb && thumb.width < 380, do: "width: 405px;" %>'
+        />
+      </a>
+      <p>
+        <strong><%= truncate an.metadata.seo_title, length: 100 %></strong><br />
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Sed feugiat consectetur pellentesque. Nam ac elit risus,
+        ac blandit dui. Duis rutrum porta tortor ut convallis.
+        Duis rutrum porta tortor ut convallis.
+      </p>
+    </div>
+
+  <% end %>
+</div>
