@@ -9,7 +9,7 @@
 /* Begin custom styles */
 
 .cursor {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .main-color-white {
@@ -27,15 +27,15 @@
 .active.ac1 a { background-color: #F26F70 !important; }
 
 .blur {
-  -webkit-filter: blur(5px);
-  -moz-filter: blur(5px);
-  -ms-filter: blur(5px);
-  -o-filter: blur(5px);
-  filter: blur(5px);
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -ms-filter: blur(5px);
+    -o-filter: blur(5px);
+    filter: blur(5px);
 }
 
 .pointer {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .badge-mini.badge {
@@ -47,17 +47,17 @@
 }
 
 button.social div {
-  font-size: 24px;
-  color: #C0C0C0;
-  -webkit-transition: all .2s ease;
-  -moz-transition: all .2s ease;
-  -o-transition: all .2s ease;
-  transition: all .2s ease;
-  top: 4px
+    font-size: 24px;
+    color: #C0C0C0;
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+    top: 4px
 }
 
 .modal.above-elem {
-   z-index: 1000000000;
+    z-index: 1000000000;
 }
 
 .favicon {
@@ -180,11 +180,11 @@ hr.mini {
 .nowrap { white-space: nowrap; }
 
 .white-orange, .white-orange * {
- color: #FFF !important;
+    color: #FFF !important;
 }
 
 .white-orange:hover, .white-orange:hover * {
- color: #ED6D58 !important;
+    color: #ED6D58 !important;
 }
 
 @media screen and (min-width:0px) {
@@ -193,6 +193,7 @@ hr.mini {
     .h2-font { font-size: 15px; letter-spacing: -1px; color: #fff; }
     hr.mini-hack { margin-bottom: 0px;}
     .media-font { font-size: 13px }
+    .media-font * { font-size: 13px }
     .media-small-font { font-size: 12px }
     .show-remove-mobile { display: none; }
     .show-remove-pc { display: block; }
@@ -206,6 +207,7 @@ hr.mini {
     .h2-font { font-size: 20px; letter-spacing: -1px; color: #fff; }
     hr.mini-hack { margin-bottom: 7px;}
     .media-font { font-size: 17px }
+    .media-font * { font-size: 17px }
     .media-small-font { font-size: 14px }
 }
 
@@ -218,6 +220,7 @@ hr.mini {
     .h2-font { font-size: 15px; letter-spacing: -1px; color: #fff; }
     hr.mini-hack { margin-bottom: 0px;}
     .media-font { font-size: 13px }
+    .media-font * { font-size: 13px }
     .media-small-font { font-size: 12px }
     .show-remove-mobile { display: block; }
     .show-remove-pc { display: none; }
@@ -228,6 +231,7 @@ hr.mini {
     .h2-font { font-size: 18px; letter-spacing: -1px; color: #fff; }
     hr.mini-hack { margin-bottom: 5px;}
     .media-font { font-size: 15px }
+    .media-font * { font-size: 15px }
     .media-small-font { font-size: 13px }
 }
 
@@ -235,6 +239,7 @@ hr.mini {
     .h2-font { font-size: 22px; letter-spacing: -2px; color: #fff; }
     hr.mini-hack { margin-bottom: 7px;}
     .media-font { font-size: 17px }
+    .media-font * { font-size: 17px }
     .media-small-font { font-size: 14px }
     .text-padding { padding: 2px 15px 0px 10px; padding-bottom: 40px; }
 }
@@ -373,23 +378,23 @@ hr.mini {
 
 .btn-orange {
     border-color: #F26F70;
-    background-color: #F26F70; 
+    background-color: #F26F70;
 }
 
 .btn-green {
-  border-color: #6F9DF2;
-  background-color: #6ED292;
+    border-color: #6F9DF2;
+    background-color: #6ED292;
 }
 
 .btn-blue {
-  border-color: #C0CB1D;
-  background-color: #4A7BC7;
+    border-color: #C0CB1D;
+    background-color: #4A7BC7;
 }
 
 .font-fallback {
-    font-family: Helvetica; 
-    font-weight: 900; 
-    color: white; 
+    font-family: Helvetica;
+    font-weight: 900;
+    color: white;
     text-shadow: 3px 3px 0px #020202, 4px 4px 0px #17355E;
 }
 
@@ -402,11 +407,11 @@ hr.mini {
 @media screen and (min-width:770px) {}
 
 .txt-shadow {
-  text-shadow: 0 1px 2px rgba(0, 0, 0, .9);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .9);
 }
 
 .lowercase{
-  text-transform: lowercase;
+    text-transform: lowercase;
 }
 
 .video-style .summary-cover div.caption {
@@ -416,18 +421,18 @@ hr.mini {
 
 .video-style .summary-cover div.caption h3 {
     color: #323232;
-}  
+}
 
 .video-style .summary-cover div.caption span.video-date {
     color: #4078C2;
-}  
+}
 
 .video-style .summary-cover div.caption span.video-pv {
     color: #373737;
-}  
+}
 
 .video-style.list-styles .list-group-item:first-child {
-    border-top: 1px solid #ddd; 
+    border-top: 1px solid #ddd;
 }
 .video-style.list-styles .list-group-item span {
     color: #686B61;
@@ -443,10 +448,10 @@ hr.mini {
 }
 
 .black-style.list-styles ul li {
-  color: white;
-  background-color: transparent;
-  border: none;
-  border-top: 1px solid #6E6E6E;
+    color: white;
+    background-color: transparent;
+    border: none;
+    border-top: 1px solid #6E6E6E;
 }
 
 .list-styles .summary-cover h3 {
@@ -471,15 +476,15 @@ hr.mini {
 
 .summary-cover div.caption h3 {
     color: #FFFFFF;
-}  
+}
 
 .summary-cover div.caption span.video-date {
     color: #4078C2;
-}  
+}
 
 .summary-cover div.caption span.video-pv {
     color: #CCC;
-}  
+}
 
 .summary-cover {
     font-size: 14px;
@@ -520,9 +525,9 @@ hr.mini {
 }
 
 .img-prev-next {
-    border-radius: 3px; 
-    border: solid 1px #E2E2E2; 
-    background-color: #f1f1f1; 
+    border-radius: 3px;
+    border: solid 1px #E2E2E2;
+    background-color: #f1f1f1;
     margin-bottom: 0;
 }
 
@@ -531,13 +536,13 @@ hr.mini {
 }
 
 .label-black {
-  background-color: #898888;
-  border: 1px solid #C3C3C3;
+    background-color: #898888;
+    border: 1px solid #C3C3C3;
 }
 a.label-black:hover {
-  color: #434a54;
-  background-color: white;
-  border: 1px solid #aab2bd;
+    color: #434a54;
+    background-color: white;
+    border: 1px solid #aab2bd;
 }
 
 .footer-position-mobile {
@@ -567,8 +572,8 @@ a.label-black:hover {
 }
 
 .footer-position-mobile a {
-  color: #FFF;
-  font-size: 20px;
+    color: #FFF;
+    font-size: 20px;
 }
 
 .black {
@@ -576,7 +581,7 @@ a.label-black:hover {
 }
 
 .show-dic.rel-show-dic {
-    position: absolute; 
+    position: absolute;
     right: 3px;
     bottom: 0;
 }
@@ -584,7 +589,7 @@ a.label-black:hover {
 .show-dic {}
 
 .show-dic img {
-    margin-top: -3px; 
+    margin-top: -3px;
     width: 27px;
     display: inline;
 }
@@ -598,8 +603,8 @@ a.label-black:hover {
 .embed-responsive embed,
 .embed-responsive object,
 .embed-responsive video {
-  width: 100% !important;
-  height: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .s-carousel-control {

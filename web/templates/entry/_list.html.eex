@@ -1,11 +1,11 @@
 <div id="columns">
   <%= for {an, index} <- Enum.with_index(@antennas.entries) do %>
-    <% thumb = better_thumb an, :entry %>
+    <% thumb = choose_thumb an, :entry %>
 
     <div class="pin">
       <a href="<%= entry_path @conn, :show, an.id %>">
         <img class="<%# {{if $e.Blog.IsPenalty}}mosaic{{end}} %>" src="<%= thumb && thumb.src %>"
-             alt="<%= truncate an.metadata.seo_title, length: 50 %> | <%= truncate an.metadata.seo_content, length: 500 %>"
+             alt="<%= truncate an.metadata.title, length: 50 %>"
              onerror='this.onerror = null; this.src="<%= static_path @conn, "/images/no-image.jpg" %>"'
              style='<%#= if thumb && thumb.width < 380, do: "width: 405px;" %>'
         />
@@ -24,7 +24,7 @@
 
 <section id="entries-list" class="container-fluid list-styles" style='background-color: #F9F9F9;'>
   <%= for {an, index} <- Enum.with_index(@antennas.entries) do %>
-    <% thumb = better_thumb an, :entry %>
+    <% thumb = choose_thumb an, :entry %>
 
     <div class="col-md-3 nopadding wow fadeInUp item" data-wow-delay="0.<%= index %>s">
         <div class="thumbnail news-entries">
@@ -32,7 +32,7 @@
             <a href="<%= entry_path @conn, :show, an.id %>">
                 <%# {{if eq $image.Name "fallback"}}<div class="img-fallback"><span class="plus">SAMPLE IMAGE<br />NO IMAGE</span></div>{{end}} %>
                 <img class="<%# {{if $e.Blog.IsPenalty}}mosaic{{end}} %>" src="<%= thumb && thumb.src %>"
-                     alt="<%= truncate an.metadata.seo_title, length: 50 %> | <%= truncate an.metadata.seo_content, length: 100 %>"
+                     alt="<%= truncate an.metadata.title, length: 50 %>"
                      onerror='this.onerror = null; this.src="<%= static_path @conn, "/images/no-image.jpg" %>"'
                      style='<%#= if thumb && thumb.width < 380, do: "width: 405px;" %>'
                 />

@@ -2,6 +2,7 @@ defmodule Exantenna.ViewHelpers do
   use Phoenix.HTML
   import Exantenna.Gettext
 
+  alias Exantenna.Thumb
   alias Exantenna.Antenna
 
   defdelegate blank?(word), to: Exantenna.Blank, as: :blank?
@@ -10,22 +11,29 @@ defmodule Exantenna.ViewHelpers do
     Timex.format! datetime, "%F %R", :strftime
   end
 
-  def better_thumb(%Antenna{} = antenna, :entry) do
+  def pick(%Thumb{} = thumb), do: thumb
+  def pick(thumbs) when is_list(thumbs), do: List.first thumbs
+
+  # TODO: make sure that thumb are desc or asc in better ordering.
+  # def better(%Thumb{} = thumb), do: thumb
+  # def better(thumbs) when is_list(thumbs), do: List.first thumbs
+
+  def choose_thumb(%Antenna{} = antenna, :entry) do
     thumb = List.first antenna.entry.thumbs
-    unless thumb, do: thumb = better_thumb(antenna)
+    unless thumb, do: thumb = choose_thumb(antenna)
 
     thumb
   end
-  def better_thumb(%Antenna{} = antenna, :picture) do
+  def choose_thumb(%Antenna{} = antenna, :picture) do
     thumb = List.first antenna.picture.thumbs
-    unless thumb, do: thumb = better_thumb(antenna)
+    unless thumb, do: thumb = choose_thumb(antenna)
 
     thumb
   end
-  def better_thumb(%Antenna{} = antenna, :video) do
-    better_thumb antenna, :picture
+  def choose_thumb(%Antenna{} = antenna, :video) do
+    choose_thumb antenna, :picture
   end
-  def better_thumb(%Antenna{} = antenna) do
+  def choose_thumb(%Antenna{} = antenna) do
     thumb = List.first antenna.entry.thumbs
 
     unless thumb, do: thumb = List.first antenna.picture.thumbs

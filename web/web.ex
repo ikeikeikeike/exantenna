@@ -60,6 +60,7 @@ defmodule Exantenna.Web do
       import Exantenna.Gettext
 
       import Exantenna.ViewHelpers
+      import SimpleFormat
     end
   end
 

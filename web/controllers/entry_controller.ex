@@ -13,15 +13,22 @@ defmodule Exantenna.EntryController do
       Antenna.essearch(words, params)
       |> Es.Paginator.paginate(Antenna.query_all, params)
 
-    render(conn, "home.html", antennas: antennas, diva: Q.fuzzy_find(Diva, words))
+    #  diva: Q.fuzzy_find(Diva, words)
+    render(conn, "home.html", antennas: antennas)
   end
 
-  def show(conn, %{"id" => id, "title" => title}) do
-    render(conn, "show.html", antenna: Repo.get!(Antenna.query_all, id), antennas: [])
+  def show(conn, %{"id" => _id, "title" => _title} = params) do
+    show conn, params
   end
 
   def show(conn, %{"id" => id} = params) do
-    render(conn, "show.html", antenna: Repo.get!(Antenna.query_all, id), antennas: [])
+    antenna = Repo.get!(Antenna.query_all, id)
+
+    antennas =
+      Antenna.essearch(antenna.metadata.title, params)
+      |> Es.Paginator.paginate(Antenna.query_all, params)
+
+    render(conn, "show.html", antenna: antenna, antennas: antennas)
   end
 
 
