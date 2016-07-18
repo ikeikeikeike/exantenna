@@ -1,10 +1,10 @@
-<div id="columns">
+<div class="pin-columns  column-count5">
   <%= for {an, index} <- Enum.with_index(@antennas.entries) do %>
     <% thumb = choose_thumb an, :entry %>
 
     <div class="pin">
       <a href="<%= entry_path @conn, :show, an.id %>">
-        <img class="<%# {{if $e.Blog.IsPenalty}}mosaic{{end}} %>" src="<%= thumb && thumb.src %>"
+        <img class="pin-deftall <%# {{if $e.Blog.IsPenalty}}mosaic{{end}} %>" src="<%= thumb && thumb.src %>"
              alt="<%= truncate an.metadata.title, length: 50 %>"
              onerror='this.onerror = null; this.src="<%= static_path @conn, "/images/no-image.jpg" %>"'
              style='<%#= if thumb && thumb.width < 380, do: "width: 405px;" %>'

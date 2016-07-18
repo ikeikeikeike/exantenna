@@ -1,5 +1,3 @@
-{{append . "HeadScripts" "/static/js/custom/header.js"}}<!-- WoW animations -->
-
   <!-- Our page loader -->
   <%# <div class="loadstack"> %>
       <%# <div class="spinner"></div> %>

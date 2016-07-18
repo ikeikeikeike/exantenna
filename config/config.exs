@@ -23,8 +23,9 @@ config :logger, :console,
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
 
-config :exantenna, MyApp.Gettext,
-  default_locale: "ja"
+config :exantenna, Exantenna.Gettext,
+  default_locale: "ja",
+  locales: ~w(en es ja)
 
 config :exantenna, :redis,
   item: "redis://127.0.0.1:6379/1",

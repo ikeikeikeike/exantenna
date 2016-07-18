@@ -67,6 +67,7 @@ defmodule Exantenna.Mixfile do
       {:tirexs, "~> 0.8"},
       {:simple_format, "~> 0.1"},
       {:scrivener_html, github: "ikeikeikeike/scrivener_html", override: true},
+      {:rdtype, github: "ikeikeikeike/rdtype"},
       {:common_device_detector, github: "ikeikeikeike/common_device_detector"},
     ]
   end

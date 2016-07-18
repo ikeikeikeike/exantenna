@@ -7,11 +7,19 @@ defmodule Exantenna.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+
+    plug Exantenna.Locale.Plug.AssignLocale
+    plug Exantenna.Locale.Plug.HandleLocalizedPath
+    plug Exantenna.Locale.Plug.ConfigureGettext
   end
 
   pipeline :browser_auth do
     plug Guardian.Plug.VerifySession
     plug Guardian.Plug.LoadResource
+
+    plug Exantenna.Locale.Plug.AssignLocale
+    plug Exantenna.Locale.Plug.HandleLocalizedPath
+    plug Exantenna.Locale.Plug.ConfigureGettext
   end
 
   pipeline :api do
@@ -30,6 +38,17 @@ defmodule Exantenna.Router do
 
     get "/divas", DivaController, :index
     get "/divas.html", DivaController, :index
+
+    get "/divas/atoz", Diva.AtozController, :index
+    get "/divas/birthday/:year/:month", Diva.BirthdayController, :month
+    get "/divas/birthday/:year", Diva.BirthdayController, :year
+    get "/divas/birthday", Diva.BirthdayController, :index
+    get "/divas/bracup", Diva.BracupController, :index
+    get "/divas/waist", Diva.WasteController, :index
+    get "/divas/bust", Diva.BustController, :index
+    get "/divas/hip", Diva.HipController, :index
+    get "/divas/height", Diva.HeightController, :index
+    get "/divas/blood", Diva.BloodController, :index
 
     get "/animes", ToonController, :index
     get "/animes.html", ToonController, :index

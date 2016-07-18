@@ -7,8 +7,19 @@ defmodule Exantenna.ViewHelpers do
 
   defdelegate blank?(word), to: Exantenna.Blank, as: :blank?
 
+  def locale do
+    Gettext.get_locale(Exantenna.Gettext)
+  end
+
   def human_datetime(datetime) do
     Timex.format! datetime, "%F %R", :strftime
+  end
+
+  def to_age(date) do
+    d = Timex.Date.today
+    age = d.year - date.year
+    if (date.month > d.month or (date.month >= d.month and date.day > d.day)), do: age = age - 1
+    age
   end
 
   def pick(%Thumb{} = thumb), do: thumb
@@ -74,5 +85,7 @@ defmodule Exantenna.ViewHelpers do
 
     thumb
   end
+
+  def fallback, do: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
 
 end
