@@ -29,6 +29,7 @@ erl_crash.dump
 # variables.
 /config/*.secret.*
 /*.secret
+/config/ua_inspector/
 
 /.hg
 /.hgignore

@@ -61,6 +61,7 @@ defmodule Exantenna.Web do
 
       import Exantenna.ViewHelpers
       import SimpleFormat
+      import Scrivener.HTML
     end
   end
 

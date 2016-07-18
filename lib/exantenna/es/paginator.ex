@@ -6,10 +6,14 @@ defmodule Exantenna.Es.Paginator do
   import Ecto.Query
 
   defstruct [
-    entries: [],
     tirexs: [],
+    entries: [],
     page_number: 0,
     page_size: 0,
+    prev_page: 0,
+    next_page: 0,
+    has_prev: false,
+    has_next: false,
     total_entries: 0,
     total_pages: 0,
   ]
@@ -22,14 +26,19 @@ defmodule Exantenna.Es.Paginator do
     page = opt[:page]
     # offset = opt[:offset]
     page_size = opt[:per_page]
+    pages = total_pages(tirexs[:hits][:total], page_size)
 
     %__MODULE__{
+      tirexs: tirexs,
+      entries: entries(tirexs[:hits][:hits], query),
       page_size: options[:page_size],
       page_number: page,
-      entries: entries(tirexs[:hits][:hits], query),
       total_entries: tirexs[:hits][:total],
-      total_pages: total_pages(tirexs[:hits][:total], page_size),
-      tirexs: tirexs,
+      total_pages: pages,
+      prev_page: page - 1,
+      next_page: page + 1,
+      has_prev: page > 1,
+      has_next: page < pages,
     }
   end
 

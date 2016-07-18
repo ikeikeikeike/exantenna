@@ -10,13 +10,17 @@
              style='<%#= if thumb && thumb.width < 380, do: "width: 405px;" %>'
         />
       </a>
+
       <p>
-        <strong><%= truncate an.metadata.seo_title, length: 100 %></strong><br />
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Sed feugiat consectetur pellentesque. Nam ac elit risus,
-        ac blandit dui. Duis rutrum porta tortor ut convallis.
-        Duis rutrum porta tortor ut convallis.
+        <%= truncate an.metadata.seo_title, length: 100 %>
+        <%= for tag <- Enum.take an.tags, 3 do %>
+          <a href='javascript:;' class='pin-tag'>#<%= tag.name %></a>
+        <% end %>
       </p>
+
+      <%= render "_pinterest_bottom.html", conn: @conn, models: an.toons %>
+      <%= for toon <- an.toons do %><%= render "_pinterest_bottom.html", conn: @conn, models: toon.chars %><% end %>
+      <%= render "_pinterest_bottom.html", conn: @conn, models: an.divas %>
     </div>
 
   <% end %>

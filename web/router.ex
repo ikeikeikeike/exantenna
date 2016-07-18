@@ -28,6 +28,15 @@ defmodule Exantenna.Router do
     get "/elog/:id", EntryController, :show
     get "/elog/:id/:title", EntryController, :show
 
+    get "/divas", DivaController, :index
+    get "/divas.html", DivaController, :index
+
+    get "/animes", ToonController, :index
+    get "/animes.html", ToonController, :index
+
+    get "/characters", CharController, :index
+    get "/characters.html", CharController, :index
+
     get "/orig", PageController, :index
   end
 

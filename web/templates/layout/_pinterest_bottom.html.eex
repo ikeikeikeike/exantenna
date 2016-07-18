@@ -1,0 +1,15 @@
+<%= for model <- @models do %>
+  <a href="" class="list-group-item"
+     title="<%= gettext "show the %{name} in xxx", name: model.name %>" rel="category tag">
+     <span style="
+       background: url('<%= pick model.thumbs %>') rgba(255, 255, 255, 0);
+       background-repeat: no-repeat;
+       background-size: cover;
+       padding-left: 20px;
+       border-radius: 50%;
+       "
+         class=""></span>
+
+          &nbsp;&nbsp; <%= model.name %>
+  </a>
+<% end %>

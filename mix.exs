@@ -23,9 +23,11 @@ defmodule Exantenna.Mixfile do
         :phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex,
         :ueberauth, :ueberauth_identity, :ueberauth_google,
         :timex, :timex_ecto, :tzdata,
-        :comeonin, :bing_translator,
+        :comeonin,
+        :bing_translator,
         :con_cache, :redix,
         :phoenix_html_simplified_helpers,
+        :common_device_detector,
       ],
       included_applications: [
       ]
@@ -64,6 +66,8 @@ defmodule Exantenna.Mixfile do
       {:con_cache, "~> 0.11"},
       {:tirexs, "~> 0.8"},
       {:simple_format, "~> 0.1"},
+      {:scrivener_html, github: "ikeikeikeike/scrivener_html", override: true},
+      {:common_device_detector, github: "ikeikeikeike/common_device_detector"},
     ]
   end
 

@@ -40,6 +40,12 @@ config :phoenix, :generators,
 config :exantenna,
   ecto_repos: [Exantenna.Repo]
 
+config :scrivener_html,
+  routes_helper: Exantenna.Router.Helpers
+
+config :ua_inspector,
+  database_path: Path.join(File.cwd!, "config/ua_inspector")
+
 import_config "toon_filters.secret.exs"
 import_config "char_filters.secret.exs"
 import_config "translate_filters.secret.exs"
