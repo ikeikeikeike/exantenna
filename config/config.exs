@@ -30,7 +30,8 @@ config :exantenna, Exantenna.Gettext,
 config :exantenna, :redis,
   item: "redis://127.0.0.1:6379/1",
   feed: "redis://127.0.0.1:6379/6",
-  imginfo: "redis://127.0.0.1:6379/9"
+  imginfo: "redis://127.0.0.1:6379/9",
+  inlog: "redis://127.0.0.1:6379/15"
 
 # Configure phoenix generators
 config :phoenix, :generators,
@@ -46,6 +47,9 @@ config :scrivener_html,
 
 config :ua_inspector,
   database_path: Path.join(File.cwd!, "config/ua_inspector")
+
+# config :public_suffix,
+  # download_data_on_compile: true
 
 import_config "toon_filters.secret.exs"
 import_config "char_filters.secret.exs"
