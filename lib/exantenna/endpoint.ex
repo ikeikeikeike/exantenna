@@ -35,5 +35,9 @@ defmodule Exantenna.Endpoint do
     key: "_exantenna_key",
     signing_salt: "LeA2kesP"
 
+  plug Exantenna.Domain.Plug.Subdomain,
+    book: Exantenna.Router.Book,
+    video: Exantenna.Router.Video
+
   plug Exantenna.Router
 end
