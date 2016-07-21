@@ -6,8 +6,8 @@ redis:set_timeout(1000)  -- 1 sec
 
 local ok, err = redis:connect("127.0.0.1", 6379)
 if not ok then
-ngx.log(ngx.ERR, err)
-return
+    ngx.log(ngx.ERR, err)
+    return
 end
 
 redis:select(15)

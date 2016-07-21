@@ -5,27 +5,24 @@ defmodule Exantenna.Score.Inlog do
 
   @host  Application.get_env(:exantenna, :url)[:host]
   @uaptn ~r(Mozilla|Opera)
+  @acceptptn ~r/.*(text|html,application|xhtml)/
 
-  def scoring(urls) when is_list(urls) do
-    logs =
-      Redis.Inlog.all
-      |> Enum.filter(&inlog?(&1))
-
+  def resource(urls) when is_list(urls) do
+    logs = Enum.filter(Redis.Inlog.all, &inlog?(&1))
     Redis.Inlog.clear
 
-    Enum.map urls, fn url ->
-      # URI.parse(url).host
+    Enum.reduce urls, %{}, fn url, t ->
+      elems =
+        Enum.filter logs, fn log ->
+          String.contains?(log["referer"], url)
+        end
 
-      # TODO: extract search key from url
-      key = ""
-
-      Enum.filter logs, fn log ->
-        String.contains?(log["referer"], key)
-      end
-
+      Map.put t, url, elems
     end
+  end
 
-    # Enum.filter
+  def scoring(resource) do
+
   end
 
   # Doing no aggregation excepting below.
@@ -37,7 +34,18 @@ defmodule Exantenna.Score.Inlog do
   # - Own site Referer(the same domain betweeen Referer and Request URL)
   # - js, css, img.src request, only html request
   #
-  def inlog?(%{"url" => url, "user-agent" => ua, "referer" => ref}) do
+  # - Check the same ip after this.
+  #
+  def inlog?(%{
+    "referer" => ref, "http_host" => host,
+    "accept" => accept, "user-agent" => ua
+  }) do
+
+    accept =
+      Enum.filter String.split(accept, "/"), fn text ->
+        Regex.match?(@acceptptn, text)
+      end
+
     cond do
       ! Regex.match?(@uaptn, ua) ->
         false
@@ -45,14 +53,14 @@ defmodule Exantenna.Score.Inlog do
         false
       String.contains?(ref, @host) ->
         false
-      URI.parse(ref).host == URI.parse(url).host ->
+      URI.parse(ref).host == host ->
         false
-
-      # TODO: only html request
-
+      length(accept) < 2 ->
+        false
       true ->
         true
     end
   end
+  def inlog?(_), do: false
 
 end
