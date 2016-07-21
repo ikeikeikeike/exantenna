@@ -15,22 +15,22 @@ redis:select(15)
 -- TODO: Never accept until spendingj 1 hour in using cookie.
 
 local params = {
-  time = ngx.now(),
-  method = ngx.req.get_method(),
+    time = ngx.now(),
+    method = ngx.req.get_method(),
 
-  remote_addr = ngx.var.remote_addr,
-  http_x_forwarded_for = ngx.var.http_x_forwarded_for,
+    remote_addr = ngx.var.remote_addr,
+    http_x_forwarded_for = ngx.var.http_x_forwarded_for,
 
-  scheme = ngx.var.scheme,
-  http_host = ngx.var.http_host,
-  request_uri = ngx.var.request_uri,
-  args = ngx.var.args,
+    scheme = ngx.var.scheme,
+    http_host = ngx.var.http_host,
+    request_uri = ngx.var.request_uri,
+    args = ngx.var.args,
 
-  url = ngx.var.scheme .. "://" .. ngx.var.http_host .. ngx.var.request_uri,
+    url = ngx.var.scheme .. "://" .. ngx.var.http_host .. ngx.var.request_uri,
 }
 
 for k, v in pairs(ngx.req.get_headers()) do
-  params[k] = v
+    params[k] = v
 end
 
 redis:rpush("inlog", cjson.encode(params))
