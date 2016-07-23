@@ -1,7 +1,7 @@
 defmodule Exantenna.Diva.BloodController do
   use Exantenna.Web, :controller
 
-  alias Exantenna.Diva, as: Model
+  alias Exantenna.Diva
   import Ecto.Query
 
   def index(conn, _params) do
@@ -9,11 +9,11 @@ defmodule Exantenna.Diva.BloodController do
       ["A", "B", "O", "AB"]
       |> Enum.map(fn blood ->
         divas =
-          Model
+          Diva.query
           |> where([q], q.blood == ^blood)
           # |> where([q], q.appeared > 0)
           |> where([q], not is_nil(q.blood))
-          |> Exantenna.Repo.all
+          |> Repo.all
         {blood, divas}
       end)
 

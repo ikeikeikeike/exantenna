@@ -1,7 +1,7 @@
 defmodule Exantenna.Diva.HeightController do
   use Exantenna.Web, :controller
 
-  alias Exantenna.Diva, as: Model
+  alias Exantenna.Diva
   import Ecto.Query
 
   def index(conn, _params) do
@@ -9,14 +9,14 @@ defmodule Exantenna.Diva.HeightController do
       [130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190]
       |> Enum.map(fn height ->
         divas =
-          Model
+          Diva.query
           |> where([q], q.height >= ^height)
           |> where([q], q.height < ^(height + 5))
           |> where([q], q.height > 130)
           # |> where([q], q.appeared > 0)
           |> where([q], not is_nil(q.height))
           |> order_by([q], [asc: q.height])
-          |> Exantenna.Repo.all
+          |> Repo.all
         {height, divas}
       end)
 

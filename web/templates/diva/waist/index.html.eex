@@ -1,20 +1,10 @@
-<div class='container <%= if mobile?(@conn), do: "row" %>' style="position: relative;">
-  <div>
+<div id="wrapper" class='page-content' style="position: relative;">
+
+  <%= render Exantenna.DivaView, "_breadcrumb.html", conn: @conn %>
+
+  <div style='display: inline-block;'>
+
     <div class="col-xs-<%= if desktop?(@conn), do: "9", else: 12 %>">
-      <ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb row style-off" style='margin-bottom: 0;'>
-        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-          <a itemprop="item" href="/"><span itemprop="name"><%= gettext "Alternative Name" %></span></a>
-          <meta itemprop="position" content="1" />
-        </li>
-        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-          <a itemprop="item" href="<%= diva_path(@conn, :index) %>"><span itemprop="name"><%= gettext "Diva" %></span></a>
-          <meta itemprop="position" content="2" />
-        </li>
-        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-          <a itemprop="item" href="<%= waist_path @conn, :index %>"><span itemprop="name"><%= gettext "Waist" %></span></a>
-          <meta itemprop="position" content="3" />
-        </li>
-      </ol>
 
       <div>
         <h2 style="margin-top: 0;"><small><%= gettext "diva waist index page title" %></small></h2>
@@ -26,7 +16,7 @@
       <%= for {waist, divas} <- @waists do %>
         <%= unless blank?(divas) do %>
           <h3 id="around-<%= Exantenna.Word.Around.five "ja", waist %>"><small><%= Exantenna.Word.Around.five locale, waist %><%= gettext "cm" %></small></h3>
-          <%= render Exantenna.DivaView, "_divalist.html", conn: @conn, divas: divas, class: nil %>
+          <%= render Exantenna.DivaView, "_divalist.html", conn: @conn, divas: divas, class: "unpin" %>
         <% end %>
       <% end %>
     </div>

@@ -1,21 +1,9 @@
-<div class='container <%= if mobile?(@conn), do: "row" %>'>
-  <div>
-    <div class="col-xs-<%= if desktop?(@conn), do: "9", else: 12 %>">
-      <ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb row style-off" style='margin-bottom: 0;'>
-        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-          <a itemprop="item" href="/"><span itemprop="name"><%= gettext "Alternative Name" %></span></a>
-          <meta itemprop="position" content="1" />
-        </li>
-        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-          <a itemprop="item" href="<%= diva_path(@conn, :index) %>"><span itemprop="name"><%= gettext "Diva" %></span></a>
-          <meta itemprop="position" content="2" />
-        </li>
-        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-          <a itemprop="item" href="<%= birthday_path @conn, :index %>"><span itemprop="name"><%= gettext "Birthday" %></span></a>
-          <meta itemprop="position" content="3" />
-        </li>
-      </ol>
+<div id="wrapper" class='page-content'>
 
+  <%= render Exantenna.DivaView, "_breadcrumb.html", conn: @conn %>
+
+  <div style='display: inline-block;'>
+    <div class="col-xs-<%= if desktop?(@conn), do: "9", else: 12 %>">
       <div>
         <h2 style="margin-top: 0;"><small><%= gettext "diva birthday index page title" %></small></h2>
         <p><small>
