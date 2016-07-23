@@ -35,3 +35,4 @@ erl_crash.dump
 /.hgignore
 
 /tags
+/web/templates
