@@ -11,7 +11,7 @@ defmodule Exantenna.Diva.BracupController do
         divas =
           Model
           |> where([q], q.bracup == ^bracup)
-          |> where([q], q.appeared > 0)
+          # |> where([q], q.appeared > 0)
           |> where([q], not is_nil(q.bracup))
           |> order_by([q], [asc: q.bust])
           |> Exantenna.Repo.all

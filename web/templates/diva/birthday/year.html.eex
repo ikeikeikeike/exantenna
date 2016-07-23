@@ -42,11 +42,11 @@
         <li class="clearfix"></li>
       </ol>
 
-      <%= render Exblur.DivaView, "_divalist.html", conn: @conn, divas: @divas %>
+      <%= render Exantenna.DivaView, "_divalist.html", conn: @conn, divas: @divas, class: nil %>
 
     </div>
 
-    <%= render Exblur.DivaView, "_divamenu.html", conn: @conn %>
+    <%= render Exantenna.DivaView, "_divamenu.html", conn: @conn %>
 
   </div>
 </div>

@@ -22,8 +22,10 @@ defmodule Exantenna.ViewHelpers do
     age
   end
 
+  def pick(nil), do: nil
   def pick(%Thumb{} = thumb), do: thumb
   def pick(thumbs) when is_list(thumbs), do: List.first thumbs
+  def pick(_), do: nil
 
   # TODO: make sure that thumb are desc or asc in better ordering.
   # def better(%Thumb{} = thumb), do: thumb

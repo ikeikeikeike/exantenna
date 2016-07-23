@@ -26,7 +26,7 @@
       <%= for {hip, divas} <- @hips do %>
         <%= unless blank?(divas) do %>
           <h3 id="around-<%= Exantenna.Word.Around.five "ja", hip %>"><small><%= Exantenna.Word.Around.five locale, hip %><%= gettext "cm" %></small></h3>
-          <%= render Exblur.DivaView, "_divalist.html", conn: @conn, divas: divas %>
+          <%= render Exantenna.DivaView, "_divalist.html", conn: @conn, divas: divas, class: nil %>
         <% end %>
       <% end %>
     </div>
@@ -50,7 +50,7 @@
       </div>
     <% end %>
 
-    <%= render Exblur.DivaView, "_divamenu.html", conn: @conn %>
+    <%= render Exantenna.DivaView, "_divamenu.html", conn: @conn %>
 
   </div>
 </div>

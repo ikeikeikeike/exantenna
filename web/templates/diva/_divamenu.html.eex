@@ -10,7 +10,7 @@
       <li><a itemprop="url" href="<%= birthday_path @conn, :index %>"><span itemprop="name"><%= gettext "diva birthday index page title" %></span></a></li>
       <li><a itemprop="url" href="<%= bracup_path @conn, :index %>"><span itemprop="name"><%= gettext "diva bracup index page title" %></span></a></li>
       <li><a itemprop="url" href="<%= bust_path @conn, :index %>"><span itemprop="name"><%= gettext "diva bust index page title" %></span></a></li>
-      <li><a itemprop="url" href="<%= waste_path @conn, :index %>"><span itemprop="name"><%= gettext "diva waist index page title" %></span></a></li>
+      <li><a itemprop="url" href="<%= waist_path @conn, :index %>"><span itemprop="name"><%= gettext "diva waist index page title" %></span></a></li>
       <li><a itemprop="url" href="<%= hip_path @conn, :index %>"><span itemprop="name"><%= gettext "diva hip index page title" %></span></a></li>
       <li><a itemprop="url" href="<%= height_path @conn, :index %>"><span itemprop="name"><%= gettext "diva height index page title" %></span></a></li>
       <li><a itemprop="url" href="<%= blood_path @conn, :index %>"><span itemprop="name"><%= gettext "diva blood index page title" %></span></a></li>

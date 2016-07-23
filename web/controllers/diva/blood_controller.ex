@@ -11,7 +11,7 @@ defmodule Exantenna.Diva.BloodController do
         divas =
           Model
           |> where([q], q.blood == ^blood)
-          |> where([q], q.appeared > 0)
+          # |> where([q], q.appeared > 0)
           |> where([q], not is_nil(q.blood))
           |> Exantenna.Repo.all
         {blood, divas}

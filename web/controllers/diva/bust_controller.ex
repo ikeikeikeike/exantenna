@@ -13,7 +13,7 @@ defmodule Exantenna.Diva.BustController do
           |> where([q], q.bust >= ^bust)
           |> where([q], q.bust < ^(bust + 5))
           |> where([q], q.bust > 60)
-          |> where([q], q.appeared > 0)
+          # |> where([q], q.appeared > 0)
           |> where([q], not is_nil(q.bust))
           |> order_by([q], [asc: q.bust])
           |> Exantenna.Repo.all

@@ -13,7 +13,7 @@ defmodule Exantenna.Diva.HipController do
           |> where([q], q.hip >= ^hip)
           |> where([q], q.hip < ^(hip + 5))
           |> where([q], q.hip > 50)
-          |> where([q], q.appeared > 0)
+          # |> where([q], q.appeared > 0)
           |> where([q], not is_nil(q.hip))
           |> order_by([q], [asc: q.hip])
           |> Exantenna.Repo.all

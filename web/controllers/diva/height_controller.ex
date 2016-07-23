@@ -13,7 +13,7 @@ defmodule Exantenna.Diva.HeightController do
           |> where([q], q.height >= ^height)
           |> where([q], q.height < ^(height + 5))
           |> where([q], q.height > 130)
-          |> where([q], q.appeared > 0)
+          # |> where([q], q.appeared > 0)
           |> where([q], not is_nil(q.height))
           |> order_by([q], [asc: q.height])
           |> Exantenna.Repo.all

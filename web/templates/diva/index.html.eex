@@ -103,7 +103,7 @@
       </a>
     </li>
     <li class="list-group-item col-xs-<%= if desktop?(@conn), do: 4, else: 6 %>">
-      <a href="<%= waste_path @conn, :index %>"
+      <a href="<%= waist_path @conn, :index %>"
          title="<%= gettext "Jump to waist page" %>"
          class="<%= if false && mobile?(@conn), do: "loose-list-width" %>"
          disabled

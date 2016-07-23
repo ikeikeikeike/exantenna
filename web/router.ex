@@ -44,7 +44,7 @@ defmodule Exantenna.Router do
     get "/divas/birthday/:year", Diva.BirthdayController, :year
     get "/divas/birthday", Diva.BirthdayController, :index
     get "/divas/bracup", Diva.BracupController, :index
-    get "/divas/waist", Diva.WasteController, :index
+    get "/divas/waist", Diva.WaistController, :index
     get "/divas/bust", Diva.BustController, :index
     get "/divas/hip", Diva.HipController, :index
     get "/divas/height", Diva.HeightController, :index

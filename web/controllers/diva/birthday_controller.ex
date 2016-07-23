@@ -15,7 +15,7 @@ defmodule Exantenna.Diva.BirthdayController do
     birthdays =
       Model
       |> select([p], p.birthday)
-      |> where([q], q.appeared > 0)
+      # |> where([q], q.appeared > 0)
       |> where([q], not is_nil(q.birthday))
       |> where([q], q.birthday  < ^next_month)
       |> where([q], q.birthday >= ^Timex.Date.from({year, month , 01}))
@@ -27,7 +27,7 @@ defmodule Exantenna.Diva.BirthdayController do
 
    divas =
       Model
-      |> where([q], q.appeared > 0)
+      # |> where([q], q.appeared > 0)
       |> where([q], not is_nil(q.birthday))
       |> where([q], q.birthday  < ^next_month)
       |> where([q], q.birthday >= ^Timex.Date.from({year, month , 01}))
@@ -40,7 +40,7 @@ defmodule Exantenna.Diva.BirthdayController do
     birthdays =
       Model
       |> select([p], p.birthday)
-      |> where([q], q.appeared > 0)
+      # |> where([q], q.appeared > 0)
       |> where([q], not is_nil(q.birthday))
       |> where([q], q.birthday <= ^"#{year}-12-31")
       |> where([q], q.birthday >= ^"#{year}-01-01")
@@ -52,7 +52,7 @@ defmodule Exantenna.Diva.BirthdayController do
 
    divas =
       Model
-      |> where([q], q.appeared > 0)
+      # |> where([q], q.appeared > 0)
       |> where([q], not is_nil(q.birthday))
       |> where([q], q.birthday <= ^"#{year}-12-31")
       |> where([q], q.birthday >= ^"#{year}-01-01")
@@ -66,7 +66,7 @@ defmodule Exantenna.Diva.BirthdayController do
       Model
       |> group_by([p], p.birthday)
       |> select([p], p.birthday)
-      |> where([q], q.appeared > 0)
+      # |> where([q], q.appeared > 0)
       |> where([q], not is_nil(q.birthday))
       |> order_by([q], [desc: q.birthday])
       |> Exantenna.Repo.all

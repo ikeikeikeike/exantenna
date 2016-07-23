@@ -26,6 +26,7 @@
     border-bottom: 1px solid #ccc;
     padding-bottom: 15px;
     margin-bottom: 5px;
+    width: 100%;
 }
 
 div.unpin {
@@ -34,8 +35,8 @@ div.unpin {
 
 img.unpin {
     object-fit: cover;
-    width: 280px;
-    height: 280px;
+    width: 280px !important;
+    height: 280px !important;
     /* padding-bottom: 0 !important; */
     /* background-color: #ccc; */
     /* border: 1px solid #ccc; */
