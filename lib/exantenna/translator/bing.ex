@@ -16,7 +16,7 @@ defmodule Exantenna.Translator.Bing do
         word
 
       true ->
-        ConCache.get_or_store :exantenna_cache, "translator.bing:#{word}", fn() ->
+        ConCache.get_or_store :translate, "translator.bing:#{word}", fn() ->
           BingTranslator.translate(word, opts)
         end
     end

@@ -11,6 +11,7 @@
     "tests"
   ],
   "dependencies": {
+    "typeahead.js": "^0.10.5",
     "bootstrap": "^3.3.6"
   }
 }

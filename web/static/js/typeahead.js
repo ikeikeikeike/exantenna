@@ -1,15 +1,31 @@
 $(document).on('ready', function() {
-  var $modal, charSuggest, toonSuggest, divaSuggest, tagSuggest;
+  var $modal = $('.js-autocomplete-modal'),
+      charSuggest,
+      toonSuggest,
+      divaSuggest,
+      tagSuggest;
 
-  if (window.isMobile) {
-    $modal = $('.js-autocomplete-modal');
-    $modal.on('shown.bs.modal', function() {
-      $(this).find('input[name="search"]').focus();
-    });
-    $modal.on('hidden.bs.modal', function() {
-      $('input.js-autocomplete-firedom').val($(this).find('input[name="search"]').val());
-    });
-  }
+  $modal.on('shown.bs.modal', function(e) {
+    var value = $('input.js-autocomplete-firedom').val(),
+        input = $(this).find('input[name="search"]');
+
+    input.val(value);
+    if ( !('createTouch' in document) && !('ontouchstart' in document)) {
+      input.focus();
+    }
+  });
+
+  $modal.on('hidden.bs.modal', function() {
+    var value = $(this).find('input[name="search"]').val(),
+        input = $('input.js-autocomplete-firedom');
+
+    input.val(value);
+    if ( !('createTouch' in document) && !('ontouchstart' in document)) {
+      setTimeout(function() { input.blur(); }, 1000);
+    }
+
+  });
+
 
   tagSuggest = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),

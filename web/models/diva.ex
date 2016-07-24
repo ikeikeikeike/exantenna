@@ -72,7 +72,7 @@ defmodule Exantenna.Diva do
       end
 
     exists =
-      ConCache.get_or_store(:exantenna_cache, "divaname:all", fn ->
+      ConCache.get_or_store(:divas, "divaname:all", fn ->
         Enum.map Repo.all(__MODULE__), &(&1.name)
       end)
       |> Exantenna.Filter.right_names(item)

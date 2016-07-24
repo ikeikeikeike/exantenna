@@ -45,7 +45,7 @@ defmodule Exantenna.Char do
     filters = Application.get_env(:exantenna, :char_filters)[:name]
 
     names =
-      ConCache.get_or_store(:exantenna_cache, "charnamealias:all", fn ->
+      ConCache.get_or_store(:chars, "charnamealias:all", fn ->
         Enum.map Repo.all(__MODULE__), &([name: &1.name, alias: &1.alias || ""])
       end)
       |> Enum.filter(fn char ->

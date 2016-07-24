@@ -8,7 +8,7 @@ defmodule Exantenna.Es.Suggester do
   end
 
   def completion(model, word) do
-    ConCache.get_or_store :exantenna_suggest_cache, "#{model}:completion:#{word}", fn ->
+    ConCache.get_or_store :es, "#{model}:suggester:#{word}", fn ->
       word
       |> String.split(".")
       |> List.first

@@ -20,5 +20,5 @@ import "phoenix_html"
 
 // import socket from "./socket"
 
-import typeahead from "./header"
 import sidebar from "./sidebar"
+import typeahead from "./typeahead"

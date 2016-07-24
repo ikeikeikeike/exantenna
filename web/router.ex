@@ -41,16 +41,18 @@ defmodule Exantenna.Router do
 
     get "/diva/:name", DivaController, :show
 
-    get "/d/atoz", Diva.AtozController, :index
-    get "/d/birthday/:year/:month", Diva.BirthdayController, :month
-    get "/d/birthday/:year", Diva.BirthdayController, :year
-    get "/d/birthday", Diva.BirthdayController, :index
-    get "/d/bracup", Diva.BracupController, :index
-    get "/d/waist", Diva.WaistController, :index
-    get "/d/bust", Diva.BustController, :index
-    get "/d/hip", Diva.HipController, :index
-    get "/d/height", Diva.HeightController, :index
-    get "/d/blood", Diva.BloodController, :index
+    scope "/d", Diva do
+      get "/atoz", AtozController, :index
+      get "/birthday/:year/:month", BirthdayController, :month
+      get "/birthday/:year", BirthdayController, :year
+      get "/birthday", BirthdayController, :index
+      get "/bracup", BracupController, :index
+      get "/waist", WaistController, :index
+      get "/bust", BustController, :index
+      get "/hip", HipController, :index
+      get "/height", HeightController, :index
+      get "/blood", BloodController, :index
+    end
 
     get "/toons", ToonController, :index
     get "/animes.html", ToonController, :index  # TODO: to be redirect

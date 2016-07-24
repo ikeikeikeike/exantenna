@@ -45,7 +45,7 @@ defmodule Exantenna.Toon do
     filters = Application.get_env(:exantenna, :toon_filters)[:title]
 
     names =
-      ConCache.get_or_store(:exantenna_cache, "toonnamealias:all", fn ->
+      ConCache.get_or_store(:toons, "toonnamealias:all", fn ->
         Enum.map Repo.all(__MODULE__), &([name: &1.name, alias: &1.alias])
       end)
       |> Enum.filter(fn toon ->
