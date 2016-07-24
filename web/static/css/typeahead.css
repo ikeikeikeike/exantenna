@@ -345,6 +345,11 @@ fieldset[disabled] .twitter-typeahead .tt-input {
   margin: 0;
 }
 
+#remote * {
+    font: 14px/20px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #555;
+}
+
 #remote .league-name {
   margin: 0 20px 5px 20px;
   padding: 3px 0;

@@ -253,10 +253,9 @@ hr.mini {
 }
 
 
-.panel
-{
-    position: relative;
-}
+.panel { position: relative; }
+
+.panel * { font: 16px/22px Arial, sans-serif; }
 
 .panel-default > .panel-leftheading
 {
@@ -612,3 +611,54 @@ a.label-black:hover {
     color: #020202;
     background-color: #B8B0B0 !important;
 }
+
+.profile-title-line {
+    background-color: #e6e9ed;
+    margin: 0px 0px 14px 0px;
+}
+
+.profile-title-line .title-bar-font {
+    line-height: 30px;
+}
+
+.menu-title-line {
+    padding-left: 15px;
+    background-color: #e6e9ed;
+}
+
+.pinbox {
+	display: inline-block;
+	background: #FEFEFE;
+	border: 2px solid #FAFAFA;
+	box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
+	margin: 0 2px 15px;
+	padding: 15px;
+	padding-bottom: 5px;
+	background: -webkit-linear-gradient(45deg, #FFF, #F9F9F9);
+	opacity: 1;
+}
+
+.pinbox li a {
+    padding: 5px 15px;
+    color: #444;
+}
+
+.pinbox li {
+    border-bottom: 1px solid #ddd;
+    border-radius: 0;
+}
+
+.pinbox li.multiline {
+	display: inline-block;
+    text-align: center;
+    width: 45px;
+}
+
+.pinbox * { font: 12px/18px Arial, sans-serif; }
+
+.pinbox p {
+    color: #333;
+    margin: 0;
+    padding-bottom: 7px;
+}
+
