@@ -51,6 +51,7 @@ defmodule Exantenna.Router do
       get "/bust", BustController, :index
       get "/hip", HipController, :index
       get "/height", HeightController, :index
+      get "/blood-type", BloodController, :index
       get "/blood", BloodController, :index
     end
 
