@@ -645,3 +645,19 @@ a.label-black:hover {
     padding-bottom: 7px;
 }
 
+.profile-view {
+    position: relative;
+}
+
+.profile-view .view-inline {
+    display: inline-block;
+    min-width: 100%;
+}
+
+.view-inline h2 {
+    margin-top: 0;
+}
+
+.view-inline .pin-highlight {
+    min-height: 1200px;
+}

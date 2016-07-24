@@ -26,7 +26,6 @@ $(document).on('ready', function() {
 
   });
 
-
   tagSuggest = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,

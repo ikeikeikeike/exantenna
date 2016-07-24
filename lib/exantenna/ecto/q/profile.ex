@@ -1,6 +1,7 @@
 defmodule Exantenna.Ecto.Q.Profile do
   import Ecto.Query
   alias Exantenna.Repo
+  alias Exantenna.Ecto.Q.Profile
 
   @kunrei_romaji ~w{
     a i u e o
@@ -42,8 +43,12 @@ defmodule Exantenna.Ecto.Q.Profile do
   end
 
   def with(:bracup, query) do
-    Enum.map(?A..?Z, &IO.iodata_to_binary([&1]))
-    |> Enum.map(fn bracup ->
+    cups = Enum.map(?A..?Z, &IO.iodata_to_binary([&1]))
+    Profile.with :bracup, query, cups
+  end
+  def with(:bracup, query, cup) when is_bitstring(cup), do: Profile.with :bracup, query, [cup]
+  def with(:bracup, query, cups) do
+    Enum.map(cups, fn bracup ->
       divas =
         query
         |> where([q], q.bracup == ^bracup)
@@ -104,8 +109,21 @@ defmodule Exantenna.Ecto.Q.Profile do
   end
 
   def with(:bust, query) do
-    [60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135]
-    |> Enum.map(fn bust ->
+    range = [
+      60, 65, 70, 75, 80, 85, 90, 95, 100,
+      105, 110, 115, 120, 125, 130, 135
+    ]
+
+    Profile.with(:bust, query, range)
+  end
+
+  def with(:bust, query, numeric) when is_integer(numeric), do: Profile.with :bust, query, [numeric]
+  def with(:bust, query, numeric) when is_bitstring(numeric) do
+    {n, _} = Integer.parse numeric
+    Profile.with :bust, query, [n]
+  end
+  def with(:bust, query, range) when is_list(range) do
+    Enum.map(range, fn bust ->
       divas =
         query
         |> where([q], q.bust >= ^bust)

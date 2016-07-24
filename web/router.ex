@@ -46,9 +46,14 @@ defmodule Exantenna.Router do
       get "/birthday/:year/:month", BirthdayController, :month
       get "/birthday/:year", BirthdayController, :year
       get "/birthday", BirthdayController, :index
-      get "/bracup", BracupController, :index
       get "/waist", WaistController, :index
+
+      get "/bracup", BracupController, :index
+      get "/bracup/cup-:cup", BracupController, :cup
+
       get "/bust", BustController, :index
+      get "/bust/around-:range", BustController, :around
+
       get "/hip", HipController, :index
       get "/height", HeightController, :index
       get "/blood-type", BloodController, :index
