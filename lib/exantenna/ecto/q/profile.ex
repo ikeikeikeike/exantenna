@@ -22,7 +22,6 @@ defmodule Exantenna.Ecto.Q.Profile do
         |> where([q], q.gyou == ^letter)
         # |> where([q], q.appeared > 0)
         |> where([q], not is_nil(q.gyou))
-        |> limit(8)
         |> Repo.all
 
       {letter, models}

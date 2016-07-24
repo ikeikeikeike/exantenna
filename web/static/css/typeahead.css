@@ -329,7 +329,7 @@ fieldset[disabled] .twitter-typeahead .tt-input {
   clear: both;
   font-weight: normal;
   line-height: 1.42857143;
-  color: #333333;
+  color: #000 !important;
   white-space: nowrap;
 }
 .tt-dropdown-menu .tt-suggestion.tt-cursor {
@@ -346,12 +346,22 @@ fieldset[disabled] .twitter-typeahead .tt-input {
 }
 
 #remote * {
-    font: 14px/20px "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #555;
+    line-height: 15px;
+    font-size: 14px;
 }
 
-#remote .league-name {
-  margin: 0 20px 5px 20px;
-  padding: 3px 0;
-  border-bottom: 1px solid #ccc;
+.tt-dataset-tag-suggest * {
+    color: #333;
+}
+
+.tt-dataset-diva-suggest * {
+    color: #333;
+}
+
+.tt-dataset-toon-suggest * {
+    color: #333;
+}
+
+.tt-dataset-char-suggest * {
+    color: #333;
 }

@@ -65,7 +65,6 @@ button.social div {
 }
 
 p, p a {
-    font-family: Verdana, Roboto, "Droid Sans", "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif !important;
     line-height: 20px;
 }
 
@@ -89,8 +88,6 @@ p, p a {
 .modaltagline h1 {
     color: #999;
     font-size: 14px;
-    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-    font-weight: 700;
     text-transform: uppercase;
     line-height: 30px;
     margin-top: 0;
@@ -126,16 +123,12 @@ button.social.main-color-white span {
 }
 
 .font-mincho {
-    font-family: 'PT Serif', 'Vollkorn', Georgia, serif;
-    font-weight: 700;
     opacity: 1 !important;
     text-decoration: none !important;
 }
 
 .title-bar-font {
     font-size: 14px;
-    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-    font-weight: 700;
     text-transform: uppercase;
     margin-top: 0;
     line-height: 50px;
@@ -190,7 +183,7 @@ hr.mini {
 @media screen and (min-width:0px) {
     p, p a { font-size: 12px; }
     .title-bar-font { font-size: 12px; }
-    .h2-font { font-size: 15px; letter-spacing: -1px; color: #fff; }
+    .h2-font { font-size: 15px; color: #fff; }
     hr.mini-hack { margin-bottom: 0px;}
     .media-font { font-size: 13px }
     .media-font * { font-size: 13px }
@@ -204,7 +197,7 @@ hr.mini {
 @media screen and (min-width:460px) {
     p, p a { font-size: 14px; }
     .title-bar-font { font-size: 14px; }
-    .h2-font { font-size: 20px; letter-spacing: -1px; color: #fff; }
+    .h2-font { font-size: 20px; color: #fff; }
     hr.mini-hack { margin-bottom: 7px;}
     .media-font { font-size: 17px }
     .media-font * { font-size: 17px }
@@ -213,11 +206,11 @@ hr.mini {
 
 @media screen and (min-width:660px) {
     p, p a { font-size: 16px; }
-    .h2-font { font-size: 30px; letter-spacing: -1px; color: #fff; }
+    .h2-font { font-size: 30px; color: #fff; }
 }
 
 @media screen and (min-width:770px) {
-    .h2-font { font-size: 15px; letter-spacing: -1px; color: #fff; }
+    .h2-font { font-size: 15px; color: #fff; }
     hr.mini-hack { margin-bottom: 0px;}
     .media-font { font-size: 13px }
     .media-font * { font-size: 13px }
@@ -228,7 +221,7 @@ hr.mini {
 }
 
 @media screen and (min-width:870px) {
-    .h2-font { font-size: 18px; letter-spacing: -1px; color: #fff; }
+    .h2-font { font-size: 18px; color: #fff; }
     hr.mini-hack { margin-bottom: 5px;}
     .media-font { font-size: 15px }
     .media-font * { font-size: 15px }
@@ -236,7 +229,7 @@ hr.mini {
 }
 
 @media screen and (min-width:1000px) {
-    .h2-font { font-size: 22px; letter-spacing: -2px; color: #fff; }
+    .h2-font { font-size: 22px; color: #fff; }
     hr.mini-hack { margin-bottom: 7px;}
     .media-font { font-size: 17px }
     .media-font * { font-size: 17px }
@@ -245,11 +238,11 @@ hr.mini {
 }
 
 @media screen and (min-width:1280px) {
-    .h2-font { font-size: 25px; letter-spacing: -2px; color: #fff; }
+    .h2-font { font-size: 25px; color: #fff; }
 }
 
 @media screen and (min-width:1700px) {
-    .h2-font { font-size: 30px; letter-spacing: -2px; color: #fff; }
+    .h2-font { font-size: 30px; color: #fff; }
 }
 
 
@@ -364,8 +357,6 @@ hr.mini {
     left: 0;
 }
 .img-fallback > .plus {
-    font-family: Helvetica;
-    font-weight: 900;
     color: white;
     text-shadow: 3px 3px 0px #020202, 4px 4px 0px #17355E;
     font-size: 20px;
@@ -391,8 +382,6 @@ hr.mini {
 }
 
 .font-fallback {
-    font-family: Helvetica;
-    font-weight: 900;
     color: white;
     text-shadow: 3px 3px 0px #020202, 4px 4px 0px #17355E;
 }
@@ -487,15 +476,12 @@ hr.mini {
 
 .summary-cover {
     font-size: 14px;
-    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-    font-weight: 700;
     text-decoration: none;
     text-transform: uppercase;
     -webkit-transition: all ease 0.3s;
     -moz-transition: all ease .3s;
     -o-transition: all ease .3s;
     transition: all ease .3s;
-    letter-spacing: -1px;
 }
 
 .summary-cover .list-group-item a {
@@ -508,15 +494,12 @@ hr.mini {
 
 .news-entries {
     font-size: 14px;
-    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-    font-weight: 700;
     text-decoration: none;
     text-transform: uppercase;
     -webkit-transition: all ease 0.3s;
     -moz-transition: all ease .3s;
     -o-transition: all ease .3s;
     transition: all ease .3s;
-    letter-spacing: -1px;
 }
 
 .news-entries a:hover.list-group-item {

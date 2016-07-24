@@ -11,7 +11,6 @@
 .sidebar-nav .nav>.active:hover>a,
 .sidebar-nav .nav>.active>a {
     padding-left: 18px;
-    font-weight: 700;
     color: #563d7c;
     background-color: transparent;
     border-left: 2px solid #563d7c;

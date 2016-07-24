@@ -49,12 +49,10 @@ html {
 }
 
 body {
-  font-family: 'Vollkorn', Georgia, serif;
   background-color: #F3F3F3;
   font-size: 24px;
   font-style: normal;
   line-height: 35px;
-  font-weight: 400;
   color: #777;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -137,15 +135,9 @@ h1, h2, h3, h4, h5, h6, p, span, blockquote, hr {
 }
 
 h1 {
-  font-family: 'PT Serif', 'Vollkorn', Georgia, serif;
-  letter-spacing: -1px;
-  font-weight: 700;
 }
 
 h2 {
-  font-family: 'PT Serif', 'Vollkorn', Georgia, serif;
-  letter-spacing: -2px;
-  font-weight: 700;
 }
 
 h3,
@@ -155,20 +147,14 @@ h4 {
 
 h3 {
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
   color: #F26F70;
   line-height: 30px
 }
 
 p, p a {
-  font-family: 'Vollkorn', Georgia, serif;
-  font-style: normal;
-  font-weight: 400;
   margin: 0 0 10px;
   font-size: 24px;
-  letter-spacing: -1px;
   line-height: 36px;
   color: #777;
 }
@@ -182,21 +168,16 @@ p a {
 a {
   color: #F26F70;
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-decoration: none;
   text-transform: uppercase;
   -webkit-transition: all ease 0.3s;
   -moz-transition: all ease .3s;
   -o-transition: all ease .3s;
   transition: all ease .3s;
-  letter-spacing: -1px;
 }
 
 a.textlink {
-  font-family: 'Vollkorn', Georgia, serif;
   font-style: italic;
-  font-weight: 400;
   text-decoration: underline;
   color: #F26F70
 }
@@ -544,8 +525,6 @@ a.scrollto {
 #menumodal .modal-header .close {
   float: right;
   font-size: 51px;
-  font-weight: normal;
-  font-family: 'Arial', sans-serif;
   color: #fff;
   text-shadow: none;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -593,11 +572,8 @@ a.scrollto {
 
 #menumodal ul li a {
   font-size: 38px;
-  font-family: 'Domine', serif;
   color: #fff;
   line-height: 48px;
-  font-weight: 400;
-  letter-spacing: -2px;
   text-transform: none;
   z-index: 9;
   width: 100%;
@@ -616,14 +592,11 @@ a.scrollto {
 #menumodal ul li span {
   display: block;
   font-size: 13px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
   text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
   color: #eee;
   margin-top: 20px;
   line-height: 25px;
-  letter-spacing: 1px
 }
 
 #menumodal .modal-footer {
@@ -693,8 +666,6 @@ a.scrollto {
 #socialmodal .modal-header .close {
   float: right;
   font-size: 51px;
-  font-weight: normal;
-  font-family: 'Arial', sans-serif;
   color: #fff;
   text-shadow: none;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -1212,8 +1183,6 @@ header#pagemeta hr.mini {
 
 h3 span.number {
   font-size: 60px;
-  font-family: 'Vollkorn', Georgia, serif;
-  font-weight: 700;
   font-style: italic;
   top: 10px;
   line-height: 20px;
@@ -1230,9 +1199,6 @@ blockquote.bigtext {
   text-align: center;
   font-size: 50px;
   line-height: 68px;
-  font-family: 'PT Serif', 'Vollkorn', Georgia, serif;
-  letter-spacing: -3px;
-  font-weight: 700;
   border-left: none;
   padding: 0 50px
 }
@@ -1260,8 +1226,6 @@ blockquote.bigtext {
 
 #stats span.counter {
   font-size: 80px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   line-height: 80px;
   color: #ccc;
 }
@@ -1474,7 +1438,6 @@ blockquote.bigtext {
 
 #blogfeed .slidetitle {
   line-height: 30px;
-  letter-spacing: 1px;
   padding: 30px 30px 0;
 }
 
@@ -1540,8 +1503,6 @@ blockquote.bigtext {
   width: 95%;
   color: #fff;
   margin: 0 auto 20px;
-  font-family: 'PT Serif', 'Vollkorn', Georgia, serif;
-  font-weight: 700;
 }
 
 .hero p {
@@ -1859,7 +1820,6 @@ blockquote.bigtext {
 
 .time-font-shadow {
   text-shadow: 2px 2px 0px #710A0A, 2px 2px 0px #280101;
-  font-weight: bold;
 }
 
 .titlebar {
@@ -1914,16 +1874,11 @@ blockquote.bigtext {
 
 .meta.col-md-4 h4 {
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
 }
 .meta.col-md-4 p {
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: none;
-  letter-spacing: 0;
 }
 
 /********************************************************/
@@ -2156,8 +2111,6 @@ ul.filters li p {
   border-bottom: 3px solid transparent;
   border-top: 3px solid transparent;
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
   -webkit-transition: all ease 0.3s;
@@ -2201,8 +2154,6 @@ ul.filters li p:hover {
   border-radius: 6px;
   width: 90%;
   position: relative;
-  font-weight: 800;
-  font-family: 'Raleway', sans-serif;
 }
 
 @media (max-width: 767px) {
@@ -2252,16 +2203,13 @@ ul.filters li p:hover {
 
 #team .team-meta .author .name {
   color: #3FD8DF;
-  font-family: 'Raleway', sans-serif;
   line-height: 23px;
-  font-weight: 800
 }
 
 #team .team-meta .author .company {
   font-size: 14px;
   color: #909090;
   line-height: 23px;
-  font-weight: 400
 }
 
 #team .team-content {
@@ -2329,7 +2277,6 @@ ul.filters li p:hover {
 
 #team .team-meta p {
   color: #939898;
-  font-weight: normal;
   font-size: 24px;
   margin-bottom: 0
 }
@@ -2492,7 +2439,6 @@ ul.filters li p:hover {
 
 .item blockquote p:before {
     content: "\e67e";
-    font-family: 'icomoon';
     float: left;
     margin-right: 10px;
 }
@@ -2672,7 +2618,6 @@ ul.filters li p:hover {
 
 .timeline-centered .timeline-entry .timeline-entry-inner .timeline-time > span:first-child {
   font-size: 15px;
-  font-weight: bold;
 }
 
 .timeline-centered .timeline-entry .timeline-entry-inner .timeline-time > span:last-child {
@@ -2782,8 +2727,6 @@ ul.filters li p:hover {
 .present,
 .born {
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
   color: #F26F70;
   padding: 10px;
@@ -2864,9 +2807,6 @@ ul.filters li p:hover {
 
 .articles h1 a {
   font-size: 36px;
-  font-family: 'PT Serif', 'Vollkorn', Georgia, serif;
-  letter-spacing: -1px;
-  font-weight: 700;
   text-decoration: none;
   color: #777;
   text-transform: none;
@@ -2932,8 +2872,6 @@ body#contact form#contactForm.well {
 body#contact .form-control {
   padding: 36px 0 48px;
   border: none;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
   font-size: 13px;
   -webkit-box-shadow: none;
@@ -2949,8 +2887,6 @@ body#contact textarea.form-control {
 }
 
 body#contact form#contactForm .btn-primary {
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
   font-size: 13px;
   -webkit-border-radius: 0;
@@ -2979,8 +2915,6 @@ body#contact form#contactForm .alert-danger {
   border-radius: 0;
   border: none;
   font-size: 15px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   width: 80%;
   background-color: transparent;
   width: 80%;
@@ -3010,8 +2944,6 @@ body#contact .help-block ul li {
 }
 
 span.icon-at {
-  font-family: 'Arial', serif;
-  font-weight: bold;
   font-size: 16px;
 }
 
@@ -3040,8 +2972,6 @@ span.icon-at {
 .plan ul {
   background-color: #fff;
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
   border-bottom: 4px solid #777;
   border-right: 4px solid #777;
@@ -3093,8 +3023,6 @@ span.icon-at {
 
 .pricing-table span {
   font-size: 24px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
 }
 
@@ -3131,8 +3059,6 @@ footer p {
 
 footer small {
   font-size: 13px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
 }
 
@@ -3169,8 +3095,6 @@ footer img:hover {
   -moz-border-radius: 0;
   border-radius: 0;
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
   border: none;
 }
@@ -3350,8 +3274,6 @@ footer img:hover {
   -moz-border-radius: 0;
   border-radius: 0;
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
   color: #fff;
   padding: 10px
@@ -3437,7 +3359,6 @@ footer img:hover {
 }
 .popover-title {
   padding-bottom: 0;
-  font-weight: bold;
   color: #fff;
   background-color: transparent;
   border-bottom: none;
@@ -3467,8 +3388,6 @@ footer img:hover {
   border-radius: 0;
   height: 40px;
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
   color: #fff;
   margin-bottom: 30px;
@@ -3495,7 +3414,6 @@ footer img:hover {
 .progress > .progress-type {
   position: absolute;
   left: 0px;
-  font-weight: 800;
   padding: 3px 30px 2px 10px;
   color: rgb(255, 255, 255);
   background-color: rgba(25, 25, 25, 0.2);
@@ -3504,7 +3422,6 @@ footer img:hover {
   position: absolute;
   right: 0px;
   color: #777;
-  font-weight: 800;
   padding: 3px 10px 2px;
 }
 
@@ -3522,8 +3439,6 @@ footer img:hover {
 .breadcrumb > .active {
   color: #434a54;
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase
 }
 
@@ -3531,8 +3446,6 @@ footer img:hover {
   margin-bottom: 0;
   color: #434a54;
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase
 }
 
@@ -3724,8 +3637,6 @@ footer img:hover {
 
  .alert {
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
@@ -3805,8 +3716,6 @@ footer img:hover {
 .nav-tabs > li > a {
   margin-right: 0;
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
   color: #fff;
   border: none;
@@ -3955,8 +3864,6 @@ a.list-group-item {
 }
 a.list-group-item .list-group-item-heading {
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
 }
 a.list-group-item:hover, a.list-group-item:focus {
@@ -4101,8 +4008,6 @@ a.list-group-item-danger.active, a.list-group-item-danger:hover, a.list-group-it
 }
 .modaltagline {
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
   float: left;
   height: 80px;
@@ -4182,8 +4087,6 @@ a.list-group-item-danger.active, a.list-group-item-danger:hover, a.list-group-it
 }
 .panel-title {
   font-size: 14px;
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
 }
 .panel-default > .panel-heading {
@@ -4309,7 +4212,6 @@ a.list-group-item-danger.active, a.list-group-item-danger:hover, a.list-group-it
 .dropdown-menu .dropdown-header {
   padding: 5px 20px;
   font-size: 14px;
-  font-weight: 700;
   color: #aab2bd;
 }
 .dropdown-menu li a {
@@ -4669,7 +4571,6 @@ a.list-group-item-danger.active, a.list-group-item-danger:hover, a.list-group-it
 .show-page-number {
   padding: 0px 0px 0px 1px ;
   color: #fff ;
-  font-weight: bold ;
   text-align: center ;
   font-size: 15px;
   min-height: 32px ;
@@ -4697,7 +4598,6 @@ a.list-group-item-danger.active, a.list-group-item-danger:hover, a.list-group-it
 .ranking-page-number {
   padding: 0px 0px 0px 1px ;
   color: #fff ;
-  font-weight: bold ;
   text-align: center ;
   font-size: 15px;
   min-height: 32px ;
