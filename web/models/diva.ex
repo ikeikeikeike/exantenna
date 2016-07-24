@@ -87,6 +87,45 @@ defmodule Exantenna.Diva do
 
   # for autocomplete below.
 
+  def essearch(word), do: essearch(word, [])
+  def essearch("", options), do: essearch(nil, options)
+  def essearch(word, options) do
+    result =
+      Tirexs.DSL.define fn ->
+        import Tirexs.Search
+
+        q =
+          search [index: esindex, from: 0, size: 5, fields: [:name]] do
+            query do
+              dis_max do
+                queries do
+                  multi_match word, ["name"]
+                  prefix "name", word
+                  multi_match word, ["kana"]
+                  prefix "kana", word
+                  multi_match word, ["alias"]
+                  prefix "alias", word
+                  multi_match word, ["romaji"]
+                  prefix "romaji", word
+                end
+              end
+            end
+            # sort do
+              # [published_at: [order: "desc"]]
+            # end
+          end
+
+        Es.Logger.ppdebug(q)
+
+        q
+      end
+
+    case result do
+      {_, _, map} -> map
+      r -> r
+    end
+  end
+
   def search_data(model) do
     [
       id: model.id,

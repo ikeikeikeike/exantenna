@@ -13,13 +13,8 @@ defmodule Exantenna do
       supervisor(Exantenna.Repo, []),
       # Here you could define other workers and supervisors as children
       # worker(Exantenna.Worker, [arg1, arg2, arg3]),
-      worker(ConCache, [
-        [
-          ttl_check: :timer.seconds(3),
-          ttl: :timer.seconds(1200)
-        ],
-        [name: :exantenna_cache]
-      ]),
+      worker(ConCache, [[ttl_check: :timer.seconds(3), ttl: :timer.seconds(60 * 30)], [name: :exantenna_cache]]),
+      worker(ConCache, [[ttl_check: :timer.seconds(10), ttl: :timer.seconds(60 * 60 * 24 * 15)], [name: :exantenna_suggest_cache]]),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

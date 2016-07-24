@@ -59,7 +59,8 @@ defmodule Exantenna.Web do
       import Exantenna.Helpers
       import Exantenna.Gettext
 
-      import Exantenna.ViewHelpers
+      import Exantenna.HTML.Safe
+
       import SimpleFormat
       import Scrivener.HTML
       import CommonDeviceDetector.Detector

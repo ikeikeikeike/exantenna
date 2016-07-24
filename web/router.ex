@@ -37,26 +37,34 @@ defmodule Exantenna.Router do
     get "/elog/:id/:title", EntryController, :show
 
     get "/divas", DivaController, :index
-    get "/divas.html", DivaController, :index
+    get "/divas.html", DivaController, :index  # TODO: to be redirect
 
-    get "/divas/atoz", Diva.AtozController, :index
-    get "/divas/birthday/:year/:month", Diva.BirthdayController, :month
-    get "/divas/birthday/:year", Diva.BirthdayController, :year
-    get "/divas/birthday", Diva.BirthdayController, :index
-    get "/divas/bracup", Diva.BracupController, :index
-    get "/divas/waist", Diva.WaistController, :index
-    get "/divas/bust", Diva.BustController, :index
-    get "/divas/hip", Diva.HipController, :index
-    get "/divas/height", Diva.HeightController, :index
-    get "/divas/blood", Diva.BloodController, :index
+    get "/diva/:name", DivaController, :show
 
-    get "/animes", ToonController, :index
-    get "/animes.html", ToonController, :index
+    get "/d/atoz", Diva.AtozController, :index
+    get "/d/birthday/:year/:month", Diva.BirthdayController, :month
+    get "/d/birthday/:year", Diva.BirthdayController, :year
+    get "/d/birthday", Diva.BirthdayController, :index
+    get "/d/bracup", Diva.BracupController, :index
+    get "/d/waist", Diva.WaistController, :index
+    get "/d/bust", Diva.BustController, :index
+    get "/d/hip", Diva.HipController, :index
+    get "/d/height", Diva.HeightController, :index
+    get "/d/blood", Diva.BloodController, :index
+
+    get "/toons", ToonController, :index
+    get "/animes.html", ToonController, :index  # TODO: to be redirect
 
     get "/characters", CharController, :index
-    get "/characters.html", CharController, :index
+    get "/characters.html", CharController, :index  # TODO: to be redirect
 
     get "/orig", PageController, :index
+
+    get "/suggest/tg/:search", TagController, :suggest
+    get "/suggest/da/:search", DivaController, :suggest
+    get "/suggest/tn/:search", ToonController, :suggest
+    get "/suggest/cr/:search", CharController, :suggest
+
   end
 
   scope "/admin", Exantenna.Admin, as: "admin" do
