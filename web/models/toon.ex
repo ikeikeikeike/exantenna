@@ -62,6 +62,19 @@ defmodule Exantenna.Toon do
     put_assoc(change(antenna), :toons, toons)
   end
 
+  # for autocomplete below.
+
+  def essearch(word), do: essearch(word, [])
+  def essearch("", options), do: essearch(nil, options)
+  def essearch(word, options) do
+    result = Es.Q.completion(word, esindex)
+
+    case result do
+      {_, _, map} -> map
+      r -> r
+    end
+  end
+
   def search_data(model) do
     [
       id: model.id,
@@ -77,34 +90,8 @@ defmodule Exantenna.Toon do
   def esreindex, do: Es.Index.reindex __MODULE__, Repo.all(__MODULE__)
 
   def create_esindex(name \\ nil) do
-    Tirexs.DSL.define(fn ->
-      use Tirexs.Mapping
-
-      index = [type: estype, index: esindex(name)]
-
-      settings do
-        analysis do
-          tokenizer "ngram_tokenizer",
-            type: "nGram",  min_gram: "2", max_gram: "3",
-            token_chars: ["letter", "digit"]
-
-          analyzer "default",
-            type: "custom", tokenizer: "ngram_tokenizer"
-          analyzer "ngram_analyzer",
-            tokenizer: "ngram_tokenizer"
-        end
-      end
-
-      mappings do
-        indexes "name",   type: "string", analyzer: "ngram_analyzer"
-        indexes "alias",  type: "string", analyzer: "ngram_analyzer"
-        indexes "kana",   type: "string", analyzer: "ngram_analyzer"
-        indexes "romaji", type: "string", analyzer: "ngram_analyzer"
-      end
-
-      Es.Logger.ppdebug(index)
-
-    index end)
+    index = [type: estype, index: esindex(name)]
+    Es.Schema.completion(index)
   end
 
 end

@@ -90,35 +90,7 @@ defmodule Exantenna.Diva do
   def essearch(word), do: essearch(word, [])
   def essearch("", options), do: essearch(nil, options)
   def essearch(word, options) do
-    result =
-      Tirexs.DSL.define fn ->
-        import Tirexs.Search
-
-        q =
-          search [index: esindex, from: 0, size: 5, fields: [:name]] do
-            query do
-              dis_max do
-                queries do
-                  multi_match word, ["name"]
-                  prefix "name", word
-                  multi_match word, ["kana"]
-                  prefix "kana", word
-                  multi_match word, ["alias"]
-                  prefix "alias", word
-                  multi_match word, ["romaji"]
-                  prefix "romaji", word
-                end
-              end
-            end
-            # sort do
-              # [published_at: [order: "desc"]]
-            # end
-          end
-
-        Es.Logger.ppdebug(q)
-
-        q
-      end
+    result = Es.Q.completion(word, esindex)
 
     case result do
       {_, _, map} -> map
@@ -139,34 +111,8 @@ defmodule Exantenna.Diva do
   def esreindex, do: Es.Index.reindex __MODULE__, Repo.all(__MODULE__)
 
   def create_esindex(name \\ nil) do
-    Tirexs.DSL.define(fn ->
-      use Tirexs.Mapping
-
-      index = [type: estype, index: esindex(name)]
-
-      settings do
-        analysis do
-          tokenizer "ngram_tokenizer",
-            type: "nGram",  min_gram: "2", max_gram: "3",
-              token_chars: ["letter", "digit"]
-
-          analyzer "default",
-            type: "custom", tokenizer: "ngram_tokenizer"
-          analyzer "ngram_analyzer",
-            tokenizer: "ngram_tokenizer"
-        end
-      end
-
-      mappings do
-        indexes "name",   type: "string", analyzer: "ngram_analyzer"
-        indexes "kana",   type: "string", analyzer: "ngram_analyzer"
-        indexes "alias",  type: "string", analyzer: "ngram_analyzer"
-        indexes "romaji", type: "string", analyzer: "ngram_analyzer"
-      end
-
-      Es.Logger.ppdebug(index)
-
-    index end)
+    index = [type: estype, index: esindex(name)]
+    Es.Schema.completion(index)
   end
 
 end
