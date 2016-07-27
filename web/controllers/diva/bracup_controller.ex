@@ -6,11 +6,11 @@ defmodule Exantenna.Diva.BracupController do
 
   def index(conn, _params) do
     bracups = Profile.with :bracup, Diva.query
-    render(conn, "index.html", bracups: bracups)
+    render(conn, "index.html", bracups: bracups, nav: bracups)
   end
 
-  def cup(conn, %{"cup" => cup} = _params) do
-    bracups = Profile.with :bracup, Diva.query, cup
+  def sub(conn, %{"name" => name} = _params) do
+    bracups = Profile.with :bracup, Diva.query, name
     render(conn, "index.html", bracups: bracups, nav: Profile.with(:bracup, Diva.query))
   end
 

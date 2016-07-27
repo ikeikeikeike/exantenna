@@ -3,6 +3,8 @@ defmodule Exantenna.Ecto.Q.Profile do
   alias Exantenna.Repo
   alias Exantenna.Ecto.Q.Profile
 
+  @limited 99 * 99 * 99 * 99 * 10
+
   @kunrei_romaji ~w{
     a i u e o
     ka ki ku ke ko
@@ -44,10 +46,12 @@ defmodule Exantenna.Ecto.Q.Profile do
 
   def with(:bracup, query) do
     cups = Enum.map(?A..?Z, &IO.iodata_to_binary([&1]))
-    Profile.with :bracup, query, cups
+    Profile.with :bracup, query, cups, 10
   end
-  def with(:bracup, query, cup) when is_bitstring(cup), do: Profile.with :bracup, query, [cup]
-  def with(:bracup, query, cups) do
+
+  def with(:bracup, query, cup), do: Profile.with :bracup, query, cup, @limited
+  def with(:bracup, query, cup,  limited) when is_bitstring(cup), do: Profile.with :bracup, query, [cup], limited
+  def with(:bracup, query, cups, limited) do
     Enum.map(cups, fn bracup ->
       divas =
         query
@@ -55,6 +59,7 @@ defmodule Exantenna.Ecto.Q.Profile do
         # |> where([q], q.appeared > 0)
         |> where([q], not is_nil(q.bracup))
         |> order_by([q], [asc: q.bust])
+        |> limit(^limited)
         |> Repo.all
       {bracup, divas}
     end)
@@ -114,15 +119,16 @@ defmodule Exantenna.Ecto.Q.Profile do
       105, 110, 115, 120, 125, 130, 135
     ]
 
-    Profile.with(:bust, query, range)
+    Profile.with(:bust, query, range, 10)
   end
 
-  def with(:bust, query, numeric) when is_integer(numeric), do: Profile.with :bust, query, [numeric]
-  def with(:bust, query, numeric) when is_bitstring(numeric) do
+  def with(:bust, query, numeric), do: Profile.with :bust, query, numeric, @limited
+  def with(:bust, query, numeric, limited) when is_integer(numeric), do: Profile.with :bust, query, [numeric], limited
+  def with(:bust, query, numeric, limited) when is_bitstring(numeric) do
     {n, _} = Integer.parse numeric
-    Profile.with :bust, query, [n]
+    Profile.with :bust, query, [n], limited
   end
-  def with(:bust, query, range) when is_list(range) do
+  def with(:bust, query, range, limited) when is_list(range) do
     Enum.map(range, fn bust ->
       divas =
         query
@@ -132,6 +138,7 @@ defmodule Exantenna.Ecto.Q.Profile do
         # |> where([q], q.appeared > 0)
         |> where([q], not is_nil(q.bust))
         |> order_by([q], [asc: q.bust])
+        |> limit(^limited)
         |> Repo.all
       {bust, divas}
     end)

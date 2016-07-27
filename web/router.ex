@@ -41,7 +41,7 @@ defmodule Exantenna.Router do
 
     get "/diva/:name", DivaController, :show
 
-    scope "/d", Diva do
+    scope "/d", Diva, as: "d" do
       get "/atoz", AtozController, :index
       get "/birthday/:year/:month", BirthdayController, :month
       get "/birthday/:year", BirthdayController, :year
@@ -49,18 +49,20 @@ defmodule Exantenna.Router do
       get "/waist", WaistController, :index
 
       get "/bracup", BracupController, :index
-      get "/bracup/cup-:cup", BracupController, :cup
+      get "/bracup/cup-:name", BracupController, :sub
 
       get "/bust", BustController, :index
-      get "/bust/around-:range", BustController, :around
+      get "/bust/around-:name", BustController, :sub
 
       get "/hip", HipController, :index
       get "/height", HeightController, :index
       get "/blood-type", BloodController, :index
+
       get "/blood", BloodController, :index
+      # get "/blood", BloodController, :index
     end
 
-    scope "/c", Char do
+    scope "/c", Char, as: "c" do
       get "/atoz", AtozController, :index
       get "/birthday/:year/:month", BirthdayController, :month
       get "/birthday/:year", BirthdayController, :year

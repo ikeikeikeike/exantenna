@@ -9,8 +9,8 @@ defmodule Exantenna.Diva.BustController do
     render(conn, "index.html", busts: busts, nav: busts)
   end
 
-  def around(conn, %{"range" => range} = _params) do
-    numeric = List.first String.split(range, "-")
+  def sub(conn, %{"name" => name} = _params) do
+    numeric = List.first String.split(name, "-")
 
     busts = Profile.with :bust, Diva.query, numeric
     render(conn, "index.html", busts: busts, nav: Profile.with(:bust, Diva.query))
