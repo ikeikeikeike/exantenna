@@ -11,13 +11,13 @@ defmodule Exantenna.Score.Inlog do
     logs = Enum.filter(Redis.Inlog.all, &inlog?(&1))
     Redis.Inlog.clear
 
-    Enum.reduce urls, %{}, fn url, t ->
-      elems =
+    Enum.reduce urls, %{}, fn url, acc ->
+      r =
         Enum.filter logs, fn log ->
           String.contains?(log["referer"], url)
         end
 
-      Map.put t, url, elems
+      Map.put acc, url, r
     end
   end
 

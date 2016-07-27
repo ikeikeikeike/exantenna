@@ -60,6 +60,25 @@ defmodule Exantenna.Router do
       get "/blood", BloodController, :index
     end
 
+    scope "/c", Char do
+      get "/atoz", AtozController, :index
+      get "/birthday/:year/:month", BirthdayController, :month
+      get "/birthday/:year", BirthdayController, :year
+      get "/birthday", BirthdayController, :index
+      get "/waist", WaistController, :index
+
+      get "/bracup", BracupController, :index
+      get "/bracup/cup-:cup", BracupController, :cup
+
+      get "/bust", BustController, :index
+      get "/bust/around-:range", BustController, :around
+
+      get "/hip", HipController, :index
+      get "/height", HeightController, :index
+      get "/blood-type", BloodController, :index
+      get "/blood", BloodController, :index
+    end
+
     get "/toons", ToonController, :index
     get "/animes.html", ToonController, :index  # TODO: to be redirect
 
