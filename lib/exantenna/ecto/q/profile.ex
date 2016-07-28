@@ -19,12 +19,18 @@ defmodule Exantenna.Ecto.Q.Profile do
   }
 
   def get(:atoz, query) do
-    Enum.map(@kunrei_romaji, fn letter ->
+    get :atoz, query, @kunrei_romaji, 10
+  end
+  def get(:atoz, query, letter), do: get :atoz, query, letter, @limited
+  def get(:atoz, query, letter,  limited) when is_bitstring(letter), do: get :atoz, query, [letter], limited
+  def get(:atoz, query, letters, limited) do
+    Enum.map(letters, fn letter ->
       models =
         query  # TODO: query_all or query
         |> where([q], q.gyou == ^letter)
         # |> where([q], q.appeared > 0)
         |> where([q], not is_nil(q.gyou))
+        |> limit(^limited)
         |> Repo.all
 
       {letter, models}

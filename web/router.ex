@@ -44,6 +44,7 @@ defmodule Exantenna.Router do
     scope "/d", Diva, as: "d" do
 
       get "/atoz", AtozController, :index
+      get "/atoz/:name", AtozController, :sub
 
       get "/birthday/:year/:month", BirthdayController, :month
       get "/birthday/:year", BirthdayController, :year
