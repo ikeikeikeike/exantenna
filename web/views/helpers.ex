@@ -127,5 +127,8 @@ defmodule Exantenna.Helpers do
 
   def fallback, do: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
 
+  def dynamical_path(method, args) do
+    apply Exantenna.Router.Helpers, String.to_atom(method), args
+  end
 
 end
