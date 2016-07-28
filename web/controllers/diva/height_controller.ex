@@ -16,5 +16,4 @@ defmodule Exantenna.Diva.HeightController do
     render(conn, "index.html", heights: heights, nav: Profile.get(:height, Diva.query))
   end
 
-
 end

@@ -6,7 +6,7 @@ defmodule Exantenna.Char.BracupController do
 
   def index(conn, _params) do
     bracups = Profile.get :bracup, Char.query
-    render(conn, "index.html", bracups: bracups)
+    render(conn, "index.html", bracups: bracups, nav: bracups)
   end
 
   def cup(conn, %{"name" => name} = _params) do

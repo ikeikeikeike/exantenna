@@ -16,5 +16,4 @@ defmodule Exantenna.Diva.HipController do
     render(conn, "index.html", hips: hips, nav: Profile.get(:hip, Diva.query))
   end
 
-
 end
