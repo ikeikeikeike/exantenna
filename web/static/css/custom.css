@@ -137,6 +137,24 @@ button.social.main-color-white span {
     margin-right: 10px;
 }
 
+@media (min-width: 0px) {
+    .show-titlebar {
+        height: 30px !important;
+    }
+    .title-bar-font {
+        line-height: 30px;
+    }
+}
+
+@media (min-width: 500px) {
+    .show-titlebar {
+        height: 50px !important;
+    }
+    .title-bar-font {
+        line-height: 50px;
+    }
+}
+
 .h2-font:hover { color: #eee; }
 
 hr.mini {
@@ -660,4 +678,21 @@ a.label-black:hover {
 
 .view-inline .pin-highlight {
     min-height: 1200px;
+}
+
+.thumbnail img.fit-cover {
+    object-fit: cover;
+    width: 100%;
+    height: 350px;
+}
+
+.read-next-more {
+    width: 105%;
+    right: -10px;
+    background: #CCC;
+    position: absolute !important;
+}
+
+.media-font.inner-font * {
+    line-height: 20px;
 }
