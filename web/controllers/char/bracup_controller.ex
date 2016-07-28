@@ -5,13 +5,13 @@ defmodule Exantenna.Char.BracupController do
   alias Exantenna.Ecto.Q.Profile
 
   def index(conn, _params) do
-    bracups = Profile.with :bracup, Char.query
+    bracups = Profile.get :bracup, Char.query
     render(conn, "index.html", bracups: bracups)
   end
 
   def cup(conn, %{"cup" => cup} = _params) do
-    bracups = Profile.with :bracup, Char.query, cup
-    render(conn, "index.html", bracups: bracups, nav: Profile.with(:bracup, Char.query))
+    bracups = Profile.get :bracup, Char.query, cup
+    render(conn, "index.html", bracups: bracups, nav: Profile.get(:bracup, Char.query))
   end
 
 

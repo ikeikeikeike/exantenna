@@ -5,7 +5,7 @@ defmodule Exantenna.Diva.WaistController do
   alias Exantenna.Ecto.Q.Profile
 
   def index(conn, _params) do
-    waists = Profile.with :waist, Diva.query
+    waists = Profile.get :waist, Diva.query
     render(conn, "index.html", waists: waists)
   end
 

@@ -5,7 +5,7 @@ defmodule Exantenna.Char.AtozController do
   alias Exantenna.Ecto.Q.Profile
 
   def index(conn, _params) do
-    letters = Profile.with(:atoz, Char.query)
+    letters = Profile.get(:atoz, Char.query)
     render(conn, "index.html", letters: letters)
   end
 

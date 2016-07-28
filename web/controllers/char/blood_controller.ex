@@ -5,7 +5,7 @@ defmodule Exantenna.Char.BloodController do
   alias Exantenna.Ecto.Q.Profile
 
   def index(conn, _params) do
-    bloods = Profile.with(:blood, Char.query)
+    bloods = Profile.get(:blood, Char.query)
     render(conn, "index.html", bloods: bloods)
   end
 

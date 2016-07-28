@@ -5,7 +5,7 @@ defmodule Exantenna.Diva.HipController do
   alias Exantenna.Ecto.Q.Profile
 
   def index(conn, _params) do
-    hips = Profile.with :hip, Diva.query
+    hips = Profile.get :hip, Diva.query
     render(conn, "index.html", hips: hips)
   end
 

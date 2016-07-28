@@ -18,7 +18,7 @@ defmodule Exantenna.Ecto.Q.Profile do
     wa
   }
 
-  def with(:atoz, query) do
+  def get(:atoz, query) do
     Enum.map(@kunrei_romaji, fn letter ->
       models =
         query  # TODO: query_all or query
@@ -31,9 +31,14 @@ defmodule Exantenna.Ecto.Q.Profile do
     end)
   end
 
-  def with(:blood, query) do
-    ["A", "B", "O", "AB"]
-    |> Enum.map(fn blood ->
+  def get(:blood, query) do
+    types = ["A", "B", "O", "AB"]
+    get :blood, query, types, 10
+  end
+  def get(:blood, query, type), do: get :blood, query, type, @limited
+  def get(:blood, query, type,  limited) when is_bitstring(type), do: get :blood, query, [type], limited
+  def get(:blood, query, types) do
+    Enum.map(types, fn blood ->
       divas =
         query
         |> where([q], q.blood == ^blood)
@@ -44,14 +49,14 @@ defmodule Exantenna.Ecto.Q.Profile do
     end)
   end
 
-  def with(:bracup, query) do
+  def get(:bracup, query) do
     cups = Enum.map(?A..?Z, &IO.iodata_to_binary([&1]))
-    Profile.with :bracup, query, cups, 10
+    get :bracup, query, cups, 10
   end
 
-  def with(:bracup, query, cup), do: Profile.with :bracup, query, cup, @limited
-  def with(:bracup, query, cup,  limited) when is_bitstring(cup), do: Profile.with :bracup, query, [cup], limited
-  def with(:bracup, query, cups, limited) do
+  def get(:bracup, query, cup), do: get :bracup, query, cup, @limited
+  def get(:bracup, query, cup,  limited) when is_bitstring(cup), do: get :bracup, query, [cup], limited
+  def get(:bracup, query, cups, limited) do
     Enum.map(cups, fn bracup ->
       divas =
         query
@@ -65,7 +70,7 @@ defmodule Exantenna.Ecto.Q.Profile do
     end)
   end
 
-  def with(:height, query) do
+  def get(:height, query) do
     [130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190]
     |> Enum.map(fn height ->
       divas =
@@ -81,7 +86,7 @@ defmodule Exantenna.Ecto.Q.Profile do
     end)
   end
 
-  def with(:waist, query) do
+  def get(:waist, query) do
     [40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
     |> Enum.map(fn waist ->
       divas =
@@ -97,7 +102,7 @@ defmodule Exantenna.Ecto.Q.Profile do
     end)
   end
 
-  def with(:hip, query) do
+  def get(:hip, query) do
     [50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120]
     |> Enum.map(fn hip ->
       divas =
@@ -113,22 +118,22 @@ defmodule Exantenna.Ecto.Q.Profile do
     end)
   end
 
-  def with(:bust, query) do
+  def get(:bust, query) do
     range = [
       60, 65, 70, 75, 80, 85, 90, 95, 100,
       105, 110, 115, 120, 125, 130, 135
     ]
 
-    Profile.with(:bust, query, range, 10)
+    get(:bust, query, range, 10)
   end
 
-  def with(:bust, query, numeric), do: Profile.with :bust, query, numeric, @limited
-  def with(:bust, query, numeric, limited) when is_integer(numeric), do: Profile.with :bust, query, [numeric], limited
-  def with(:bust, query, numeric, limited) when is_bitstring(numeric) do
+  def get(:bust, query, numeric), do: get :bust, query, numeric, @limited
+  def get(:bust, query, numeric, limited) when is_integer(numeric), do: get :bust, query, [numeric], limited
+  def get(:bust, query, numeric, limited) when is_bitstring(numeric) do
     {n, _} = Integer.parse numeric
-    Profile.with :bust, query, [n], limited
+    get :bust, query, [n], limited
   end
-  def with(:bust, query, range, limited) when is_list(range) do
+  def get(:bust, query, range, limited) when is_list(range) do
     Enum.map(range, fn bust ->
       divas =
         query
@@ -144,7 +149,7 @@ defmodule Exantenna.Ecto.Q.Profile do
     end)
   end
 
-  def with(:month, mod, query, %{"year" => year, "month" => month}) do
+  def get(:month, mod, query, %{"year" => year, "month" => month}) do
     {year, _} = Integer.parse(year)
     {month, _} = Integer.parse(month)
     next_month =
@@ -175,7 +180,7 @@ defmodule Exantenna.Ecto.Q.Profile do
     {birthdays, divas}
   end
 
-  def with(:year, mod, query, %{"year" => year}) do
+  def get(:year, mod, query, %{"year" => year}) do
     birthdays =
       mod
       |> select([p], p.birthday)
@@ -200,7 +205,7 @@ defmodule Exantenna.Ecto.Q.Profile do
     {birthdays, divas}
   end
 
-  def with(:birthday, mod) do
+  def get(:birthday, mod) do
     mod
     |> group_by([p], p.birthday)
     |> select([p], p.birthday)

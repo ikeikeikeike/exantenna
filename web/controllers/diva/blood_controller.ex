@@ -5,8 +5,15 @@ defmodule Exantenna.Diva.BloodController do
   alias Exantenna.Ecto.Q.Profile
 
   def index(conn, _params) do
-    bloods = Profile.with(:blood, Diva.query)
-    render(conn, "index.html", bloods: bloods)
+    bloods = Profile.get(:blood, Diva.query)
+    render(conn, "index.html", bloods: bloods, nav: bloods)
   end
+
+  def sub(conn, %{"name" => name} = _params) do
+    bloods = Profile.get :bracup, Diva.query, name
+    render(conn, "index.html", bloods: bloods, nav: Profile.get(:blood, Diva.query))
+  end
+
+
 
 end

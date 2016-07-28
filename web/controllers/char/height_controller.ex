@@ -5,7 +5,7 @@ defmodule Exantenna.Char.HeightController do
   alias Exantenna.Ecto.Q.Profile
 
   def index(conn, _params) do
-    heights = Profile.with :height, Char.query
+    heights = Profile.get :height, Char.query
     render(conn, "index.html", heights: heights)
   end
 
