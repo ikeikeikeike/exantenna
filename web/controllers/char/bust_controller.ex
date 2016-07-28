@@ -9,8 +9,8 @@ defmodule Exantenna.Char.BustController do
     render(conn, "index.html", busts: busts, nav: busts)
   end
 
-  def around(conn, %{"range" => range} = _params) do
-    numeric = List.first String.split(range, "-")
+  def around(conn, %{"name" => name} = _params) do
+    numeric = List.first String.split(name, "-")
 
     busts = Profile.get :bust, Char.query, numeric
     render(conn, "index.html", busts: busts, nav: Profile.get(:bust, Char.query))

@@ -37,13 +37,14 @@ defmodule Exantenna.Ecto.Q.Profile do
   end
   def get(:blood, query, type), do: get :blood, query, type, @limited
   def get(:blood, query, type,  limited) when is_bitstring(type), do: get :blood, query, [type], limited
-  def get(:blood, query, types) do
+  def get(:blood, query, types, limited) do
     Enum.map(types, fn blood ->
       divas =
         query
         |> where([q], q.blood == ^blood)
         # |> where([q], q.appeared > 0)
         |> where([q], not is_nil(q.blood))
+        |> limit(^limited)
         |> Repo.all
       {blood, divas}
     end)
@@ -71,8 +72,22 @@ defmodule Exantenna.Ecto.Q.Profile do
   end
 
   def get(:height, query) do
-    [130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190]
-    |> Enum.map(fn height ->
+    range =
+      [
+        130, 135, 140, 145, 150, 155, 160,
+        165, 170, 175, 180, 185, 190
+      ]
+
+    get(:height, query, range, 10)
+  end
+  def get(:height, query, numeric), do: get :height, query, numeric, @limited
+  def get(:height, query, numeric, limited) when is_integer(numeric), do: get :height, query, [numeric], limited
+  def get(:height, query, numeric, limited) when is_bitstring(numeric) do
+    {n, _} = Integer.parse numeric
+    get :height, query, [n], limited
+  end
+  def get(:height, query, range, limited) when is_list(range) do
+    Enum.map(range, fn height ->
       divas =
         query
         |> where([q], q.height >= ^height)
@@ -81,14 +96,27 @@ defmodule Exantenna.Ecto.Q.Profile do
         # |> where([q], q.appeared > 0)
         |> where([q], not is_nil(q.height))
         |> order_by([q], [asc: q.height])
+        |> limit(^limited)
         |> Repo.all
       {height, divas}
     end)
   end
 
+
   def get(:waist, query) do
-    [40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
-    |> Enum.map(fn waist ->
+    range =
+      [40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
+
+    get(:waist, query, range, 10)
+  end
+  def get(:waist, query, numeric), do: get :waist, query, numeric, @limited
+  def get(:waist, query, numeric, limited) when is_integer(numeric), do: get :waist, query, [numeric], limited
+  def get(:waist, query, numeric, limited) when is_bitstring(numeric) do
+    {n, _} = Integer.parse numeric
+    get :waist, query, [n], limited
+  end
+  def get(:waist, query, range, limited) when is_list(range) do
+    Enum.map(range, fn waist ->
       divas =
         query
         |> where([q], q.waist >= ^waist)
@@ -97,14 +125,29 @@ defmodule Exantenna.Ecto.Q.Profile do
         # |> where([q], q.appeared > 0)
         |> where([q], not is_nil(q.waist))
         |> order_by([q], [asc: q.waist])
+        |> limit(^limited)
         |> Repo.all
       {waist, divas}
     end)
   end
 
   def get(:hip, query) do
-    [50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120]
-    |> Enum.map(fn hip ->
+    range =
+      [
+        50, 55, 60, 65, 70, 75, 80, 85,
+        90, 95, 100, 105, 110, 115, 120
+      ]
+
+    get(:hip, query, range, 10)
+  end
+  def get(:hip, query, numeric), do: get :hip, query, numeric, @limited
+  def get(:hip, query, numeric, limited) when is_integer(numeric), do: get :hip, query, [numeric], limited
+  def get(:hip, query, numeric, limited) when is_bitstring(numeric) do
+    {n, _} = Integer.parse numeric
+    get :hip, query, [n], limited
+  end
+  def get(:hip, query, range, limited) do
+    Enum.map(range, fn hip ->
       divas =
         query
         |> where([q], q.hip >= ^hip)
@@ -113,6 +156,7 @@ defmodule Exantenna.Ecto.Q.Profile do
         # |> where([q], q.appeared > 0)
         |> where([q], not is_nil(q.hip))
         |> order_by([q], [asc: q.hip])
+        |> limit(^limited)
         |> Repo.all
       {hip, divas}
     end)
@@ -126,7 +170,6 @@ defmodule Exantenna.Ecto.Q.Profile do
 
     get(:bust, query, range, 10)
   end
-
   def get(:bust, query, numeric), do: get :bust, query, numeric, @limited
   def get(:bust, query, numeric, limited) when is_integer(numeric), do: get :bust, query, [numeric], limited
   def get(:bust, query, numeric, limited) when is_bitstring(numeric) do
