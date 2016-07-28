@@ -36,11 +36,6 @@ defmodule Exantenna.Router do
     get "/elog/:id", EntryController, :show
     get "/elog/:id/:title", EntryController, :show
 
-    get "/divas", DivaController, :index
-    get "/divas.html", DivaController, :index  # TODO: to be redirect
-
-    get "/diva/:name", DivaController, :show
-
     scope "/d", Diva, as: "d" do
 
       get "/atoz", AtozController, :index
@@ -88,6 +83,10 @@ defmodule Exantenna.Router do
       get "/blood-type", BloodController, :index
       get "/blood", BloodController, :index
     end
+
+    get "/divas", DivaController, :index
+    get "/divas.html", DivaController, :index  # TODO: to be redirect
+    get "/diva/:name", DivaController, :show
 
     get "/toons", ToonController, :index
     get "/animes.html", ToonController, :index  # TODO: to be redirect

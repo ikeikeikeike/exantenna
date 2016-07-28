@@ -33,6 +33,23 @@ defmodule Exantenna.Char do
   @required_fields ~w(name)
   @optional_fields ~w(alias kana romaji gyou height weight bust bracup waist hip blood birthday)
 
+  def full_relational_fields, do: @full_relational_fields
+  @full_relational_fields [
+    :thumbs,
+    antennas: Antenna.full_relational_fields
+  ]
+  @relational_fields ~w(antennas thumbs)a
+
+  def query do
+    from e in __MODULE__,
+    preload: ^@relational_fields
+  end
+
+  def query_all do
+    from e in __MODULE__,
+    preload: ^@full_relational_fields
+  end
+
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
