@@ -4,7 +4,8 @@ defmodule Exantenna.Sub.Book.AntennaController do
   plug :put_layout, {Exantenna.Sub.Book.LayoutView, "app.html"}
 
   def home(conn, _params) do
-    render(conn, "home.html", antennas: [])
+    text(conn, "Book subdomain home page")
+    # render(conn, "home.html", antennas: [])
   end
 
 end

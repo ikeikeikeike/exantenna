@@ -16,7 +16,7 @@ defmodule Exantenna.Router.Video do
   scope "/", Exantenna.Sub.Video do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
+    get "/", AntennaController, :home
   end
 
 end
