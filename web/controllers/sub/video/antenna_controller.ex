@@ -4,7 +4,7 @@ defmodule Exantenna.Sub.Video.AntennaController do
   plug :put_layout, {Exantenna.Sub.Video.LayoutView, "app.html"}
 
   def home(conn, _params) do
-    text(conn, "Video subdomain home page")
+    render(conn, "home.html", antennas: [])
   end
 
 end
