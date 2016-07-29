@@ -16,7 +16,7 @@ defmodule Exantenna.Router.Book do
   scope "/", Exantenna.Sub.Book do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
+    get "/", AntennaController, :home
   end
 
 end
