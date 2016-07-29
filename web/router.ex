@@ -16,10 +16,6 @@ defmodule Exantenna.Router do
   pipeline :browser_auth do
     plug Guardian.Plug.VerifySession
     plug Guardian.Plug.LoadResource
-
-    plug Exantenna.Locale.Plug.AssignLocale
-    plug Exantenna.Locale.Plug.HandleLocalizedPath
-    plug Exantenna.Locale.Plug.ConfigureGettext
   end
 
   pipeline :api do

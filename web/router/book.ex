@@ -6,6 +6,11 @@ defmodule Exantenna.Router.Book do
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
+    plug :put_secure_browser_headers
+
+    plug Exantenna.Locale.Plug.AssignLocale
+    plug Exantenna.Locale.Plug.HandleLocalizedPath
+    plug Exantenna.Locale.Plug.ConfigureGettext
   end
 
   scope "/", Exantenna.Sub.Book do

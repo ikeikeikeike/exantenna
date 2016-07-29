@@ -2,6 +2,7 @@ defmodule Exantenna.Char do
   use Exantenna.Web, :model
   use Exantenna.Es
 
+  alias Exantenna.Toon
   alias Exantenna.Antenna
 
   schema "chars" do
@@ -36,7 +37,8 @@ defmodule Exantenna.Char do
   def full_relational_fields, do: @full_relational_fields
   @full_relational_fields [
     :thumbs,
-    antennas: Antenna.full_relational_fields
+    :tags,
+    toons: Toon.full_relational_fields
   ]
   @relational_fields ~w(antennas thumbs)a
 
