@@ -28,7 +28,11 @@ exports.config = {
     //  }
 
     javascripts: {
-      joinTo: "js/app.js",
+      joinTo: {
+        "js/app-def.js": /^(web\/static\/js\/(def|modules)|bower_components|node_modules\/phoenix|deps\/phoenix\/web\/static\/js)/,
+        "js/app-book.js": /^(web\/static\/js\/(book|modules)|bower_components|node_modules\/phoenix|deps\/phoenix\/web\/static\/js)/,
+        "js/app-video.js": /^(web\/static\/js\/(video|modules)|bower_components|node_modules\/phoenix|deps\/phoenix\/web\/static\/js)/,
+      },
       order: {
         before: [
           "bower_components/jquery/dist/jquery.min.js",
@@ -38,7 +42,9 @@ exports.config = {
     },
     stylesheets: {
       joinTo: {
-        'css/app.css': /^(web\/static\/css|bower_components)/
+        "css/app-def.css": /^(web\/static\/css\/(def|modules)|bower_components)/,
+        "css/app-book.css": /^(web\/static\/css\/(book|modules)|bower_components)/,
+        "css/app-video.css": /^(web\/static\/css\/(video|modules)|bower_components)/,
       },
       order: {
         before: [
