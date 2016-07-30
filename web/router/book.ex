@@ -20,8 +20,11 @@ defmodule Exantenna.Router.Book do
     get "/news", EntryController, :index
     get "/news.html", EntryController, :index
 
-    # TODO: need to redirect under line from /video/v:id/:title and /video/v:id by nginx
     scope "/s" do
+      # TODO: need to redirect under line from /book/viewer:id and /book/viewer:id/:title by nginx
+      get "/:id/viewer", EntryController, :view
+
+      # TODO: need to redirect under line from /video/v:id/:title and /video/v:id by nginx
       get "/:id", EntryController, :show
       get "/:id/:title", EntryController, :show
     end

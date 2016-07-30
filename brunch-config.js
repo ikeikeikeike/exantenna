@@ -41,6 +41,8 @@ exports.config = {
         "css/app-def.css": /^(web\/static\/css\/(def|modules)|bower_components)/,
         "css/app-book.css": /^(web\/static\/css\/(book|modules)|bower_components)/,
         "css/app-video.css": /^(web\/static\/css\/(video|modules)|bower_components)/,
+        "css/app-none.css": /^(web\/static\/css\/(none|modules)|bower_components)/,
+        "css/app-view.css": /^(web\/static\/css\/(view|modules)|bower_components)/,
       },
       order: {
         before: [

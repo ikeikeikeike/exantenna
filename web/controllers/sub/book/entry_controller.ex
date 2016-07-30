@@ -35,5 +35,20 @@ defmodule Exantenna.Sub.Book.EntryController do
     render(conn, Book.EntryView, "show.html", antenna: antenna, antennas: antennas)
   end
 
+  def view(conn, %{"id" => _id, "title" => _title} = params) do
+    view conn, params
+  end
+
+  def view(conn, %{"id" => id} = params) do
+    antenna = Repo.get!(Antenna.query_all, id)
+
+    # antennas =
+      # Antenna.essearch(antenna.metadata.title, params)
+      # |> Es.Paginator.paginate(Antenna.query_all, params)
+
+    conn
+    |> put_layout({Book.LayoutView, "view.html"})
+    |> render(Book.EntryView, "view.html", antenna: antenna, antennas: [])
+  end
 
 end
