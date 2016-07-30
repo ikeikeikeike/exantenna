@@ -1,11 +1,13 @@
 $(document).keydown(function(e) {
-  if (! window.isMobile ) {
+  if (! window.isMobile && window.domain === 'book' ) {
     var atag;
 
     switch(e.which) {
     case 37: // left
       atag = $(".js-keydown-prev-next a[rel='prev']");
-      location.href = atag.attr('href');
+      if (atag.length) {
+        location.href = atag.attr('href');
+      }
       break;
 
     case 38: // up
@@ -13,7 +15,9 @@ $(document).keydown(function(e) {
 
     case 39: // right
       atag = $(".js-keydown-prev-next a[rel='next']");
-      location.href = atag.attr('href');
+      if (atag.length) {
+        location.href = atag.attr('href');
+      }
       break;
 
     case 40: // down

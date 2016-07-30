@@ -20,6 +20,6 @@ import "phoenix_html"
 
 // import socket from "./socket"
 
-import typeahead from "./typeahead"
-import sidebar from "./sidebar"
-import keydown from "./keydown"
+import typeahead from "./modules/typeahead"
+import sidebar from "./modules/sidebar"
+import keydown from "./modules/keydown"

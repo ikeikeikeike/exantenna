@@ -28,11 +28,7 @@ exports.config = {
     //  }
 
     javascripts: {
-      joinTo: {
-        "js/app-def.js": /^(web\/static\/js\/(def|modules)|bower_components|node_modules\/phoenix|deps\/phoenix\/web\/static\/js)/,
-        "js/app-book.js": /^(web\/static\/js\/(book|modules)|bower_components|node_modules\/phoenix|deps\/phoenix\/web\/static\/js)/,
-        "js/app-video.js": /^(web\/static\/js\/(video|modules)|bower_components|node_modules\/phoenix|deps\/phoenix\/web\/static\/js)/,
-      },
+      joinTo: "js/app.js",
       order: {
         before: [
           "bower_components/jquery/dist/jquery.min.js",
