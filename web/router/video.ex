@@ -17,6 +17,16 @@ defmodule Exantenna.Router.Video do
     pipe_through :browser # Use the default browser stack
 
     get "/", AntennaController, :home
+    get "/news", EntryController, :index
+    get "/news.html", EntryController, :index
+
+    # TODO: need to redirect under line from /video/v:id/:title and /video/v:id by nginx
+    scope "/s" do
+      get "/:id", EntryController, :show
+      get "/:id/:title", EntryController, :show
+    end
+
   end
+
 
 end

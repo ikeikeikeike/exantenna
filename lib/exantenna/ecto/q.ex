@@ -31,4 +31,5 @@ defmodule Exantenna.Ecto.Q do
     end
   end
   def fuzzy_find(_mod, [], diva), do: diva
+
 end

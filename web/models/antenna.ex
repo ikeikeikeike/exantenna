@@ -76,6 +76,30 @@ defmodule Exantenna.Antenna do
   def query_entries, do: query_all
   def query_videos, do: query_all
 
+  def prev_blogs(query, model) do
+    from q in query,
+      where: q.id < ^model.id
+         and q.blog_id == ^model.blog_id
+  end
+
+  def next_blogs(query, model) do
+    from q in query,
+      where: q.id > ^model.id
+         and q.blog_id == ^model.blog_id
+  end
+
+  def prev_blog(query, model) do
+    from q in prev_blogs(query, model),
+      order_by: [desc: q.id],
+      limit: 1
+  end
+
+  def next_blog(query, model) do
+    from q in next_blogs(query, model),
+      order_by: [asc: q.id],
+      limit: 1
+  end
+
   def where_url(query, url) do
     from q in query,
       join: m in Metadata,

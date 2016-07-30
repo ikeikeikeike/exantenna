@@ -40,6 +40,7 @@ defmodule Exantenna.Char do
     :tags,
     toons: Toon.full_relational_fields
   ]
+
   @relational_fields ~w(antennas thumbs)a
 
   def query do

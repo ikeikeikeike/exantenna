@@ -696,3 +696,33 @@ a.label-black:hover {
 .media-font.inner-font * {
     line-height: 20px;
 }
+
+.milli-letter-spacing {
+    letter-spacing: -1.5px;
+}
+
+.book-layout {
+    margin: 5px 10px 0px 0px;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.book-layout a.label.label-default {
+    padding: 3px;
+    margin-left: 5px;
+}
+
+.provider-profile.well {
+    border-radius: 3px;
+    text-align: center;
+    border: solid 1px #E2E2E2;
+}
+
+.provider-profile span {
+    font-weight: bold;
+    color: #767676;
+    font-size: 14px;
+}
+
+.book-layout-image {
+ margin: 20px 20px 0px 0px;
+}

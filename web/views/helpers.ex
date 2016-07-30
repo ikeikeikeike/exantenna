@@ -5,6 +5,7 @@ defmodule Exantenna.Helpers do
 
   use Phoenix.HTML
 
+  alias Exantenna.Repo
   alias Exantenna.Thumb
   alias Exantenna.Antenna
 
@@ -147,10 +148,18 @@ defmodule Exantenna.Helpers do
     thumb
   end
 
-  def fallback, do: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+  def prev_blog(%Antenna{} = antenna) do
+    Repo.one Antenna.prev_blog(Antenna.query_all, antenna)
+  end
+
+  def next_blog(%Antenna{} = antenna) do
+    Repo.one Antenna.next_blog(Antenna.query_all, antenna)
+  end
 
   def dynamical_path(method, args) do
     apply Exantenna.Router.Helpers, String.to_atom(method), args
   end
+
+  def fallback, do: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
 
 end
