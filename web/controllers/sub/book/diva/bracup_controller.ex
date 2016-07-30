@@ -1,18 +1,10 @@
-defmodule Exantenna.Diva.BracupController do
+defmodule Exantenna.Sub.Book.Diva.BracupController do
   use Exantenna.Web, :controller
 
-  alias Exantenna.Diva
-  alias Exantenna.Ecto.Q.Profile
+  plug :put_view, Exantenna.Diva.BracupView
+  plug :put_layout, {Exantenna.Sub.Book.LayoutView, "app.html"}
 
-  def index(conn, _params) do
-    bracups = Profile.get :bracup, Diva.query
-    render(conn, "index.html", bracups: bracups, nav: bracups)
-  end
-
-  def sub(conn, %{"name" => name} = _params) do
-    bracups = Profile.get :bracup, Diva.query, name
-    render(conn, "index.html", bracups: bracups, nav: Profile.get(:bracup, Diva.query))
-  end
-
+  defdelegate index(conn, params), to: Exantenna.Diva.BracupController
+  defdelegate sub(conn, params), to: Exantenna.Diva.BracupController
 
 end

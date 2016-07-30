@@ -1,19 +1,10 @@
-defmodule Exantenna.Diva.WaistController do
+defmodule Exantenna.Sub.Book.Diva.WaistController do
   use Exantenna.Web, :controller
 
-  alias Exantenna.Diva
-  alias Exantenna.Ecto.Q.Profile
+  plug :put_view, Exantenna.Diva.WaistView
+  plug :put_layout, {Exantenna.Sub.Book.LayoutView, "app.html"}
 
-  def index(conn, _params) do
-    waists = Profile.get :waist, Diva.query
-    render(conn, "index.html", waists: waists, nav: waists)
-  end
-
-  def sub(conn, %{"name" => name} = _params) do
-    numeric = List.first String.split(name, "-")
-
-    waists = Profile.get :waist, Diva.query, numeric
-    render(conn, "index.html", waists: waists, nav: Profile.get(:waist, Diva.query))
-  end
+  defdelegate index(conn, params), to: Exantenna.Diva.WaistController
+  defdelegate sub(conn, params), to: Exantenna.Diva.WaistController
 
 end

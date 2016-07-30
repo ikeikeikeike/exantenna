@@ -1,22 +1,11 @@
-defmodule Exantenna.Diva.BirthdayController do
+defmodule Exantenna.Sub.Book.Diva.BirthdayController do
   use Exantenna.Web, :controller
 
-  alias Exantenna.Diva
-  alias Exantenna.Ecto.Q.Profile
+  plug :put_view, Exantenna.Diva.BirthdayView
+  plug :put_layout, {Exantenna.Sub.Book.LayoutView, "app.html"}
 
-  def month(conn, %{"year" => _, "month" => _} = params) do
-    {birthdays, divas} = Profile.get :month, Diva, Diva.query, params
-    render(conn, "month.html", birthdays: birthdays, divas: divas)
-  end
-
-  def year(conn, %{"year" => _} = params) do
-    {birthdays, divas} = Profile.get :year, Diva, Diva.query, params
-    render(conn, "year.html", birthdays: birthdays, divas: divas)
-  end
-
-  def index(conn, _params) do
-    birthdays = Profile.get :birthday, Diva
-    render(conn, "index.html", birthdays: birthdays)
-  end
+  defdelegate month(conn, params), to: Exantenna.Diva.BirthdayController
+  defdelegate year(conn, params), to: Exantenna.Diva.BirthdayController
+  defdelegate index(conn, params), to: Exantenna.Diva.BirthdayController
 
 end

@@ -1,19 +1,10 @@
-defmodule Exantenna.Char.BustController do
+defmodule Exantenna.Sub.Book.Char.BustController do
   use Exantenna.Web, :controller
 
-  alias Exantenna.Char
-  alias Exantenna.Ecto.Q.Profile
+  plug :put_view, Exantenna.Char.BustView
+  plug :put_layout, {Exantenna.Sub.Book.LayoutView, "app.html"}
 
-  def index(conn, _params) do
-    busts = Profile.get :bust, Char.query
-    render(conn, "index.html", busts: busts, nav: busts)
-  end
-
-  def sub(conn, %{"name" => name} = _params) do
-    numeric = List.first String.split(name, "-")
-
-    busts = Profile.get :bust, Char.query, numeric
-    render(conn, "index.html", busts: busts, nav: Profile.get(:bust, Char.query))
-  end
+  defdelegate index(conn, params), to: Exantenna.Char.BustController
+  defdelegate sub(conn, params), to: Exantenna.Char.BustController
 
 end

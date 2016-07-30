@@ -1,12 +1,10 @@
-defmodule Exantenna.Char.AtozController do
+defmodule Exantenna.Sub.Book.Char.AtozController do
   use Exantenna.Web, :controller
 
-  alias Exantenna.Char
-  alias Exantenna.Ecto.Q.Profile
+  plug :put_view, Exantenna.Char.AtozView
+  plug :put_layout, {Exantenna.Sub.Book.LayoutView, "app.html"}
 
-  def index(conn, _params) do
-    letters = Profile.get(:atoz, Char.query)
-    render(conn, "index.html", letters: letters)
-  end
+  defdelegate index(conn, params), to: Exantenna.Char.AtozController
+  defdelegate sub(conn, params), to: Exantenna.Char.AtozController
 
 end

@@ -1,19 +1,10 @@
-defmodule Exantenna.Char.HeightController do
+defmodule Exantenna.Sub.Book.Char.HeightController do
   use Exantenna.Web, :controller
 
-  alias Exantenna.Char
-  alias Exantenna.Ecto.Q.Profile
+  plug :put_view, Exantenna.Char.HeightView
+  plug :put_layout, {Exantenna.Sub.Book.LayoutView, "app.html"}
 
-  def index(conn, _params) do
-    heights = Profile.get :height, Char.query
-    render(conn, "index.html", heights: heights, nav: heights)
-  end
-
-  def sub(conn, %{"name" => name} = _params) do
-    numeric = List.first String.split(name, "-")
-
-    heights = Profile.get :height, Diva.query, numeric
-    render(conn, "index.html", heights: heights, nav: Profile.get(:height, Diva.query))
-  end
+  defdelegate index(conn, params), to: Exantenna.Char.HeightController
+  defdelegate sub(conn, params), to: Exantenna.Char.HeightController
 
 end

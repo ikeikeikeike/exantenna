@@ -1,18 +1,10 @@
-defmodule Exantenna.Char.BloodController do
+defmodule Exantenna.Sub.Book.Char.BloodController do
   use Exantenna.Web, :controller
 
-  alias Exantenna.Char
-  alias Exantenna.Ecto.Q.Profile
+  plug :put_view, Exantenna.Char.BloodView
+  plug :put_layout, {Exantenna.Sub.Book.LayoutView, "app.html"}
 
-  def index(conn, _params) do
-    bloods = Profile.get :blood, Char.query
-    render(conn, "index.html", bloods: bloods, nav: bloods)
-  end
-
-  def sub(conn, %{"name" => name} = _params) do
-    bloods = Profile.get :blood, Char.query, name
-    render(conn, "index.html", bloods: bloods, nav: Profile.get(:blood, Char.query))
-  end
-
+  defdelegate index(conn, params), to: Exantenna.Char.BloodController
+  defdelegate sub(conn, params), to: Exantenna.Char.BloodController
 
 end
