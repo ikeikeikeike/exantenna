@@ -29,8 +29,30 @@ defmodule Exantenna.Router do
     get "/news", EntryController, :index
     get "/news.html", EntryController, :index
 
-    get "/elog/:id", EntryController, :show
-    get "/elog/:id/:title", EntryController, :show
+    # TODO: consider redirecting below by nginx
+
+    get "/divas", DivaController, :index
+    get "/divas.html", DivaController, :index  # TODO: to be redirect
+    get "/diva/:name", DivaController, :show
+
+    get "/toons", ToonController, :index
+    get "/animes.html", ToonController, :index  # TODO: to be redirect
+
+    get "/characters", CharController, :index
+    get "/characters.html", CharController, :index  # TODO: to be redirect
+
+    get "/orig", PageController, :index
+
+    get "/suggest/tg/:search", TagController, :suggest
+    get "/suggest/da/:search", DivaController, :suggest
+    get "/suggest/tn/:search", ToonController, :suggest
+    get "/suggest/cr/:search", CharController, :suggest
+
+    # TODO: need to redirect under line from /elog/v:id/:title and /elog/v:id by nginx
+    scope "/s" do
+      get "/:id", EntryController, :show
+      get "/:id/:title", EntryController, :show
+    end
 
     scope "/d", Diva, as: "d" do
 
@@ -79,23 +101,6 @@ defmodule Exantenna.Router do
       get "/blood-type", BloodController, :index
       get "/blood", BloodController, :index
     end
-
-    get "/divas", DivaController, :index
-    get "/divas.html", DivaController, :index  # TODO: to be redirect
-    get "/diva/:name", DivaController, :show
-
-    get "/toons", ToonController, :index
-    get "/animes.html", ToonController, :index  # TODO: to be redirect
-
-    get "/characters", CharController, :index
-    get "/characters.html", CharController, :index  # TODO: to be redirect
-
-    get "/orig", PageController, :index
-
-    get "/suggest/tg/:search", TagController, :suggest
-    get "/suggest/da/:search", DivaController, :suggest
-    get "/suggest/tn/:search", ToonController, :suggest
-    get "/suggest/cr/:search", CharController, :suggest
 
   end
 
