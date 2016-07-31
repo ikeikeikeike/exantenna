@@ -724,5 +724,41 @@ a.label-black:hover {
 }
 
 .book-layout-image {
- margin: 20px 20px 0px 0px;
+    margin: 20px 20px 0px 0px;
 }
+
+a.display-fitting {
+    display: flex;
+}
+
+a.display-fitting img {
+    object-fit: cover;
+    width: 100%;
+    bottom: 20px;
+}
+
+.display-readnext-fitting {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 3px;
+    margin: auto;
+}
+
+@media (min-width: 650px) {}
+@media (min-width: 700px) {}
+@media (min-width: 760px) {
+    a.display-fitting img {
+        bottom: 10px;
+        width: auto;
+    }
+    .display-readnext-fitting {
+        bottom: -5px;
+    }
+    .book-layout-image {
+        margin: 20px 20px 20px 0px;
+    }
+}
+@media (min-width: 860px) {}
+@media (min-width: 960px) {}
+@media (min-width: 1100px) {}
