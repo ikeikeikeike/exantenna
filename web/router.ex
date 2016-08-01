@@ -41,6 +41,8 @@ defmodule Exantenna.Router do
     get "/characters", CharController, :index
     get "/characters.html", CharController, :index  # TODO: to be redirect
 
+    get "/tag/:name", TagController, :show
+
     get "/orig", PageController, :index
 
     get "/suggest/tg/:search", TagController, :suggest
