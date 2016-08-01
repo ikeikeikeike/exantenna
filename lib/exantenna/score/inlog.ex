@@ -7,6 +7,7 @@ defmodule Exantenna.Score.Inlog do
   @ua_ptn ~r(Mozilla|Opera)
   @accept_ptn ~r/.*(text|html,application|xhtml)/
 
+  # Daily score
   def scoring(%{} = resource) do
     Enum.reduce resource, %{}, fn {url, logs}, acc ->
       result =
