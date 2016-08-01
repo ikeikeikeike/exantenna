@@ -28,6 +28,7 @@ defmodule Exantenna.Mixfile do
         :con_cache, :redix,
         :phoenix_html_simplified_helpers,
         :common_device_detector,
+        :html_entities,
       ],
       included_applications: [
       ]
@@ -70,6 +71,7 @@ defmodule Exantenna.Mixfile do
       {:scrivener_html, github: "ikeikeikeike/scrivener_html", override: true},
       {:rdtype, github: "ikeikeikeike/rdtype"},
       {:common_device_detector, github: "ikeikeikeike/common_device_detector"},
+      {:html_entities, "~> 0.3"},
     ]
   end
 

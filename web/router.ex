@@ -48,6 +48,12 @@ defmodule Exantenna.Router do
     get "/suggest/tn/:search", ToonController, :suggest
     get "/suggest/cr/:search", CharController, :suggest
 
+    scope "/feed" do
+      get "/rdf.xml", FeedController, :xml
+      get "/rss.xml", FeedController, :xml
+      get "/atom.xml", FeedController, :xml
+    end
+
     # TODO: need to redirect under line from /elog/v:id/:title and /elog/v:id by nginx
     scope "/s" do
       get "/:id", EntryController, :show
