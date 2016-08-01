@@ -5,9 +5,7 @@ defmodule Exantenna.Builders.Score do
   alias Exantenna.Score.Inlog
 
   def inscore_into do
-    blogs = Repo.all Blog
-
-    Inlog
+    # blogs = Repo.all Blog
 
   end
 
