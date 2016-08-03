@@ -1,5 +1,5 @@
 $(document).keydown(function(e) {
-  if (! window.isMobile && window.layout === 'book' ) {
+  if (! window.isMobile && (window.layout === 'book' || window.layout === 'video') ) {
     var atag;
 
     switch(e.which) {
