@@ -34,5 +34,8 @@ erl_crash.dump
 /.hg
 /.hgignore
 
+/web/static/js
+/web/static/css
+
 /tags
 /web/templates
