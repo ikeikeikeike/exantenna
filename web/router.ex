@@ -114,8 +114,9 @@ defmodule Exantenna.Router do
       get "/blood", BloodController, :index
     end
 
-    scope "/v1", V1, as: "v1" do
-      get "/parts.js", ApiController, :parts
+    scope "/v1", V1Api, as: "v1api" do
+      get "/parts.xml", PartsController, :json
+      get "/parts.json", PartsController, :json
     end
 
   end
