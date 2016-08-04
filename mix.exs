@@ -63,7 +63,7 @@ defmodule Exantenna.Mixfile do
       {:mailgun, "~> 0.1"},
       {:redix, ">= 0.0.0"},
       {:bing_translator, "~> 0.3"},
-      {:html_sanitize_ex, "~> 1.0"},
+      {:phoenix_html_sanitizer, "~> 1.0.0"},
       {:con_cache, "~> 0.11"},
       {:tirexs, "~> 0.8"},
       {:simple_format, "~> 0.1"},

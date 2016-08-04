@@ -26,8 +26,12 @@ defmodule Exantenna.Router do
     pipe_through [:browser, :browser_auth]
 
     get "/", AntennaController, :home
-    get "/news", EntryController, :index
+
+    get "/new-stuff", EntryController, :index
     get "/news.html", EntryController, :index
+
+    get "/hot-stuff", SummaryController, :index
+    get "/hots.html", SummaryController, :index
 
     # TODO: consider redirecting below by nginx
 
@@ -108,6 +112,10 @@ defmodule Exantenna.Router do
       get "/height", HeightController, :index
       get "/blood-type", BloodController, :index
       get "/blood", BloodController, :index
+    end
+
+    scope "/v1", V1, as: "v1" do
+      get "/parts.js", ApiController, :parts
     end
 
   end
