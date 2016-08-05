@@ -72,6 +72,7 @@ defmodule Exantenna.Mixfile do
       {:rdtype, github: "ikeikeikeike/rdtype"},
       {:common_device_detector, github: "ikeikeikeike/common_device_detector"},
       {:html_entities, "~> 0.3"},
+      {:cors_plug, "~> 1.1"},
     ]
   end
 

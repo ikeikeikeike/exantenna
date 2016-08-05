@@ -20,6 +20,17 @@ defmodule Exantenna.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+
+    [host: host, port: port] =
+      Application.get_env(:exantenna, Exantenna.Endpoint)[:url]
+
+    fqdn = "#{host}:#{port}"
+
+    plug CORSPlug,
+      origin:      [fqdn, "http://#{fqdn}", "https://#{fqdn}"],
+      credentials: true,
+      methods:     ["POST", "OPTIONS"]
+
   end
 
   scope "/", Exantenna do
@@ -114,11 +125,6 @@ defmodule Exantenna.Router do
       get "/blood", BloodController, :index
     end
 
-    scope "/v1", V1Api, as: "v1api" do
-      get "/parts.xml", PartsController, :json
-      get "/parts.json", PartsController, :json
-    end
-
   end
 
   scope "/admin", Exantenna.Admin, as: "admin" do
@@ -139,6 +145,14 @@ defmodule Exantenna.Router do
 
   end
 
+  scope "/v1", Exantenna.V1Api, as: "v1api" do
+    pipe_through :api
+
+    get "/parts.json", PartsController, :json
+    post "/parts.json", PartsController, :json
+    post "/parts.xml", PartsController, :json
+    options "/parts.json", PartsController, :options
+  end
 
   # Other scopes may use custom stacks.
   # scope "/api", Exantenna do
