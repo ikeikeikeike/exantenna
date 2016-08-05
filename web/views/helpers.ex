@@ -69,27 +69,7 @@ defmodule Exantenna.Helpers do
   # def better(%Thumb{} = thumb), do: thumb
   # def better(thumbs) when is_list(thumbs), do: List.first thumbs
 
-  def thumbs_all(%Antenna{} = antenna) do
-    antenna.picture.thumbs
-      ++ antenna.entry.thumbs
-      ++ Enum.reduce(antenna.toons, [], fn model, acc ->
-           acc ++ model.thumbs
-         end)
-      ++ Enum.reduce(antenna.toons, [], fn model, acc ->
-           acc ++ Enum.reduce model.chars, [], fn mo, ac ->
-             ac ++ mo.thumbs
-           end
-         end)
-      ++ Enum.reduce(antenna.divas, [], fn model, acc ->
-          acc ++ model.thumbs
-         end)
-      ++ Enum.reduce(antenna.video.metadatas, [], fn model, acc ->
-          acc ++ model.thumbs
-         end)
-      ++ Enum.reduce(antenna.tags, [], fn model, acc ->
-          acc ++ model.thumbs
-         end)
-  end
+  def thumbs_all(%Antenna{} = antenna), do: Exantenna.Ecto.Extractor.thumb antenna
 
   def choose_thumb(%Antenna{} = antenna, :entry) do
     choose_thumb(antenna)

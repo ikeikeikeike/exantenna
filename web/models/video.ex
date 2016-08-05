@@ -5,6 +5,8 @@ defmodule Exantenna.Video do
   alias Exantenna.VideoMetadata
   alias Exantenna.Redis.Imginfo
 
+  @json_fields ~w(metadatas)
+  @derive {Poison.Encoder, only: Enum.map(@json_fields, &(String.to_atom(&1)))}
   schema "videos" do
     has_one :antenna, Antenna
     has_many :metadatas, VideoMetadata

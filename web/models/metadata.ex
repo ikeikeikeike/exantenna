@@ -2,6 +2,8 @@ defmodule Exantenna.Metadata do
   use Exantenna.Web, :model
   alias Exantenna.Antenna
 
+  @json_fields ~w(url title content seo_title seo_content creator publisher published_at)
+  @derive {Poison.Encoder, only: Enum.map(@json_fields, &(String.to_atom(&1)))}
   schema "metadatas" do
     field :url, :string
     field :title, :string

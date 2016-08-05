@@ -1,6 +1,8 @@
 defmodule Exantenna.VideoMetadata do
   use Exantenna.Web, :model
 
+  @json_fields ~w(url title content embed_code duration)
+  @derive {Poison.Encoder, only: Enum.map(@json_fields, &(String.to_atom(&1)))}
   schema "video_metadatas" do
     belongs_to :site, Exantenna.Site
     belongs_to :video, Exantenna.Video

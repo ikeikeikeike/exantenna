@@ -1,6 +1,8 @@
 defmodule Exantenna.Blog do
   use Exantenna.Web, :model
 
+  @json_fields ~w(name url mediatype contenttype)
+  @derive {Poison.Encoder, only: Enum.map(@json_fields, &(String.to_atom(&1)))}
   schema "blogs" do
     belongs_to :user, Exantenna.User
 
