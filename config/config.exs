@@ -48,6 +48,10 @@ config :scrivener_html,
 config :ua_inspector,
   database_path: Path.join(File.cwd!, "config/ua_inspector")
 
+config :exantenna, :subdomain,
+  book: Exantenna.Router.Book,
+  video: Exantenna.Router.Video
+
 # config :public_suffix,
   # download_data_on_compile: true
 

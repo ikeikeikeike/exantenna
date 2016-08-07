@@ -5,8 +5,8 @@ defmodule Exantenna.SignupMailer do
                       key: Application.get_env(:exantenna, :mailer)[:mailgun_key]
 
   @from Application.get_env(:exantenna, :mailer)[:from]
-  @site_name Application.get_env(:exantenna, :sitemeta)[:name]
-  @site_email Application.get_env(:exantenna, :sitemeta)[:email]
+  @site_name Application.get_env(:exantenna, :sitemetas)[:default][:host]
+  @site_email Application.get_env(:exantenna, :sitemetas)[:default][:email]
 
   def send_activation(email, confirm) do
     send_email(

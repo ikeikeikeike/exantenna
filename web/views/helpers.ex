@@ -140,6 +140,12 @@ defmodule Exantenna.Helpers do
     apply Exantenna.Router.Helpers, String.to_atom(method), args
   end
 
+  def sitemeta(key), do: sitemeta(:default, key)
+  def sitemeta(:default, key), do: Application.get_env(:exantenna, :sitemetas)[:default][key]
+  def sitemeta(:video, key), do: Application.get_env(:exantenna, :sitemetas)[:video][key]
+  def sitemeta(:book, key), do: Application.get_env(:exantenna, :sitemetas)[:book][key]
+  def sitemeta(domain, key), do: Application.get_env(:exantenna, :sitemetas)[domain][key]
+
   def fallback, do: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
 
 end

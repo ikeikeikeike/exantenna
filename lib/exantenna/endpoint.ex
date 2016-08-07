@@ -36,8 +36,7 @@ defmodule Exantenna.Endpoint do
     signing_salt: "LeA2kesP"
 
   plug Exantenna.Domain.Plug.Subdomain,
-    book: Exantenna.Router.Book,
-    video: Exantenna.Router.Video
+    Application.get_env(:exantenna, :subdomain)
 
   plug Exantenna.Router
 end

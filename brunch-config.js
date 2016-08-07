@@ -47,6 +47,7 @@ exports.config = {
       order: {
         before: [
           "bower_components/bootstrap/dist/css/bootstrap.min.css",
+          "bower_components/icomoon-bower/style.css",
           // "bower_components/bootstrap/dist/css/bootstrap-theme.css",
         ]
       }
@@ -69,6 +70,7 @@ exports.config = {
       "web/static",
       "test/static",
       "bower_components/bootstrap/dist/css",
+      "bower_components/icomoon-bower/style.css",
     ],
 
     // Where to compile files to
@@ -84,6 +86,9 @@ exports.config = {
     afterBrunch: [
       'mkdir -p priv/static/fonts',
       'cp -f bower_components/bootstrap/fonts/* priv/static/fonts',
+
+      'mkdir -p priv/static/css/fonts',
+      'cp -f bower_components/icomoon-bower/fonts/* priv/static/css/fonts',
     ]
   },
 
