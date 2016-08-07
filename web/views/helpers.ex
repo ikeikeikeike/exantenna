@@ -140,6 +140,18 @@ defmodule Exantenna.Helpers do
     apply Exantenna.Router.Helpers, String.to_atom(method), args
   end
 
+  def search_value(conn) do
+    [
+      conn.params["q"],
+      conn.params["tag"],
+      conn.params["diva"],
+      conn.params["toon"],
+      conn.params["char"]
+    ]
+    |> Enum.uniq
+    |> Enum.join(" ")
+  end
+
   def sitemeta(key), do: sitemeta(:default, key)
   def sitemeta(:default, key), do: Application.get_env(:exantenna, :sitemetas)[:default][key]
   def sitemeta(:video, key), do: Application.get_env(:exantenna, :sitemetas)[:video][key]

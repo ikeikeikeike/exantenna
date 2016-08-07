@@ -7,7 +7,7 @@ defmodule Exantenna.V1Api.PartsController do
   alias Exantenna.Antenna
 
   def json(conn, params) do
-    words = params["search"]
+    words = params["q"]
 
     antennas =
       Antenna.essearch(words, params)

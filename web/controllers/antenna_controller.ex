@@ -8,7 +8,7 @@ defmodule Exantenna.AntennaController do
   import Ecto.Query
 
   def home(conn, params) do
-    words = params["search"]
+    words = params["q"]
 
     antennas =
       Antenna.essearch(words, params)

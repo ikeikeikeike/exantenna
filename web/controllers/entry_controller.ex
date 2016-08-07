@@ -7,7 +7,7 @@ defmodule Exantenna.EntryController do
   alias Exantenna.Ecto.Q
 
   def index(conn, params) do
-    words = params["search"]
+    words = params["q"]
 
     antennas =
       Antenna.essearch(words, params)

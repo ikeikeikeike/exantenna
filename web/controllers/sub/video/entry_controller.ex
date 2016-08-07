@@ -11,7 +11,7 @@ defmodule Exantenna.Sub.Video.EntryController do
   plug :put_layout, {Video.LayoutView, "app.html"}
 
   def index(conn, params) do
-    words = params["search"]
+    words = params["q"]
 
     antennas =
       Antenna.essearch(words, params)
