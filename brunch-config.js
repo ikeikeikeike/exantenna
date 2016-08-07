@@ -48,6 +48,7 @@ exports.config = {
         before: [
           "bower_components/bootstrap/dist/css/bootstrap.min.css",
           "bower_components/icomoon-bower/style.css",
+          "web/static/css/modules/custom.css",
           // "bower_components/bootstrap/dist/css/bootstrap-theme.css",
         ]
       }
