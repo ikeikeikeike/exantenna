@@ -44,6 +44,9 @@ defmodule Exantenna.Router do
     get "/hot-stuff", SummaryController, :index
     get "/hots.html", SummaryController, :index
 
+    # XXX: redirect from search path
+    get "/search.html", AntennaController, :home
+
     # TODO: consider redirecting below by nginx
 
     get "/divas", DivaController, :index
@@ -64,6 +67,21 @@ defmodule Exantenna.Router do
     get "/suggest/da/:search", DivaController, :suggest
     get "/suggest/tn/:search", ToonController, :suggest
     get "/suggest/cr/:search", CharController, :suggest
+
+    scope "/media" do
+      get "/", MediaController, :index
+      get "/rss", MediaController, :rss
+      get "/parts", MediaController, :parts
+      get "/links", MediaController, :links
+    end
+
+    get "/register.html", MediaController, :index
+    scope "/register" do
+      # get ".html", MediaController, :index
+      get "/rss.html", MediaController, :rss
+      get "/parts.html", MediaController, :parts
+      get "/links.html", MediaController, :links
+    end
 
     scope "/feed" do
       get "/rdf.xml", FeedController, :xml
