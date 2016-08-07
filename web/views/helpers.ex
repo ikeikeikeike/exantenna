@@ -55,6 +55,33 @@ defmodule Exantenna.Helpers do
     |> Map.merge(merge)
   end
 
+  def nextnav_carried_params do
+    ~w(q)
+  end
+
+  def search_carried_params do
+    ~w(page q)
+  end
+
+  def search_value(conn) do
+    [
+      conn.params["q"],
+      conn.params["tag"],
+      conn.params["diva"],
+      conn.params["toon"],
+      conn.params["char"]
+    ]
+    |> Enum.uniq
+    |> Enum.join(" ")
+  end
+
+  def to_keylist(params) do
+    Enum.reduce(params, [], fn {k, v}, kw ->
+      if !is_atom(k), do: k = String.to_atom(k)
+      Keyword.put(kw, k , v)
+    end)
+  end
+
   def to_qstring(params) do
     "?" <> URI.encode_query params
   end
@@ -156,18 +183,6 @@ defmodule Exantenna.Helpers do
 
   def dynamical_path(method, args) do
     apply Exantenna.Router.Helpers, String.to_atom(method), args
-  end
-
-  def search_value(conn) do
-    [
-      conn.params["q"],
-      conn.params["tag"],
-      conn.params["diva"],
-      conn.params["toon"],
-      conn.params["char"]
-    ]
-    |> Enum.uniq
-    |> Enum.join(" ")
   end
 
   def sitemeta(key), do: sitemeta(:default, key)
