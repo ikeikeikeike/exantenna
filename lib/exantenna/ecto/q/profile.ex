@@ -267,4 +267,73 @@ defmodule Exantenna.Ecto.Q.Profile do
     end)
   end
 
+  def get(:release_month, mod, query, %{"year" => year, "month" => month}) do
+    {year, _} = Integer.parse(year)
+    {month, _} = Integer.parse(month)
+    next_month =
+      Timex.Date.from({year, month, 01})
+      |> Timex.Date.shift(months: 1)
+
+    releases =
+      mod
+      |> select([q], q.release_date)
+      # |> where([q], q.appeared > 0)
+      |> where([q], not is_nil(q.release_date))
+      |> where([q], q.release_date  < ^next_month)
+      |> where([q], q.release_date >= ^Timex.Date.from({year, month , 01}))
+      |> order_by([q], [asc: q.release_date])
+      |> Repo.all
+      |> Enum.uniq_by(fn release_date ->
+        if release_date, do: release_date.day
+      end)
+
+    divas =
+      query
+      # |> where([q], q.appeared > 0)
+      |> where([q], not is_nil(q.release_date))
+      |> where([q], q.release_date  < ^next_month)
+      |> where([q], q.release_date >= ^Timex.Date.from({year, month , 01}))
+      |> Repo.all
+
+    {releases, divas}
+  end
+
+  def get(:release_year, mod, query, %{"year" => year}) do
+    releases =
+      mod
+      |> select([p], p.release_date)
+      # |> where([q], q.appeared > 0)
+      |> where([q], not is_nil(q.release_date))
+      |> where([q], q.release_date <= ^"#{year}-12-31")
+      |> where([q], q.release_date >= ^"#{year}-01-01")
+      |> order_by([q], [asc: q.release_date])
+      |> Repo.all
+      |> Enum.uniq_by(fn release_date ->
+        if release_date, do: release_date.month
+      end)
+
+   toons =
+      query
+      # |> where([q], q.appeared > 0)
+      |> where([q], not is_nil(q.release_date))
+      |> where([q], q.release_date <= ^"#{year}-12-31")
+      |> where([q], q.release_date >= ^"#{year}-01-01")
+      |> Repo.all
+
+    {releases, toons}
+  end
+
+  def get(:release, mod) do
+    mod
+    |> group_by([p], p.release_date)
+    |> select([p], p.release_date)
+    # |> where([q], q.appeared > 0)
+    |> where([q], not is_nil(q.release_date))
+    |> order_by([q], [desc: q.release_date])
+    |> Repo.all
+    |> Enum.uniq_by(fn release_date ->
+      if release_date, do: release_date.year
+    end)
+  end
+
 end

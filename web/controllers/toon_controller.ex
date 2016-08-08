@@ -9,7 +9,7 @@ defmodule Exantenna.ToonController do
 
   def index(conn, params) do
     toons =
-      Toon.query  # TODO: query_all or query
+      Toon.query_all(2)
       # |> where([q], q.appeared > 0)
       # |> order_by([q], [desc: q.appeared])
       |> limit(100)

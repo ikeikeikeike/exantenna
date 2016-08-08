@@ -36,14 +36,10 @@ defmodule Exantenna.Char do
   @required_fields ~w(name)
   @optional_fields ~w(alias kana romaji gyou height weight bust bracup waist hip blood birthday)
 
-  def full_relational_fields, do: @full_relational_fields
-  @full_relational_fields [
-    :thumbs,
-    :tags,
-    toons: Toon.full_relational_fields
-  ]
+  @relational_fields ~w(tags thumbs toons)a
 
-  @relational_fields ~w(antennas thumbs)a
+  def full_relational_fields, do: @full_relational_fields
+  @full_relational_fields @relational_fields
 
   def query do
     from e in __MODULE__,
@@ -53,6 +49,15 @@ defmodule Exantenna.Char do
   def query_all do
     from e in __MODULE__,
     preload: ^@full_relational_fields
+  end
+
+  def query_all(limit) do
+    antennas =
+      from q in Antenna.query_all,
+        limit: ^limit
+
+    from q in query,
+    preload: [toons: [antennas: ^antennas]]
   end
 
   def changeset(model, params \\ :invalid) do

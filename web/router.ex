@@ -55,9 +55,11 @@ defmodule Exantenna.Router do
 
     get "/toons", ToonController, :index
     get "/animes.html", ToonController, :index  # TODO: to be redirect
+    get "/toon/:name", ToonController, :show
 
     get "/characters", CharController, :index
     get "/characters.html", CharController, :index  # TODO: to be redirect
+    get "/character/:name", CharController, :show
 
     get "/tag/:name", TagController, :show
 
@@ -95,6 +97,23 @@ defmodule Exantenna.Router do
       get "/:id/:title", EntryController, :show
     end
 
+    scope "/t", Toon, as: "t" do
+
+      get "/atoz/:name", AtozController, :sub
+      get "/atoz", AtozController, :index
+
+      get "/release/:year/:month", ReleaseController, :month
+      get "/release/:year", ReleaseController, :year
+      get "/release", ReleaseController, :index
+
+      get "/works/:name", WorksController, :sub
+      get "/works", WorksController, :index
+
+      get "/author/:name", AuthorController, :sub
+      get "/author", AuthorController, :index
+
+    end
+
     scope "/d", Diva, as: "d" do
 
       get "/atoz", AtozController, :index
@@ -126,20 +145,29 @@ defmodule Exantenna.Router do
 
     scope "/c", Char, as: "c" do
       get "/atoz", AtozController, :index
+      get "/atoz/:name", AtozController, :sub
+
       get "/birthday/:year/:month", BirthdayController, :month
       get "/birthday/:year", BirthdayController, :year
       get "/birthday", BirthdayController, :index
+
       get "/waist", WaistController, :index
+      get "/waist/around-:name", WaistController, :sub
 
       get "/bracup", BracupController, :index
-      get "/bracup/cup-:cup", BracupController, :cup
+      get "/bracup/cup-:name", BracupController, :sub
 
       get "/bust", BustController, :index
-      get "/bust/around-:range", BustController, :around
+      get "/bust/around-:name", BustController, :sub
 
       get "/hip", HipController, :index
+      get "/hip/around-:name", HipController, :sub
+
       get "/height", HeightController, :index
+      get "/height/around-:name", HeightController, :sub
+
       get "/blood-type", BloodController, :index
+      get "/blood-type/:name", BloodController, :sub
       get "/blood", BloodController, :index
     end
 

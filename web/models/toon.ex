@@ -2,6 +2,7 @@ defmodule Exantenna.Toon do
   use Exantenna.Web, :model
   use Exantenna.Es
 
+  alias Exantenna.Tag
   alias Exantenna.Char
   alias Exantenna.Antenna
 
@@ -11,8 +12,9 @@ defmodule Exantenna.Toon do
     has_many :thumbs, {"toons_thumbs", Exantenna.Thumb},
       foreign_key: :assoc_id, on_delete: :delete_all
 
-    many_to_many :tags, Exantenna.Tag, join_through: "toons_tags"
-    many_to_many :chars, Exantenna.Toon, join_through: "toons_chars"
+    many_to_many :tags, Tag, join_through: "toons_tags"
+    many_to_many :chars, Char, join_through: "toons_chars"
+    many_to_many :antennas, Antenna, join_through: "antennas_toons"
 
     field :name, :string
     field :alias, :string
@@ -26,7 +28,7 @@ defmodule Exantenna.Toon do
 
     field :outline, :string
 
-    field :release_date, Ecto.DateTime
+    field :release_date, Ecto.Date
 
     timestamps
   end
@@ -34,14 +36,10 @@ defmodule Exantenna.Toon do
   @required_fields ~w(name)
   @optional_fields ~w(alias kana romaji gyou url author works release_date outline)
 
+  @relational_fields ~w(antennas tags thumbs chars)a
+
+  @full_relational_fields @relational_fields
   def full_relational_fields, do: @full_relational_fields
-  @full_relational_fields [
-    :thumbs,
-    :tags,
-    :chars,
-    antennas: Antenna.full_relational_fields
-  ]
-  @relational_fields ~w(antennas thumbs)a
 
   def query do
     from e in __MODULE__,
@@ -53,6 +51,14 @@ defmodule Exantenna.Toon do
     preload: ^@full_relational_fields
   end
 
+  def query_all(limit) do
+    antennas =
+      from q in Antenna.query_all,
+        limit: ^limit
+
+    from q in query,
+    preload: [antennas: ^antennas]
+  end
 
   def changeset(model, params \\ :invalid) do
     model

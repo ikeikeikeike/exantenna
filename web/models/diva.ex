@@ -37,12 +37,10 @@ defmodule Exantenna.Diva do
     waist hip blood birthday
   )
 
-  def full_relational_fields, do: @full_relational_fields
-  @full_relational_fields [
-    :thumbs,
-    antennas: Antenna.full_relational_fields
-  ]
   @relational_fields ~w(antennas thumbs)a
+
+  def full_relational_fields, do: @full_relational_fields
+  @full_relational_fields @relational_fields
 
   def query do
     from e in __MODULE__,
@@ -52,6 +50,15 @@ defmodule Exantenna.Diva do
   def query_all do
     from e in __MODULE__,
     preload: ^@full_relational_fields
+  end
+
+  def query_all(limit) do
+    antennas =
+      from q in Antenna.query_all,
+        limit: ^limit
+
+    from q in query,
+    preload: [antennas: ^antennas]
   end
 
   def changeset(model, params \\ :invalid) do

@@ -9,7 +9,7 @@ defmodule Exantenna.DivaController do
 
   def index(conn, params) do
     divas =
-      Diva.query  # TODO: query_all or query
+      Diva.query_all(2)
       # |> where([q], q.appeared > 0)
       # |> order_by([q], [desc: q.appeared])
       |> limit(100)

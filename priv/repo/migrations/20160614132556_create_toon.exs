@@ -14,7 +14,7 @@ defmodule Exantenna.Repo.Migrations.CreateToon do
       add :author, :string
       add :works, :string
 
-      add :release_date, :datetime
+      add :release_date, :date
 
       add :outline, :text
 

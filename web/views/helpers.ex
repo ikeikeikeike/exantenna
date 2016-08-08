@@ -6,6 +6,8 @@ defmodule Exantenna.Helpers do
   use Phoenix.HTML
 
   alias Exantenna.Repo
+  alias Exantenna.Toon
+  alias Exantenna.Diva
   alias Exantenna.Thumb
   alias Exantenna.Antenna
 
@@ -128,8 +130,28 @@ defmodule Exantenna.Helpers do
 
     thumb
   end
+  def choose_thumb(%Antenna{} = antenna, :toon) do
+    thumb = models_thumb(nil, antenna.toons)
+
+    unless thumb, do: thumb = models_thumb(thumb, antenna.toons, [:chars])
+    unless thumb, do: thumb = List.first antenna.picture.thumbs
+    unless thumb, do: thumb = choose_thumb(antenna)
+
+    thumb
+  end
+  def choose_thumb(%Antenna{} = antenna, :diva) do
+    thumb = models_thumb(nil, antenna.divas)
+
+    unless thumb, do: thumb = List.first antenna.picture.thumbs
+    unless thumb, do: thumb = models_thumb(thumb, antenna.toons)
+    unless thumb, do: thumb = models_thumb(thumb, antenna.toons, [:chars])
+    unless thumb, do: thumb = choose_thumb(antenna)
+
+    thumb
+  end
   def choose_thumb(%Antenna{} = antenna, :video) do
     thumb = List.first antenna.picture.thumbs
+
     unless thumb, do: thumb = models_thumb(thumb, antenna.divas)
     unless thumb, do: thumb = choose_thumb(antenna)
 
@@ -146,6 +168,26 @@ defmodule Exantenna.Helpers do
       |> models_thumb(antenna.divas)
       |> models_thumb(antenna.video.metadatas)
       |> models_thumb(antenna.tags)
+  end
+  def choose_thumb(%Toon{} = toon) do
+    thumb = pick(toon.thumbs)
+
+    Enum.reduce toon.antennas, thumb, fn antenna, acc ->
+      case acc do
+        nil -> choose_thumb(antenna, :toon)
+        acc -> acc
+      end
+    end
+  end
+  def choose_thumb(%Diva{} = diva) do
+    thumb = pick(diva.thumbs)
+
+    Enum.reduce diva.antennas, thumb, fn antenna, acc ->
+      case acc do
+        nil -> choose_thumb(antenna, :diva)
+        acc -> acc
+      end
+    end
   end
 
   def models_thumb(%Thumb{} = thumb, _models), do: thumb
