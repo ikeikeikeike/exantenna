@@ -36,7 +36,7 @@ defmodule Exantenna.Router do
   scope "/", Exantenna do
     pipe_through [:browser, :browser_auth]
 
-    get "/", AntennaController, :home
+    get "/", AntennaController, :index
 
     get "/new-stuff", EntryController, :index
     get "/news.html", EntryController, :index
@@ -45,7 +45,7 @@ defmodule Exantenna.Router do
     get "/hots.html", SummaryController, :index
 
     # XXX: redirect from search path
-    get "/search.html", AntennaController, :home
+    get "/search.html", AntennaController, :index
 
     # TODO: consider redirecting below by nginx
 

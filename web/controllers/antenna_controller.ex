@@ -7,7 +7,7 @@ defmodule Exantenna.AntennaController do
   alias Exantenna.Ecto.Q
   import Ecto.Query
 
-  def home(conn, params) do
+  def index(conn, params) do
     words = params["q"]
 
     antennas =
@@ -26,7 +26,7 @@ defmodule Exantenna.AntennaController do
       |> Repo.all
 
     #  diva: Q.fuzzy_find(Diva, words)
-    render(conn, "home.html", antennas: antennas, summaries: summaries, divas: divas)
+    render(conn, "index.html", antennas: antennas, summaries: summaries, divas: divas)
   end
 
 end
