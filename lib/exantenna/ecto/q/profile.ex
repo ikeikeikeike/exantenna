@@ -1,7 +1,6 @@
 defmodule Exantenna.Ecto.Q.Profile do
   import Ecto.Query
   alias Exantenna.Repo
-  alias Exantenna.Ecto.Q.Profile
 
   @limited 99 * 99 * 99 * 99 * 10
 
@@ -34,6 +33,64 @@ defmodule Exantenna.Ecto.Q.Profile do
         |> Repo.all
 
       {letter, models}
+    end)
+  end
+
+  def get(:author, mod, query) do
+    authors =
+      mod
+      |> group_by([p], p.author)
+      |> select([p], p.author)
+      |> where([q], not is_nil(q.author))
+      |> where([q], q.author != "")
+      |> where([q], q.author != "-")
+      |> order_by([q], [q.author])
+      |> Repo.all
+
+    get :author, mod, query, authors, 10
+  end
+  def get(:author, mod, query, author), do: get :author, mod, query, author, @limited
+  def get(:author, mod, query, author,  limited) when is_bitstring(author), do: get :author, mod, query, [author], limited
+  def get(:author, mod, query, authors, limited) do
+    Enum.map(authors, fn author ->
+      models =
+        query
+        |> where([q], q.author == ^author)
+        # |> where([q], q.appeared > 0)
+        |> where([q], not is_nil(q.author))
+        |> limit(^limited)
+        |> Repo.all
+
+      {author, models}
+    end)
+  end
+
+  def get(:works, mod, query) do
+    works =
+      mod
+      |> group_by([p], p.works)
+      |> select([p], p.works)
+      |> where([q], not is_nil(q.works))
+      |> where([q], q.works != "")
+      |> where([q], q.works != "-")
+      |> order_by([q], [q.works])
+      |> Repo.all
+
+    get :works, mod, query, works, 10
+  end
+  def get(:works, mod, query, work), do: get :works, mod, query, work, @limited
+  def get(:works, mod, query, work,  limited) when is_bitstring(work), do: get :works, mod, query, [work], limited
+  def get(:works, mod, query, works, limited) do
+    Enum.map(works, fn work ->
+      models =
+        query
+        |> where([q], q.works == ^work)
+        # |> where([q], q.appeared > 0)
+        |> where([q], not is_nil(q.works))
+        |> limit(^limited)
+        |> Repo.all
+
+      {work, models}
     end)
   end
 

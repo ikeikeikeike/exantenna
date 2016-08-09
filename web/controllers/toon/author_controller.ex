@@ -5,13 +5,13 @@ defmodule Exantenna.Toon.AuthorController do
   alias Exantenna.Ecto.Q.Profile
 
   def index(conn, _params) do
-    letters = Profile.get :author, Toon.query
-    render(conn, "index.html", letters: letters, nav: letters)
+    authors = Profile.get :author, Toon, Toon.query_all(3)
+    render(conn, "index.html", authors: authors, nav: authors)
   end
 
   def sub(conn, %{"name" => name} = _params) do
-    letters = Profile.get :author, Toon.query, name
-    render(conn, "index.html", letters: letters, nav: Profile.get(:author, Toon.query))
+    authors = Profile.get :author, Toon, Toon.query_all(3), name
+    render(conn, "index.html", authors: authors, nav: Profile.get(:author, Toon, Toon))
   end
 
 end
