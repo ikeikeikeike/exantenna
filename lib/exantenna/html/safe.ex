@@ -5,8 +5,8 @@ defmodule Exantenna.HTML.Safe do
   end
 
   def sha256(data) do
-    ConCache.get_or_store(:sha256, "sha256:#{data}", fn ->
-      :crypto.hash(:sha256, data) |> Base.encode16(case: :lower)
+    ConCache.get_or_store(:common, "sha256:#{data}", fn ->
+      :crypto.hash(:common, data) |> Base.encode16(case: :lower)
     end)
   end
 

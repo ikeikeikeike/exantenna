@@ -70,6 +70,9 @@ defmodule Exantenna.Router do
     get "/suggest/tn/:search", ToonController, :suggest
     get "/suggest/cr/:search", CharController, :suggest
 
+    get "/about", AboutController, :index
+    get "/abouts.html", AboutController, :index
+
     scope "/media" do
       get "/", MediaController, :index
       get "/rss", MediaController, :rss

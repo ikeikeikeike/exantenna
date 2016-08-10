@@ -8,14 +8,13 @@ defmodule Exantenna.ToonController do
   import Ecto.Query
 
   def index(conn, params) do
-    toons =
+    pager =
       Toon.query_all(2)
       # |> where([q], q.appeared > 0)
       # |> order_by([q], [desc: q.appeared])
-      |> limit(100)
-      |> Repo.all
+      |> Repo.paginate(params)
 
-    render(conn, "index.html", toons: toons)
+    render(conn, "index.html", pager: pager)
   end
 
   def show(conn, %{"name" => name} = params) do

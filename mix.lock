@@ -59,6 +59,7 @@
   "rss": {:hex, :rss, "0.2.1", "034f2fe5250a490862e692eb34a31bb5c142913c2fe0fb093e1fd982f010e15d", [:mix], []},
   "scrape": {:git, "https://github.com/Anonyfox/elixir-scrape.git", "6e059f58d0112505657f1e0ae09c1b734609c99f", []},
   "scrivener": {:hex, :scrivener, "2.0.0", "38e59a1c37e989c40a22c019da245a86b257182aee45a074292c9038fab39678", [:mix], []},
+  "scrivener_ecto": {:hex, :scrivener_ecto, "1.0.0", "66a0c4cf722e965cd4fc8b5ad48c09409c19a5a125bf2435d2f3fb18d0d72f50", [:mix], [{:ecto, "~> 2.0", [hex: :ecto, optional: false]}, {:postgrex, "~> 0.11.2", [hex: :postgrex, optional: true]}, {:scrivener, "~> 2.0", [hex: :scrivener, optional: false]}]},
   "scrivener_html": {:git, "https://github.com/ikeikeikeike/scrivener_html.git", "1016bf33de5a12f9e39dbcdbd684c586b7c0dd1d", []},
   "simple_format": {:hex, :simple_format, "0.1.0", "18e997286ca90c7224100db7f6108de1e566f7ce93a7e84d152e24f2e52bb631", [:mix], [{:phoenix_html, "~> 2.2", [hex: :phoenix_html, optional: false]}]},
   "ssl_verify_fun": {:hex, :ssl_verify_fun, "1.1.0", "edee20847c42e379bf91261db474ffbe373f8acb56e9079acb6038d4e0bf414f", [:rebar, :make], []},

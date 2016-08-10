@@ -235,4 +235,18 @@ defmodule Exantenna.Helpers do
 
   def fallback, do: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
 
+  def random_icon_selector(name \\ "glyphicon") do
+    icons =
+      ConCache.get_or_store :common, "icon:#{name}", fn ->
+        path =
+          Application.get_env(:exantenna, Exantenna.Endpoint)[:root]
+          |> Path.join("config/icons.yml")
+
+        yml = :yamerl_constr.file path
+        :proplists.get_value '#{name}', hd(yml)
+      end
+
+    Enum.random icons
+  end
+
 end

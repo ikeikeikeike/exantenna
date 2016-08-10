@@ -46,9 +46,9 @@ exports.config = {
       },
       order: {
         before: [
+          "web/static/css/modules/custom.css",
           "bower_components/bootstrap/dist/css/bootstrap.min.css",
           "bower_components/icomoon-bower/style.css",
-          "web/static/css/modules/custom.css",
           // "bower_components/bootstrap/dist/css/bootstrap-theme.css",
         ]
       }
@@ -70,7 +70,7 @@ exports.config = {
       "deps/phoenix_html/web/static",
       "web/static",
       "test/static",
-      "bower_components/bootstrap/dist/css",
+      "bower_components/bootstrap/dist/css/bootstrap.min.css",
       "bower_components/icomoon-bower/style.css",
     ],
 

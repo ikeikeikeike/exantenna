@@ -19,7 +19,7 @@ defmodule Exantenna do
       worker(ConCache, [[ttl_check: :timer.seconds(488), ttl: :timer.seconds(60 * 60 * 24 * 3)], [name: :toons]], id: :exantenna_toons_cache),
       worker(ConCache, [[ttl_check: :timer.seconds(477), ttl: :timer.seconds(60 * 60 * 24 * 3)], [name: :divas]], id: :exantenna_divas_cache),
       worker(ConCache, [[ttl_check: :timer.seconds(466), ttl: :timer.seconds(60 * 60 * 24 * 3)], [name: :tags]], id: :exantenna_tags_cache),
-      worker(ConCache, [[ttl_check: :timer.seconds(454), ttl: :timer.seconds(60 * 60 * 24 * 2)], [name: :sha256]], id: :exantenna_sha256_cache),
+      worker(ConCache, [[ttl_check: :timer.seconds(454), ttl: :timer.seconds(60 * 60 * 24 * 2)], [name: :common]], id: :exantenna_common_cache),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
