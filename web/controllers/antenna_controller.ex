@@ -3,6 +3,7 @@ defmodule Exantenna.AntennaController do
 
   alias Exantenna.Es
   alias Exantenna.Diva
+  alias Exantenna.Toon
   alias Exantenna.Antenna
   alias Exantenna.Ecto.Q
   import Ecto.Query
@@ -19,14 +20,24 @@ defmodule Exantenna.AntennaController do
       |> Es.Paginator.paginate(Antenna.query_all, params)
 
     divas =
-      Diva.query  # TODO: query_all or query
+      Diva.query_all(2)
+      # |> where([q], q.appeared > 0)
+      # |> order_by([q], [desc: q.appeared])
+      |> limit(4)
+      |> Repo.all
+
+    toons =
+      Toon.query_all(2)
       # |> where([q], q.appeared > 0)
       # |> order_by([q], [desc: q.appeared])
       |> limit(4)
       |> Repo.all
 
     #  diva: Q.fuzzy_find(Diva, words)
-    render(conn, "index.html", antennas: antennas, summaries: summaries, divas: divas)
+    render(conn, "index.html",
+      antennas: antennas, summaries: summaries,
+      divas: divas, toons: toons
+    )
   end
 
 end

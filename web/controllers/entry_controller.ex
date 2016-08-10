@@ -28,7 +28,7 @@ defmodule Exantenna.EntryController do
       Antenna.essearch(antenna.metadata.title, params)
       |> Es.Paginator.paginate(Antenna.query_all, params)
 
-    render(conn, "show.html", antenna: antenna, antennas: antennas)
+    render(conn, "show.html", antenna: antenna, antennas: antennas, summaries: antennas)
   end
 
 end
