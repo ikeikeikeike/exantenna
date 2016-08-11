@@ -28,17 +28,24 @@ defmodule Exantenna.Es.Paginator do
     page_size = opt[:per_page]
     pages = total_pages(tirexs[:hits][:total], page_size)
 
-    %__MODULE__{
-      tirexs: tirexs,
+    st = %__MODULE__{
       entries: entries(tirexs[:hits][:hits], query),
       page_size: options[:page_size],
       page_number: page,
       total_entries: tirexs[:hits][:total],
       total_pages: pages,
-      prev_page: page - 1,
-      next_page: page + 1,
-      has_prev: page > 1,
-      has_next: page < pages,
+      tirexs: tirexs,
+    }
+
+    addition st
+  end
+
+  def addition(st) do
+    Map.merge st, %{
+      prev_page: st.page_number - 1,
+      next_page: st.page_number + 1,
+      has_prev: st.page_number > 1,
+      has_next: st.page_number < st.total_pages
     }
   end
 

@@ -1,17 +1,24 @@
 defmodule Exantenna.Blog do
   use Exantenna.Web, :model
 
+  alias Exantenna.Antenna
+  alias Exantenna.BlogVerifier
+  alias Exantenna.Penalty
+  alias Exantenna.Score
+  alias Exantenna.Thumb
+  alias Exantenna.User
+
   @json_fields ~w(name url mediatype contenttype)
   @derive {Poison.Encoder, only: Enum.map(@json_fields, &(String.to_atom(&1)))}
   schema "blogs" do
-    belongs_to :user, Exantenna.User
+    belongs_to :user, User
 
-    has_one :antenna, Exantenna.Antenna
-    has_one :penalty, {"blogs_penalties", Exantenna.Penalty}, foreign_key: :assoc_id
+    has_one :antenna, Antenna
+    has_one :penalty, {"blogs_penalties", Penalty}, foreign_key: :assoc_id
 
-    has_many :thumbs, {"blogs_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
-    has_many :scores, {"blogs_scores", Exantenna.Score}, foreign_key: :assoc_id
-    has_many :verifiers, Exantenna.BlogVerifier
+    has_many :thumbs, {"blogs_thumbs", Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
+    has_many :scores, {"blogs_scores", Score}, foreign_key: :assoc_id
+    has_many :verifiers, BlogVerifier
 
     field :name, :string
     field :explain, :string
@@ -35,9 +42,24 @@ defmodule Exantenna.Blog do
 
   @relational_fields ~w(user antenna thumbs penalty scores verifiers)a
 
+  def full_relational_fields, do: @full_relational_fields
+  @full_relational_fields [
+    :user,
+    :thumbs,
+    :penalty,
+    :scores,
+    :verifiers,
+    antenna: Antenna.full_relational_fields
+  ]
+
   def query do
     from e in __MODULE__,
     preload: ^@relational_fields
+  end
+
+  def query_all do
+    from e in __MODULE__,
+    preload: ^@full_relational_fields
   end
 
   def available(query) do

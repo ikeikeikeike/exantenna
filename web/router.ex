@@ -40,6 +40,11 @@ defmodule Exantenna.Router do
 
     get "/new-stuff", EntryController, :index
     get "/news.html", EntryController, :index
+    # TODO: need to redirect under line from /elog/v:id/:title and /elog/v:id by nginx
+    scope "/s" do
+      get "/:id", EntryController, :show
+      get "/:id/:title", EntryController, :show
+    end
 
     get "/hot-stuff", SummaryController, :index
     get "/hots.html", SummaryController, :index
@@ -47,21 +52,16 @@ defmodule Exantenna.Router do
     # XXX: redirect from search path
     get "/search.html", AntennaController, :index
 
-    # TODO: consider redirecting below by nginx
-
-    get "/divas", DivaController, :index
-    get "/divas.html", DivaController, :index  # TODO: to be redirect
-    get "/diva/:name", DivaController, :show
-
-    get "/toons", ToonController, :index
-    get "/animes.html", ToonController, :index  # TODO: to be redirect
-    get "/toon/:name", ToonController, :show
-
-    get "/characters", CharController, :index
-    get "/characters.html", CharController, :index  # TODO: to be redirect
-    get "/character/:name", CharController, :show
-
+    get "/tags", TagController, :index
+    get "/tags.html", TagController, :index
     get "/tag/:name", TagController, :show
+
+    # TODO: need to redirect under line from /blog/v:id/:title and /blog/v:id by nginx
+    get "/blogs", BlogController, :index
+    scope "/b" do
+      get "/:id", BlogController, :show
+      get "/:id/:name", BlogController, :show
+    end
 
     get "/orig", PageController, :index
 
@@ -94,11 +94,19 @@ defmodule Exantenna.Router do
       get "/atom.xml", FeedController, :xml
     end
 
-    # TODO: need to redirect under line from /elog/v:id/:title and /elog/v:id by nginx
-    scope "/s" do
-      get "/:id", EntryController, :show
-      get "/:id/:title", EntryController, :show
-    end
+    # TODO: consider redirecting below by nginx
+
+    get "/divas", DivaController, :index
+    get "/divas.html", DivaController, :index  # TODO: to be redirect
+    get "/diva/:name", DivaController, :show
+
+    get "/toons", ToonController, :index
+    get "/animes.html", ToonController, :index  # TODO: to be redirect
+    get "/toon/:name", ToonController, :show
+
+    get "/characters", CharController, :index
+    get "/characters.html", CharController, :index  # TODO: to be redirect
+    get "/character/:name", CharController, :show
 
     scope "/t", Toon, as: "t" do
 

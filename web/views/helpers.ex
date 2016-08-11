@@ -215,6 +215,9 @@ defmodule Exantenna.Helpers do
     thumb
   end
 
+  def anstget(%Antenna{} = antenna), do: antenna
+  def anstget(%{antenna: antenna}), do: anstget antenna
+
   def prev_blog(%Antenna{} = antenna) do
     Repo.one Antenna.prev_blog(Antenna.query_all, antenna)
   end

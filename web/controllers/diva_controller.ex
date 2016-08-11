@@ -18,11 +18,11 @@ defmodule Exantenna.DivaController do
   end
 
   def show(conn, %{"name" => name} = params) do
-    diva = Repo.get_by!(Diva.query_all, name: name)
+    diva = Repo.get_by!(Diva.query_all(2), name: name)
 
     antennas =
       Antenna.essearch(diva.name, params)
-      |> Es.Paginator.paginate(Antenna.query_all, params)
+      |> Es.Paginator.paginate(Antenna.query_all(1), params)
 
     render(conn, "show.html", diva: diva, antennas: antennas)
   end
