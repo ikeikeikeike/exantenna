@@ -228,9 +228,11 @@ defmodule Exantenna.Helpers do
   end
 
   def sitemeta(key), do: sitemeta(:default, key)
-  def sitemeta(:default, key), do: Application.get_env(:exantenna, :sitemetas)[:default][key]
-  def sitemeta(:video, key), do: Application.get_env(:exantenna, :sitemetas)[:video][key]
+  def sitemeta(env, key) when is_bitstring(env), do: sitemeta String.to_atom(env), key
+  def sitemeta(nil, key), do: Application.get_env(:exantenna, :sitemetas)[:default][key]
   def sitemeta(:book, key), do: Application.get_env(:exantenna, :sitemetas)[:book][key]
+  def sitemeta(:video, key), do: Application.get_env(:exantenna, :sitemetas)[:video][key]
+  def sitemeta(:default, key), do: Application.get_env(:exantenna, :sitemetas)[:default][key]
   def sitemeta(domain, key), do: Application.get_env(:exantenna, :sitemetas)[domain][key]
 
   def fallback, do: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
