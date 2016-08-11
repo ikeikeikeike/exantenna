@@ -254,4 +254,13 @@ defmodule Exantenna.Helpers do
     Enum.random icons
   end
 
+  def model_to_string(model) do
+    model.__struct__
+    |> to_string
+    |> String.split(".")
+    |> List.last
+    |> String.downcase
+  end
+
+
 end
