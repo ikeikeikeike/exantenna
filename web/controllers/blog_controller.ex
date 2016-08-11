@@ -1,7 +1,7 @@
 defmodule Exantenna.BlogController do
   use Exantenna.Web, :controller
 
-  alias Exantenna.Blog
+  alias Exantenna.Antenna
   alias Exantenna.Es.Paginator
 
   import Ecto.Query
