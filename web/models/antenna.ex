@@ -226,7 +226,9 @@ defmodule Exantenna.Antenna do
       divas: Enum.map(model.divas, &(&1.name)),
       toons: Enum.map(model.toons, &(&1.name)),
       chars: chars,
-      summray: !!model.summary,
+      is_summary: Exantenna.Filter.allow?(:summary, model),
+      is_video: Exantenna.Filter.allow?(:video, model),
+      is_book: Exantenna.Filter.allow?(:book, model),
     ]
   end
 
@@ -274,7 +276,9 @@ defmodule Exantenna.Antenna do
         indexes "toons", type: "string", index: "not_analyzed"
         indexes "chars", type: "string", index: "not_analyzed"
 
-        indexes "summary", type: "boolean"
+        indexes "is_summary", type: "boolean"
+        indexes "is_video", type: "boolean"
+        indexes "is_book", type: "boolean"
       end
 
       Es.Logger.ppdebug(index)

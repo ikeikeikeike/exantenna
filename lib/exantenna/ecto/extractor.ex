@@ -1,5 +1,6 @@
 defmodule Exantenna.Ecto.Extractor do
   alias Exantenna.Antenna
+  alias Exantenna.Ecto.Q
 
   def tag(%Antenna{} = antenna) do
     tags = [
@@ -20,22 +21,29 @@ defmodule Exantenna.Ecto.Extractor do
     antenna.picture.thumbs
       ++ antenna.entry.thumbs
       ++ Enum.reduce(antenna.toons, [], fn model, acc ->
-           acc ++ model.thumbs
+           acc ++ defget(model.thumbs, [])
          end)
       ++ Enum.reduce(antenna.toons, [], fn model, acc ->
            acc ++ Enum.reduce model.chars, [], fn mo, ac ->
-             ac ++ mo.thumbs
+             ac ++ defget(mo.thumbs, [])
            end
          end)
       ++ Enum.reduce(antenna.divas, [], fn model, acc ->
-          acc ++ model.thumbs
+          acc ++ defget(model.thumbs, [])
          end)
       ++ Enum.reduce(antenna.video.metadatas, [], fn model, acc ->
-          acc ++ model.thumbs
+          acc ++ defget(model.thumbs, [])
          end)
       ++ Enum.reduce(antenna.tags, [], fn model, acc ->
-          acc ++ model.thumbs
+          acc ++ defget(model.thumbs, [])
          end)
+  end
+
+  defp defget(model, default) do
+    case model do
+      %Ecto.Association.NotLoaded{} -> default
+      _ -> model
+    end
   end
 
 end
