@@ -22,5 +22,7 @@ defmodule Exantenna.Score do
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> validate_inclusion(:name, @names)
   end
+
 end

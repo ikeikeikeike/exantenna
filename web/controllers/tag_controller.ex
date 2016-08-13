@@ -3,29 +3,32 @@ defmodule Exantenna.TagController do
 
   alias Exantenna.Es
   alias Exantenna.Repo
+
   alias Exantenna.Tag
   alias Exantenna.Antenna
   import Ecto.Query
 
+  # TODO: below
+
   def index(conn, params) do
-    tags =
-      Tag.query  # TODO: query_all or query
+    pager =
+      Tag.query_all(2)
       # |> where([q], q.appeared > 0)
       # |> order_by([q], [desc: q.appeared])
-      |> limit(100)
-      |> Repo.all
+      |> Repo.paginate(params)
+      |> Es.Paginator.addition
 
-    render(conn, "index.html", tags: tags)
+    render(conn, "index.html", pager: pager)
   end
 
   def show(conn, %{"name" => name} = params) do
-    tag = Repo.get_by!(Tag.query_all, name: name)
+    diva = Repo.get_by!(Tag.query_all(2), name: name)
 
     antennas =
-      Antenna.essearch(tag.name, params)
+      Antenna.essearch(diva.name, params)
       |> Es.Paginator.paginate(Antenna.query_all, params)
 
-    render(conn, "show.html", tag: tag, antennas: antennas)
+    render(conn, "show.html", diva: diva, antennas: antennas)
   end
 
   def suggest(conn, %{"search" => search}) do

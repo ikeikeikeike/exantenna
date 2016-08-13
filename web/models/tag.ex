@@ -5,11 +5,11 @@ defmodule Exantenna.Tag do
 
   schema "tags" do
     has_many :thumbs, {"tags_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
-    has_many :scores, {"tags_scores", Exantenna.Score}, foreign_key: :assoc_id
+    has_many :scores, {"tags_scores", Exantenna.Score}, foreign_key: :assoc_id, on_replace: :delete
 
     many_to_many :antennas, Exantenna.Antenna, join_through: "antennas_tags"
-    many_to_many :chars, Exantenna.Antenna, join_through: "chars_tags"
-    many_to_many :toons, Exantenna.Antenna, join_through: "toons_tags"
+    many_to_many :chars, Exantenna.Char, join_through: "chars_tags"
+    many_to_many :toons, Exantenna.Toon, join_through: "toons_tags"
 
     field :name, :string
     field :kana, :string
@@ -22,6 +22,30 @@ defmodule Exantenna.Tag do
 
   @required_fields ~w(name)
   @optional_fields ~w(kana romaji orig gyou)
+
+  @relational_fields ~w(antennas scores thumbs chars toons)a
+
+  def full_relational_fields, do: @full_relational_fields
+  @full_relational_fields @relational_fields
+
+  def query do
+    from e in __MODULE__,
+    preload: ^@relational_fields
+  end
+
+  def query_all do
+    from e in __MODULE__,
+    preload: ^@full_relational_fields
+  end
+
+  def query_all(limit) do
+    antennas =
+      from q in Antenna.query_all,
+        limit: ^limit
+
+    from q in query,
+    preload: [antennas: ^antennas]
+  end
 
   def changeset(model, params \\ :invalid) do
     model
@@ -44,12 +68,21 @@ defmodule Exantenna.Tag do
 
     adding =
       tags ++ item["tags"]
+      |> Enum.reduce([], fn name, acc ->
+        acc ++ String.split(name, [" ", "　", "・"])
+      end)
       |> Enum.uniq
 
     tags =
       Exantenna.Ecto.Changeset.get_or_changeset(__MODULE__, adding)
 
     put_assoc(change(antenna), :tags, tags)
+  end
+
+  def aggs_changeset(model, params \\ :invalid) do
+    model
+    |> cast(params, @required_fields, @optional_fields)
+    |> cast_assoc(:scores, required: true)
   end
 
   use Exantenna.Es

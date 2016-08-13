@@ -1,4 +1,4 @@
-defmodule Exantenna.Repo.Migrations.AntennasPenalties do
+defmodule Exantenna.Repo.Migrations.CreateAntennasPenalties do
   use Ecto.Migration
 
   def change do

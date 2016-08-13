@@ -157,7 +157,7 @@ defmodule Exantenna.Antenna do
 
             aggs do
               tags do
-                terms field: "tags", size: 20, order: [_count: "desc"]
+                terms field: "tags",  size: 20, order: [_count: "desc"]
               end
               toons do
                 terms field: "toons", size: 20, order: [_count: "desc"]
@@ -185,6 +185,30 @@ defmodule Exantenna.Antenna do
 
         Es.Logger.ppdebug(q)
 
+        q
+      end
+
+    case result do
+      {_, _, map} -> map
+      r -> r
+    end
+  end
+
+  def esaggs(field) do
+    result =
+      Tirexs.DSL.define fn ->
+        import Tirexs.Search
+        import Tirexs.Query
+
+        q =
+          search [index: esindex, fields: [], from: 0, size: 0] do
+            aggs do
+              values do
+                terms field: field, size: 50000, order: [_count: "desc"]
+              end
+            end
+          end
+        Es.Logger.ppdebug(q)
         q
       end
 
@@ -255,13 +279,22 @@ defmodule Exantenna.Antenna do
         end
       end
 
+      Es.Logger.ppdebug(index)
+
+    index end)
+
+    Tirexs.DSL.define(fn ->
+      use Tirexs.Mapping
+
+      index = [type: estype, index: esindex(name)]
+
       mappings do
         indexes "title", type: "string", analyzer: "ja_analyzer"
-        indexes "published_at", type: "date",   format: "dateOptionalTime"
+        indexes "published_at", type: "date", format: "dateOptionalTime"
         # indexes "video_title",    type: "string", analyzer: "ja_analyzer"
         # indexes "video_duration", type: "long"
         # indexes "sites",          type: "string", index: "not_analyzed"
-        indexes "tags", type: "string", index: "not_analyzed"
+        indexes "tags",  type: "string", index: "not_analyzed"
         indexes "divas", type: "string", index: "not_analyzed"
         indexes "toons", type: "string", index: "not_analyzed"
         indexes "chars", type: "string", index: "not_analyzed"

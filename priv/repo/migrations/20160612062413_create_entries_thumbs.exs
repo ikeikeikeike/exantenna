@@ -1,4 +1,4 @@
-defmodule Exantenna.Repo.Migrations.EntriesThumbs do
+defmodule Exantenna.Repo.Migrations.CreateEntriesThumbs do
   use Ecto.Migration
 
   def change do

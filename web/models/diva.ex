@@ -9,7 +9,7 @@ defmodule Exantenna.Diva do
   @derive {Poison.Encoder, only: Enum.map(@json_fields, &(String.to_atom(&1)))}
   schema "divas" do
     has_many :thumbs, {"divas_thumbs", Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
-    has_many :scores, {"divas_scores", Exantenna.Score}, foreign_key: :assoc_id
+    has_many :scores, {"divas_scores", Exantenna.Score}, foreign_key: :assoc_id, on_replace: :delete
     many_to_many :antennas, Antenna, join_through: "antennas_divas"
 
     field :name, :string
@@ -93,6 +93,12 @@ defmodule Exantenna.Diva do
       Exantenna.Ecto.Changeset.get_or_changeset(__MODULE__, exists)
 
     put_assoc(change(antenna), :divas, divas)
+  end
+
+  def aggs_changeset(model, params \\ :invalid) do
+    model
+    |> cast(params, @required_fields, @optional_fields)
+    |> cast_assoc(:scores, required: true)
   end
 
   # for autocomplete below.

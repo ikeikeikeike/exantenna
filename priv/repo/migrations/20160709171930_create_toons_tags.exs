@@ -1,4 +1,4 @@
-defmodule Exantenna.Repo.Migrations.ToonsTags do
+defmodule Exantenna.Repo.Migrations.CreateToonsTags do
   use Ecto.Migration
 
   def change do

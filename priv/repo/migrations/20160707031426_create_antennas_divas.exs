@@ -1,4 +1,4 @@
-defmodule Exantenna.Repo.Migrations.AntennasDivas do
+defmodule Exantenna.Repo.Migrations.CreateAntennasDivas do
   use Ecto.Migration
 
   def change do

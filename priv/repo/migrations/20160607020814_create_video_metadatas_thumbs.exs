@@ -1,4 +1,4 @@
-defmodule Exantenna.Repo.Migrations.VideoMetadatasThumbs do
+defmodule Exantenna.Repo.Migrations.CreateVideoMetadatasThumbs do
   use Ecto.Migration
 
   def change do

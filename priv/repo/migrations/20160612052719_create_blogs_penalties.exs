@@ -1,4 +1,4 @@
-defmodule Exantenna.Repo.Migrations.BlogsPenalties do
+defmodule Exantenna.Repo.Migrations.CreateBlogsPenalties do
   use Ecto.Migration
 
   def change do

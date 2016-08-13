@@ -10,7 +10,7 @@ defmodule Exantenna.Toon do
   @derive {Poison.Encoder, only: Enum.map(@json_fields, &(String.to_atom(&1)))}
   schema "toons" do
     has_many :thumbs, {"toons_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
-    has_many :scores, {"toons_scores", Exantenna.Score}, foreign_key: :assoc_id
+    has_many :scores, {"toons_scores", Exantenna.Score}, foreign_key: :assoc_id, on_replace: :delete
 
     many_to_many :tags, Tag, join_through: "toons_tags"
     many_to_many :chars, Char, join_through: "toons_chars"
@@ -88,6 +88,12 @@ defmodule Exantenna.Toon do
       |> Exantenna.Ecto.Changeset.get_or_changeset(names)
 
     put_assoc(change(antenna), :toons, toons)
+  end
+
+  def aggs_changeset(model, params \\ :invalid) do
+    model
+    |> cast(params, @required_fields, @optional_fields)
+    |> cast_assoc(:scores, required: true)
   end
 
   # for autocomplete below.

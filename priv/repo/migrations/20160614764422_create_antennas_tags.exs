@@ -1,4 +1,4 @@
-defmodule Exantenna.Repo.Migrations.AntennasTags do
+defmodule Exantenna.Repo.Migrations.CreateAntennasTags do
   use Ecto.Migration
 
   def change do

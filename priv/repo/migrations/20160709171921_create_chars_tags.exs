@@ -1,4 +1,4 @@
-defmodule Exantenna.Repo.Migrations.CharsTags do
+defmodule Exantenna.Repo.Migrations.CreateCharsTags do
   use Ecto.Migration
 
   def change do

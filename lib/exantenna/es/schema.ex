@@ -18,6 +18,12 @@ defmodule Exantenna.Es.Schema do
         end
       end
 
+      Es.Logger.ppdebug(index)
+    index end)
+
+    Tirexs.DSL.define(fn ->
+      use Tirexs.Mapping
+
       mappings do
         indexes "name",   type: "string", analyzer: "ngram_analyzer"
         indexes "kana",   type: "string", analyzer: "ngram_analyzer"
@@ -26,7 +32,6 @@ defmodule Exantenna.Es.Schema do
       end
 
       Es.Logger.ppdebug(index)
-
     index end)
 
   end
