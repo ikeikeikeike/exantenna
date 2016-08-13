@@ -9,6 +9,7 @@ defmodule Exantenna.Char do
   @derive {Poison.Encoder, only: Enum.map(@json_fields, &(String.to_atom(&1)))}
   schema "chars" do
     has_many :thumbs, {"chars_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
+    has_many :scores, {"chars_scores", Exantenna.Score}, foreign_key: :assoc_id
 
     many_to_many :tags, Exantenna.Tag, join_through: "chars_tags"
     many_to_many :toons, Exantenna.Toon, join_through: "toons_chars"

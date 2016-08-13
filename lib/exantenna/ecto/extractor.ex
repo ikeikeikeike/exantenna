@@ -46,4 +46,15 @@ defmodule Exantenna.Ecto.Extractor do
     end
   end
 
+  def model_to_string(model) when is_map(model), do: model_to_string model.__struct__
+  def model_to_string(st) do
+    st
+    |> to_string
+    |> String.split(".")
+    |> List.last
+    |> String.downcase
+  end
+
+  def toname(model), do: model_to_string model
+
 end

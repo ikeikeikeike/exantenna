@@ -1,6 +1,8 @@
 defmodule Exantenna.Ecto.Q.Profile do
   import Ecto.Query
   alias Exantenna.Repo
+  alias Exantenna.Score
+  import Exantenna.Ecto.Extractor, only: [toname: 1]
 
   @limited 99 * 99 * 99 * 99 * 10
 
@@ -17,17 +19,19 @@ defmodule Exantenna.Ecto.Q.Profile do
     wa
   }
 
-  def get(:atoz, query) do
-    get :atoz, query, @kunrei_romaji, 10
+  defp joinner(mod), do: {"#{toname mod}s_scores", Score}
+
+  def get(:atoz, mod, query) do
+    get :atoz, mod, query, @kunrei_romaji, 10
   end
-  def get(:atoz, query, letter), do: get :atoz, query, letter, @limited
-  def get(:atoz, query, letter,  limited) when is_bitstring(letter), do: get :atoz, query, [letter], limited
-  def get(:atoz, query, letters, limited) do
+  def get(:atoz, mod, query, letter), do: get :atoz, mod, query, letter, @limited
+  def get(:atoz, mod, query, letter,  limited) when is_bitstring(letter), do: get :atoz, mod, query, [letter], limited
+  def get(:atoz, mod, query, letters, limited) do
     Enum.map(letters, fn letter ->
       models =
         query
+        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
         |> where([q], q.gyou == ^letter)
-        # |> where([q], q.appeared > 0)
         |> where([q], not is_nil(q.gyou))
         |> limit(^limited)
         |> Repo.all
@@ -41,6 +45,7 @@ defmodule Exantenna.Ecto.Q.Profile do
       mod
       |> group_by([p], p.author)
       |> select([p], p.author)
+      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
       |> where([q], not is_nil(q.author))
       |> where([q], q.author != "")
       |> where([q], q.author != "-")
@@ -55,8 +60,8 @@ defmodule Exantenna.Ecto.Q.Profile do
     Enum.map(authors, fn author ->
       models =
         query
+        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
         |> where([q], q.author == ^author)
-        # |> where([q], q.appeared > 0)
         |> where([q], not is_nil(q.author))
         |> limit(^limited)
         |> Repo.all
@@ -70,6 +75,7 @@ defmodule Exantenna.Ecto.Q.Profile do
       mod
       |> group_by([p], p.works)
       |> select([p], p.works)
+      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
       |> where([q], not is_nil(q.works))
       |> where([q], q.works != "")
       |> where([q], q.works != "-")
@@ -84,6 +90,7 @@ defmodule Exantenna.Ecto.Q.Profile do
     Enum.map(works, fn work ->
       models =
         query
+        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
         |> where([q], q.works == ^work)
         # |> where([q], q.appeared > 0)
         |> where([q], not is_nil(q.works))
@@ -94,16 +101,17 @@ defmodule Exantenna.Ecto.Q.Profile do
     end)
   end
 
-  def get(:blood, query) do
+  def get(:blood, mod, query) do
     types = ["A", "B", "O", "AB"]
-    get :blood, query, types, 10
+    get :blood, mod, query, types, 10
   end
-  def get(:blood, query, type), do: get :blood, query, type, @limited
-  def get(:blood, query, type,  limited) when is_bitstring(type), do: get :blood, query, [type], limited
-  def get(:blood, query, types, limited) do
+  def get(:blood, mod, query, type), do: get :blood, mod, query, type, @limited
+  def get(:blood, mod, query, type,  limited) when is_bitstring(type), do: get :blood, mod, query, [type], limited
+  def get(:blood, mod, query, types, limited) do
     Enum.map(types, fn blood ->
       divas =
         query
+        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
         |> where([q], q.blood == ^blood)
         # |> where([q], q.appeared > 0)
         |> where([q], not is_nil(q.blood))
@@ -113,17 +121,18 @@ defmodule Exantenna.Ecto.Q.Profile do
     end)
   end
 
-  def get(:bracup, query) do
+  def get(:bracup, mod, query) do
     cups = Enum.map(?A..?Z, &IO.iodata_to_binary([&1]))
-    get :bracup, query, cups, 10
+    get :bracup, mod, query, cups, 10
   end
 
-  def get(:bracup, query, cup), do: get :bracup, query, cup, @limited
-  def get(:bracup, query, cup,  limited) when is_bitstring(cup), do: get :bracup, query, [cup], limited
-  def get(:bracup, query, cups, limited) do
+  def get(:bracup, mod, query, cup), do: get :bracup, mod, query, cup, @limited
+  def get(:bracup, mod, query, cup,  limited) when is_bitstring(cup), do: get :bracup, mod, query, [cup], limited
+  def get(:bracup, mod, query, cups, limited) do
     Enum.map(cups, fn bracup ->
       divas =
         query
+        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
         |> where([q], q.bracup == ^bracup)
         # |> where([q], q.appeared > 0)
         |> where([q], not is_nil(q.bracup))
@@ -134,25 +143,26 @@ defmodule Exantenna.Ecto.Q.Profile do
     end)
   end
 
-  def get(:height, query) do
+  def get(:height, mod, query) do
     range =
       [
         130, 135, 140, 145, 150, 155, 160,
         165, 170, 175, 180, 185, 190
       ]
 
-    get(:height, query, range, 10)
+    get(:height, mod, query, range, 10)
   end
-  def get(:height, query, numeric), do: get :height, query, numeric, @limited
-  def get(:height, query, numeric, limited) when is_integer(numeric), do: get :height, query, [numeric], limited
-  def get(:height, query, numeric, limited) when is_bitstring(numeric) do
+  def get(:height, mod, query, numeric), do: get :height, query, numeric, @limited
+  def get(:height, mod, query, numeric, limited) when is_integer(numeric), do: get :height, mod, query, [numeric], limited
+  def get(:height, mod, query, numeric, limited) when is_bitstring(numeric) do
     {n, _} = Integer.parse numeric
-    get :height, query, [n], limited
+    get :height, mod, query, [n], limited
   end
-  def get(:height, query, range, limited) when is_list(range) do
+  def get(:height, mod, query, range, limited) when is_list(range) do
     Enum.map(range, fn height ->
       divas =
         query
+        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
         |> where([q], q.height >= ^height)
         |> where([q], q.height < ^(height + 5))
         |> where([q], q.height > 130)
@@ -166,22 +176,23 @@ defmodule Exantenna.Ecto.Q.Profile do
   end
 
 
-  def get(:waist, query) do
+  def get(:waist, mod, query) do
     range =
       [40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
 
-    get(:waist, query, range, 10)
+    get(:waist, mod, query, range, 10)
   end
-  def get(:waist, query, numeric), do: get :waist, query, numeric, @limited
-  def get(:waist, query, numeric, limited) when is_integer(numeric), do: get :waist, query, [numeric], limited
-  def get(:waist, query, numeric, limited) when is_bitstring(numeric) do
+  def get(:waist, mod, query, numeric), do: get :waist, mod, query, numeric, @limited
+  def get(:waist, mod, query, numeric, limited) when is_integer(numeric), do: get :waist, mod, query, [numeric], limited
+  def get(:waist, mod, query, numeric, limited) when is_bitstring(numeric) do
     {n, _} = Integer.parse numeric
-    get :waist, query, [n], limited
+    get :waist, mod, query, [n], limited
   end
-  def get(:waist, query, range, limited) when is_list(range) do
+  def get(:waist, mod, query, range, limited) when is_list(range) do
     Enum.map(range, fn waist ->
       divas =
         query
+        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
         |> where([q], q.waist >= ^waist)
         |> where([q], q.waist < ^(waist + 5))
         |> where([q], q.waist > 40)
@@ -194,25 +205,26 @@ defmodule Exantenna.Ecto.Q.Profile do
     end)
   end
 
-  def get(:hip, query) do
+  def get(:hip, mod, query) do
     range =
       [
         50, 55, 60, 65, 70, 75, 80, 85,
         90, 95, 100, 105, 110, 115, 120
       ]
 
-    get(:hip, query, range, 10)
+    get(:hip, mod, query, range, 10)
   end
-  def get(:hip, query, numeric), do: get :hip, query, numeric, @limited
-  def get(:hip, query, numeric, limited) when is_integer(numeric), do: get :hip, query, [numeric], limited
-  def get(:hip, query, numeric, limited) when is_bitstring(numeric) do
+  def get(:hip, mod, query, numeric), do: get :hip, mod, query, numeric, @limited
+  def get(:hip, mod, query, numeric, limited) when is_integer(numeric), do: get :hip, mod, query, [numeric], limited
+  def get(:hip, mod, query, numeric, limited) when is_bitstring(numeric) do
     {n, _} = Integer.parse numeric
-    get :hip, query, [n], limited
+    get :hip, mod, query, [n], limited
   end
-  def get(:hip, query, range, limited) do
+  def get(:hip, mod, query, range, limited) do
     Enum.map(range, fn hip ->
       divas =
         query
+        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
         |> where([q], q.hip >= ^hip)
         |> where([q], q.hip < ^(hip + 5))
         |> where([q], q.hip > 50)
@@ -225,24 +237,25 @@ defmodule Exantenna.Ecto.Q.Profile do
     end)
   end
 
-  def get(:bust, query) do
+  def get(:bust, mod, query) do
     range = [
       60, 65, 70, 75, 80, 85, 90, 95, 100,
       105, 110, 115, 120, 125, 130, 135
     ]
 
-    get(:bust, query, range, 10)
+    get(:bust, mod, query, range, 10)
   end
-  def get(:bust, query, numeric), do: get :bust, query, numeric, @limited
-  def get(:bust, query, numeric, limited) when is_integer(numeric), do: get :bust, query, [numeric], limited
-  def get(:bust, query, numeric, limited) when is_bitstring(numeric) do
+  def get(:bust, mod, query, numeric), do: get :bust, mod, query, numeric, @limited
+  def get(:bust, mod, query, numeric, limited) when is_integer(numeric), do: get :bust, mod, query, [numeric], limited
+  def get(:bust, mod, query, numeric, limited) when is_bitstring(numeric) do
     {n, _} = Integer.parse numeric
-    get :bust, query, [n], limited
+    get :bust, mod, query, [n], limited
   end
-  def get(:bust, query, range, limited) when is_list(range) do
+  def get(:bust, mod, query, range, limited) when is_list(range) do
     Enum.map(range, fn bust ->
       divas =
         query
+        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
         |> where([q], q.bust >= ^bust)
         |> where([q], q.bust < ^(bust + 5))
         |> where([q], q.bust > 60)
@@ -265,6 +278,7 @@ defmodule Exantenna.Ecto.Q.Profile do
     birthdays =
       mod
       |> select([p], p.birthday)
+      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
       # |> where([q], q.appeared > 0)
       |> where([q], not is_nil(q.birthday))
       |> where([q], q.birthday  < ^next_month)
@@ -277,6 +291,7 @@ defmodule Exantenna.Ecto.Q.Profile do
 
     divas =
       query
+      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
       # |> where([q], q.appeared > 0)
       |> where([q], not is_nil(q.birthday))
       |> where([q], q.birthday  < ^next_month)
@@ -290,6 +305,7 @@ defmodule Exantenna.Ecto.Q.Profile do
     birthdays =
       mod
       |> select([p], p.birthday)
+      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
       # |> where([q], q.appeared > 0)
       |> where([q], not is_nil(q.birthday))
       |> where([q], q.birthday <= ^"#{year}-12-31")
@@ -302,6 +318,7 @@ defmodule Exantenna.Ecto.Q.Profile do
 
    divas =
       query
+      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
       # |> where([q], q.appeared > 0)
       |> where([q], not is_nil(q.birthday))
       |> where([q], q.birthday <= ^"#{year}-12-31")
@@ -315,6 +332,7 @@ defmodule Exantenna.Ecto.Q.Profile do
     mod
     |> group_by([p], p.birthday)
     |> select([p], p.birthday)
+    |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
     # |> where([q], q.appeared > 0)
     |> where([q], not is_nil(q.birthday))
     |> order_by([q], [desc: q.birthday])
@@ -334,6 +352,7 @@ defmodule Exantenna.Ecto.Q.Profile do
     releases =
       mod
       |> select([q], q.release_date)
+      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
       # |> where([q], q.appeared > 0)
       |> where([q], not is_nil(q.release_date))
       |> where([q], q.release_date  < ^next_month)
@@ -346,6 +365,7 @@ defmodule Exantenna.Ecto.Q.Profile do
 
     divas =
       query
+      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
       # |> where([q], q.appeared > 0)
       |> where([q], not is_nil(q.release_date))
       |> where([q], q.release_date  < ^next_month)
@@ -359,6 +379,7 @@ defmodule Exantenna.Ecto.Q.Profile do
     releases =
       mod
       |> select([p], p.release_date)
+      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
       # |> where([q], q.appeared > 0)
       |> where([q], not is_nil(q.release_date))
       |> where([q], q.release_date <= ^"#{year}-12-31")
@@ -371,6 +392,7 @@ defmodule Exantenna.Ecto.Q.Profile do
 
    toons =
       query
+      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
       # |> where([q], q.appeared > 0)
       |> where([q], not is_nil(q.release_date))
       |> where([q], q.release_date <= ^"#{year}-12-31")
@@ -384,6 +406,7 @@ defmodule Exantenna.Ecto.Q.Profile do
     mod
     |> group_by([p], p.release_date)
     |> select([p], p.release_date)
+    |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
     # |> where([q], q.appeared > 0)
     |> where([q], not is_nil(q.release_date))
     |> order_by([q], [desc: q.release_date])

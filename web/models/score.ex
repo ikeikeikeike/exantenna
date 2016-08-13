@@ -16,6 +16,7 @@ defmodule Exantenna.Score do
     domain
     indaily  inweekly  inmonthly  inyearly  intotally
     outdaily outweekly outmonthly outyearly outtotally
+    tag_appeared char_appeared diva_appeared toon_appeared
   )
 
   def changeset(model, params \\ :invalid) do

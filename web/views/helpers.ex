@@ -95,6 +95,7 @@ defmodule Exantenna.Helpers do
   end
 
   defdelegate blank?(word), to: Exantenna.Blank, as: :blank?
+  defdelegate model_to_string(model), to: Exantenna.Ecto.Extractor, as: :model_to_string
 
   def human_datetime(datetime) do
     Timex.format! datetime, "%F %R", :strftime
@@ -253,14 +254,5 @@ defmodule Exantenna.Helpers do
 
     Enum.random icons
   end
-
-  def model_to_string(model) do
-    model.__struct__
-    |> to_string
-    |> String.split(".")
-    |> List.last
-    |> String.downcase
-  end
-
 
 end
