@@ -4,7 +4,7 @@ defmodule Exantenna.Ecto.Q.Profile do
   alias Exantenna.Score
   import Exantenna.Ecto.Extractor, only: [toname: 1]
 
-  @limited 99 * 99 * 99 * 99 * 10
+  @limit 99 * 99 * 99 * 99 * 10
 
   @kunrei_romaji ~w{
     a i u e o
@@ -19,252 +19,237 @@ defmodule Exantenna.Ecto.Q.Profile do
     wa
   }
 
-  defp joinner(mod), do: {"#{toname mod}s_scores", Score}
-
-  def get(:atoz, mod, query) do
-    get :atoz, mod, query, @kunrei_romaji, 10
+  def get(:atoz, %{value: nil} = m) do
+    get :atoz, Map.merge(m, %{value: @kunrei_romaji, limit: 10})
   end
-  def get(:atoz, mod, query, letter), do: get :atoz, mod, query, letter, @limited
-  def get(:atoz, mod, query, letter,  limited) when is_bitstring(letter), do: get :atoz, mod, query, [letter], limited
-  def get(:atoz, mod, query, letters, limited) do
-    Enum.map(letters, fn letter ->
-      models =
-        query
-        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-        |> where([q], q.gyou == ^letter)
-        |> where([q], not is_nil(q.gyou))
-        |> limit(^limited)
-        |> Repo.all
+  def get(:atoz, m) do
+    Enum.map(m[:value], fn letter ->
+      qs =
+        from [c, s] in joinner(m),
+           where: c.gyou == ^letter
+             and not is_nil(c.gyou),
+           # order_by: [asc: c.gyou],
+           limit: ^m[:limit]
 
-      {letter, models}
+      {letter, Repo.all(qs)}
     end)
   end
 
-  def get(:author, mod, query) do
-    authors =
-      mod
-      |> group_by([p], p.author)
-      |> select([p], p.author)
-      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-      |> where([q], not is_nil(q.author))
-      |> where([q], q.author != "")
-      |> where([q], q.author != "-")
-      |> order_by([q], [q.author])
-      |> Repo.all
-
-    get :author, mod, query, authors, 10
-  end
-  def get(:author, mod, query, author), do: get :author, mod, query, author, @limited
-  def get(:author, mod, query, author,  limited) when is_bitstring(author), do: get :author, mod, query, [author], limited
-  def get(:author, mod, query, authors, limited) do
-    Enum.map(authors, fn author ->
-      models =
-        query
-        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-        |> where([q], q.author == ^author)
-        |> where([q], not is_nil(q.author))
-        |> limit(^limited)
-        |> Repo.all
-
-      {author, models}
-    end)
-  end
-
-  def get(:works, mod, query) do
-    works =
-      mod
-      |> group_by([p], p.works)
-      |> select([p], p.works)
-      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-      |> where([q], not is_nil(q.works))
-      |> where([q], q.works != "")
-      |> where([q], q.works != "-")
-      |> order_by([q], [q.works])
-      |> Repo.all
-
-    get :works, mod, query, works, 10
-  end
-  def get(:works, mod, query, work), do: get :works, mod, query, work, @limited
-  def get(:works, mod, query, work,  limited) when is_bitstring(work), do: get :works, mod, query, [work], limited
-  def get(:works, mod, query, works, limited) do
-    Enum.map(works, fn work ->
-      models =
-        query
-        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-        |> where([q], q.works == ^work)
-        # |> where([q], q.appeared > 0)
-        |> where([q], not is_nil(q.works))
-        |> limit(^limited)
-        |> Repo.all
-
-      {work, models}
-    end)
-  end
-
-  def get(:blood, mod, query) do
+  def get(:blood, %{value: nil} = m) do
     types = ["A", "B", "O", "AB"]
-    get :blood, mod, query, types, 10
+    get :blood, Map.merge(m, %{value: types, limit: 10})
   end
-  def get(:blood, mod, query, type), do: get :blood, mod, query, type, @limited
-  def get(:blood, mod, query, type,  limited) when is_bitstring(type), do: get :blood, mod, query, [type], limited
-  def get(:blood, mod, query, types, limited) do
-    Enum.map(types, fn blood ->
-      divas =
-        query
-        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-        |> where([q], q.blood == ^blood)
-        # |> where([q], q.appeared > 0)
-        |> where([q], not is_nil(q.blood))
-        |> limit(^limited)
-        |> Repo.all
-      {blood, divas}
+  def get(:blood, m) do
+    Enum.map(m[:value], fn blood ->
+      qs =
+        from [c, s] in joinner(m),
+           where: c.blood == ^blood
+             and not is_nil(c.blood),
+           # order_by: [asc: c.blood],
+           limit: ^m[:limit]
+
+      {blood, Repo.all(qs)}
     end)
   end
 
-  def get(:bracup, mod, query) do
+  def get(:bracup, %{value: nil} = m) do
     cups = Enum.map(?A..?Z, &IO.iodata_to_binary([&1]))
-    get :bracup, mod, query, cups, 10
+    get :bracup, Map.merge(m, %{value: cups, limit: 10})
   end
 
-  def get(:bracup, mod, query, cup), do: get :bracup, mod, query, cup, @limited
-  def get(:bracup, mod, query, cup,  limited) when is_bitstring(cup), do: get :bracup, mod, query, [cup], limited
-  def get(:bracup, mod, query, cups, limited) do
-    Enum.map(cups, fn bracup ->
-      divas =
-        query
-        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-        |> where([q], q.bracup == ^bracup)
-        # |> where([q], q.appeared > 0)
-        |> where([q], not is_nil(q.bracup))
-        |> order_by([q], [asc: q.bust])
-        |> limit(^limited)
-        |> Repo.all
-      {bracup, divas}
+  def get(:bracup, m) do
+    Enum.map(m[:value], fn bracup ->
+      qs =
+        from [c, s] in joinner(m),
+           where: c.bracup == ^bracup
+             and not is_nil(c.bracup),
+           # order_by: [asc: c.bust],
+           limit: ^m[:limit]
+
+      {bracup, Repo.all(qs)}
     end)
   end
 
-  def get(:height, mod, query) do
+  def get(:height, %{value: nil} = m) do
     range =
       [
         130, 135, 140, 145, 150, 155, 160,
         165, 170, 175, 180, 185, 190
       ]
+    get :height, Map.merge(m, %{value: range, limit: 10})
+  end
 
-    get(:height, mod, query, range, 10)
+  def get(:height, %{value: value} = m) when is_integer(value), do: get :height, Map.merge(m, %{value: [value]})
+  def get(:height, %{value: value} = m) when is_list(value) do
+    values =
+      Enum.map value, fn v ->
+        if is_bitstring(v) do
+          {v, _} = Integer.parse v
+        end
+        v
+      end
+    get :height, Map.merge(m, %{value: values})
   end
-  def get(:height, mod, query, numeric), do: get :height, query, numeric, @limited
-  def get(:height, mod, query, numeric, limited) when is_integer(numeric), do: get :height, mod, query, [numeric], limited
-  def get(:height, mod, query, numeric, limited) when is_bitstring(numeric) do
-    {n, _} = Integer.parse numeric
-    get :height, mod, query, [n], limited
-  end
-  def get(:height, mod, query, range, limited) when is_list(range) do
-    Enum.map(range, fn height ->
-      divas =
-        query
-        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-        |> where([q], q.height >= ^height)
-        |> where([q], q.height < ^(height + 5))
-        |> where([q], q.height > 130)
-        # |> where([q], q.appeared > 0)
-        |> where([q], not is_nil(q.height))
-        |> order_by([q], [asc: q.height])
-        |> limit(^limited)
-        |> Repo.all
-      {height, divas}
+  def get(:height, m) do
+    Enum.map(m[:value], fn height ->
+      qs =
+        from [c, s] in joinner(m),
+           where: c.height >= ^height
+             and  c.height < ^(height + 5)
+             and  c.height > 130
+             and not is_nil(c.height),
+           # order_by: [asc: c.height],
+           limit: ^m[:limit]
+
+      {height, Repo.all(qs)}
     end)
   end
 
-
-  def get(:waist, mod, query) do
+  def get(:waist, %{value: nil} = m) do
     range =
       [40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
+    get :waist, Map.merge(m, %{value: range, limit: 10})
+  end
+  def get(:waist, %{value: value} = m) when is_integer(value), do: get :waist, Map.merge(m, %{value: [value]})
+  def get(:waist, %{value: value} = m) when is_list(value) do
+    values =
+      Enum.map value, fn v ->
+        if is_bitstring(v) do
+          {v, _} = Integer.parse v
+        end
+        v
+      end
+    get :waist, Map.merge(m, %{value: values})
+  end
+  def get(:waist, m) do
+    Enum.map(m[:value], fn waist ->
+      qs =
+        from [c, s] in joinner(m),
+           where: c.waist >= ^waist
+             and  c.waist < ^(waist + 5)
+             and  c.waist > 40
+             and not is_nil(c.waist),
+           # order_by: [asc: c.waist],
+           limit: ^m[:limit]
 
-    get(:waist, mod, query, range, 10)
-  end
-  def get(:waist, mod, query, numeric), do: get :waist, mod, query, numeric, @limited
-  def get(:waist, mod, query, numeric, limited) when is_integer(numeric), do: get :waist, mod, query, [numeric], limited
-  def get(:waist, mod, query, numeric, limited) when is_bitstring(numeric) do
-    {n, _} = Integer.parse numeric
-    get :waist, mod, query, [n], limited
-  end
-  def get(:waist, mod, query, range, limited) when is_list(range) do
-    Enum.map(range, fn waist ->
-      divas =
-        query
-        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-        |> where([q], q.waist >= ^waist)
-        |> where([q], q.waist < ^(waist + 5))
-        |> where([q], q.waist > 40)
-        # |> where([q], q.appeared > 0)
-        |> where([q], not is_nil(q.waist))
-        |> order_by([q], [asc: q.waist])
-        |> limit(^limited)
-        |> Repo.all
-      {waist, divas}
+      {waist, Repo.all(qs)}
     end)
   end
 
-  def get(:hip, mod, query) do
+  def get(:hip, %{value: nil} = m) do
     range =
       [
         50, 55, 60, 65, 70, 75, 80, 85,
         90, 95, 100, 105, 110, 115, 120
       ]
+    get :hip, Map.merge(m, %{value: range, limit: 10})
+  end
+  def get(:hip, %{value: value} = m) when is_integer(value), do: get :hip, Map.merge(m, %{value: [value]})
+  def get(:hip, %{value: value} = m) when is_list(value) do
+    values =
+      Enum.map value, fn v ->
+        if is_bitstring(v) do
+          {v, _} = Integer.parse v
+        end
+        v
+      end
+    get :hip, Map.merge(m, %{value: values})
+  end
+  def get(:hip, m) do
+    Enum.map(m[:value], fn hip ->
+      qs =
+        from [c, s] in joinner(m),
+           where: c.hip >= ^hip
+             and  c.hip < ^(hip + 5)
+             and  c.hip > 50
+             and not is_nil(c.hip),
+           # order_by: [asc: c.hip],
+           limit: ^m[:limit]
 
-    get(:hip, mod, query, range, 10)
-  end
-  def get(:hip, mod, query, numeric), do: get :hip, mod, query, numeric, @limited
-  def get(:hip, mod, query, numeric, limited) when is_integer(numeric), do: get :hip, mod, query, [numeric], limited
-  def get(:hip, mod, query, numeric, limited) when is_bitstring(numeric) do
-    {n, _} = Integer.parse numeric
-    get :hip, mod, query, [n], limited
-  end
-  def get(:hip, mod, query, range, limited) do
-    Enum.map(range, fn hip ->
-      divas =
-        query
-        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-        |> where([q], q.hip >= ^hip)
-        |> where([q], q.hip < ^(hip + 5))
-        |> where([q], q.hip > 50)
-        # |> where([q], q.appeared > 0)
-        |> where([q], not is_nil(q.hip))
-        |> order_by([q], [asc: q.hip])
-        |> limit(^limited)
-        |> Repo.all
-      {hip, divas}
+      {hip, Repo.all(qs)}
     end)
   end
 
-  def get(:bust, mod, query) do
+  def get(:bust, %{value: nil} = m) do
     range = [
       60, 65, 70, 75, 80, 85, 90, 95, 100,
       105, 110, 115, 120, 125, 130, 135
     ]
+    get :bust, Map.merge(m, %{value: range, limit: 10})
+  end
+  def get(:bust, %{value: value} = m) when is_integer(value), do: get :bust, Map.merge(m, %{value: [value]})
+  def get(:bust, %{value: value} = m) when is_list(value) do
+    values =
+      Enum.map value, fn v ->
+        if is_bitstring(v) do
+          {v, _} = Integer.parse v
+        end
+        v
+      end
+    get :bust, Map.merge(m, %{value: values})
+  end
+  def get(:bust, m) do
+    Enum.map(m[:value], fn bust ->
+      qs =
+        from [c, s] in joinner(m),
+           where: c.bust >= ^bust
+             and  c.bust < ^(bust + 5)
+             and  c.bust > 60
+             and not is_nil(c.bust),
+           # order_by: [asc: c.bust],
+           limit: ^m[:limit]
 
-    get(:bust, mod, query, range, 10)
+      {bust, Repo.all(qs)}
+    end)
   end
-  def get(:bust, mod, query, numeric), do: get :bust, mod, query, numeric, @limited
-  def get(:bust, mod, query, numeric, limited) when is_integer(numeric), do: get :bust, mod, query, [numeric], limited
-  def get(:bust, mod, query, numeric, limited) when is_bitstring(numeric) do
-    {n, _} = Integer.parse numeric
-    get :bust, mod, query, [n], limited
+
+  def get(:author, %{value: nil} = m) do
+    qs =
+      from [c, s] in joinner(m),
+        select: [c.author],
+        where: not is_nil(c.author),
+          and c.author != ""
+          and c.author != "-"
+        group_by: [c.author],
+        order_by: [asc: c.author]
+
+    get :author, Map.merge(m, %{value: Repo.all(qs), limit: 10})
   end
-  def get(:bust, mod, query, range, limited) when is_list(range) do
-    Enum.map(range, fn bust ->
-      divas =
-        query
-        |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-        |> where([q], q.bust >= ^bust)
-        |> where([q], q.bust < ^(bust + 5))
-        |> where([q], q.bust > 60)
-        # |> where([q], q.appeared > 0)
-        |> where([q], not is_nil(q.bust))
-        |> order_by([q], [asc: q.bust])
-        |> limit(^limited)
-        |> Repo.all
-      {bust, divas}
+  def get(:author, m) do
+    Enum.map(m[:value], fn author ->
+      qs =
+        from [c, s] in joinner(m),
+           where: c.author == ^author
+             and not is_nil(c.author),
+           # order_by: [asc: c.author],
+           limit: ^m[:limit]
+
+      {author, Repo.all(qs)}
+    end)
+  end
+
+  def get(:works, %{value: nil} = m) do
+    qs =
+      from [c, s] in joinner(m),
+        select: [c.works],
+        where: not is_nil(c.works),
+          and c.works != ""
+          and c.works != "-"
+        group_by: [c.works],
+        order_by: [asc: c.works]
+
+    get :works, Map.merge(m, %{value: Repo.all(qs), limit: 10})
+  end
+  def get(:works, m) do
+    Enum.map(m[:value], fn works ->
+      qs =
+        from [c, s] in joinner(m),
+           where: c.works == ^works
+             and not is_nil(c.works),
+           # order_by: [asc: c.works],
+           limit: ^m[:limit]
+
+      {works, Repo.all(qs)}
     end)
   end
 
@@ -416,4 +401,30 @@ defmodule Exantenna.Ecto.Q.Profile do
     end)
   end
 
+  def args(sub, mod, query),
+    do: %{sub: sub, mod: mod, query: query, value: nil, limit: nil}
+  def args(sub, mod, query, value) when is_bitstring(value),
+    do: %{sub: sub, mod: mod, query: query, value: [value], limit: @limit}
+  def args(sub, mod, query, value),
+    do: %{sub: sub, mod: mod, query: query, value: value, limit: @limit}
+  def args(sub, mod, query, value, limit) when is_bitstring(value),
+    do: %{sub: sub, mod: mod, query: query, value: [value], limit: limit}
+  def args(sub, mod, query, value, limit),
+    do: %{sub: sub, mod: mod, query: query, value: value, limit: limit}
+
+  defp joinqs(mod), do: {"#{toname mod}s_scores", Score}
+
+  defp joinner(m) do
+    qs = from c in m[:query],
+           join: s in ^joinqs(m[:mod]),
+             where: s.assoc_id == c.id
+               and  s.count > 0
+
+    if m[:sub] do
+      qs = from [c, s] in qs,
+           where: s.name == ^"#{m[:sub]}_appeared"
+    end
+
+    qs
+  end
 end

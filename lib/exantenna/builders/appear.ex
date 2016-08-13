@@ -11,7 +11,7 @@ defmodule Exantenna.Builders.Appear do
     aggs = Exantenna.Antenna.esaggs "#{modname}s"
 
     aggs.aggregations.values.buckets
-    |> Enum.each(fn(term) ->
+    |> Enum.each(fn term ->
       Repo.transaction fn ->
 
         if model = Repo.get_by(mod, name: term.key) do
