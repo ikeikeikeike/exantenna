@@ -30,7 +30,7 @@ defmodule Exantenna.Es.Filter do
   def is_([is_book: is_book]) do
     Tirexs.Query.Filter.filter do
       bool do
-        bool do
+        must do
           terms "is_book",    [is_book]
         end
       end

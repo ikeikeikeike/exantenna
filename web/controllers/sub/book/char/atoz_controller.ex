@@ -3,6 +3,7 @@ defmodule Exantenna.Sub.Book.Char.AtozController do
 
   plug :put_view, Exantenna.Char.AtozView
   plug :put_layout, {Exantenna.Sub.Book.LayoutView, "app.html"}
+  plug DomainPlug.Esparams
 
   defdelegate index(conn, params), to: Exantenna.Char.AtozController
   defdelegate sub(conn, params), to: Exantenna.Char.AtozController

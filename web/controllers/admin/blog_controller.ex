@@ -6,7 +6,7 @@ defmodule Exantenna.Admin.BlogController do
   alias Exantenna.BlogVerifier
 
   plug AuthPlug.LoginRequired
-  plug AdminPlug.AssignUser
+  plug AuthPlug.AssignUser
   plug :put_layout, {Exantenna.Admin.LayoutView, "app.html"}
 
   def index(conn, _params) do

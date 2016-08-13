@@ -1,4 +1,4 @@
-defmodule Exantenna.Admin.Plug.AssignUser do
+defmodule Exantenna.Auth.Plug.AssignUser do
   import Plug.Conn
   alias Exantenna.User
 

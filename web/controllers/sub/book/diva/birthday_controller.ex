@@ -3,6 +3,7 @@ defmodule Exantenna.Sub.Book.Diva.BirthdayController do
 
   plug :put_view, Exantenna.Diva.BirthdayView
   plug :put_layout, {Exantenna.Sub.Book.LayoutView, "app.html"}
+  plug DomainPlug.Esparams
 
   defdelegate month(conn, params), to: Exantenna.Diva.BirthdayController
   defdelegate year(conn, params), to: Exantenna.Diva.BirthdayController

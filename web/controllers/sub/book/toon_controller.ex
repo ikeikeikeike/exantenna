@@ -3,6 +3,7 @@ defmodule Exantenna.Sub.Book.ToonController do
 
   plug :put_view, Exantenna.ToonView
   plug :put_layout, {Exantenna.Sub.Book.LayoutView, "app.html"}
+  plug DomainPlug.Esparams
 
   defdelegate index(conn, params), to: Exantenna.ToonController
   defdelegate show(conn, params), to: Exantenna.ToonController

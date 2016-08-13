@@ -109,6 +109,7 @@ defmodule Exantenna.Antenna do
 
   use Exantenna.Es
 
+  def essearch(nil), do: essearch(nil, [])
   def essearch(word), do: essearch(word, [])
   def essearch("", options), do: essearch(nil, options)
   def essearch(word, options) do
@@ -136,6 +137,7 @@ defmodule Exantenna.Antenna do
 
         q =
           search [index: esindex, fields: [], from: offset, size: per_page] do
+
             query do
               filtered do
                 query do

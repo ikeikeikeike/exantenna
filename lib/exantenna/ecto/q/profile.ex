@@ -25,7 +25,7 @@ defmodule Exantenna.Ecto.Q.Profile do
   def get(:atoz, query, letters, limited) do
     Enum.map(letters, fn letter ->
       models =
-        query  # TODO: query_all or query
+        query
         |> where([q], q.gyou == ^letter)
         # |> where([q], q.appeared > 0)
         |> where([q], not is_nil(q.gyou))

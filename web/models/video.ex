@@ -11,6 +11,8 @@ defmodule Exantenna.Video do
     has_one :antenna, Antenna
     has_many :metadatas, VideoMetadata
 
+    # XXX: consider to make allow field for allowing book or video site'
+
     timestamps
   end
 

@@ -8,6 +8,7 @@ defmodule Exantenna.Diva do
   @json_fields ~w(name alias kana romaji gyou height weight bust bracup waist hip blood birthday)
   @derive {Poison.Encoder, only: Enum.map(@json_fields, &(String.to_atom(&1)))}
   schema "divas" do
+    # has_one :appears, {"diva_appears", Exantenna.Appears}, foreign_key: :assoc_id, on_delete: :delete_all
     has_many :thumbs, {"divas_thumbs", Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
     many_to_many :antennas, Antenna, join_through: "antennas_divas"
 

@@ -42,10 +42,6 @@ defmodule Exantenna.Filter do
   def allow?(:summary, %Antenna{} = antenna), do: !!antenna.summary
   def allow?(:book, %Antenna{} = antenna), do: 5 < length(Extractor.thumb(antenna))
   def allow?(:video, %Antenna{} = antenna) do
-    # if length(antenna.video.metadatas) > 0 do
-      # require IEx; IEx.pry
-    # end
-
     antenna.video
     |> Map.get(:metadatas, [])
     |> Enum.map(fn meta ->

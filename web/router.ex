@@ -63,8 +63,6 @@ defmodule Exantenna.Router do
       get "/:id/:name", BlogController, :show
     end
 
-    get "/orig", PageController, :index
-
     get "/suggest/tg/:search", TagController, :suggest
     get "/suggest/da/:search", DivaController, :suggest
     get "/suggest/tn/:search", ToonController, :suggest

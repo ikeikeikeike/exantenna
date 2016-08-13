@@ -34,7 +34,7 @@ defmodule Exantenna.Web do
 
       alias Exantenna.Repo
       alias Exantenna.Auth.Plug, as: AuthPlug
-      alias Exantenna.Admin.Plug, as: AdminPlug
+      alias Exantenna.Domain.Plug, as: DomainPlug
 
       import Ecto
       import Ecto.Query, only: [from: 1, from: 2]

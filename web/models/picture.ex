@@ -6,6 +6,8 @@ defmodule Exantenna.Picture do
     has_one :antenna, Exantenna.Antenna
     has_many :thumbs, {"pictures_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
 
+    # XXX: consider to make allow field for allowing book or video site'
+
     timestamps
   end
 

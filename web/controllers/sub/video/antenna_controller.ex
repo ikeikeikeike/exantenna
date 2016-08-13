@@ -3,6 +3,7 @@ defmodule Exantenna.Sub.Video.AntennaController do
 
   plug :put_view, Exantenna.AntennaView
   plug :put_layout, {Exantenna.Sub.Video.LayoutView, "app.html"}
+  plug DomainPlug.Esparams
 
   defdelegate index(conn, params), to: Exantenna.AntennaController
 

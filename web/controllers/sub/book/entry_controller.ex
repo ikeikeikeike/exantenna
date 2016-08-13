@@ -9,6 +9,7 @@ defmodule Exantenna.Sub.Book.EntryController do
   alias Exantenna.Ecto.Q
 
   plug :put_layout, {Book.LayoutView, "app.html"}
+  plug DomainPlug.Esparams
 
   def index(conn, params) do
     words = params["q"]
