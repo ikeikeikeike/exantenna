@@ -137,34 +137,31 @@ defmodule Exantenna.Antenna do
         q =
           search [index: esindex, fields: [], from: offset, size: per_page] do
             query do
-              match_all([])
+              filtered do
+                query do
+                  match_all([])
+                end
+                filter do
+                  bool do
+                    must do
+                      terms "is_summary", [true, false]
+                      terms "is_video", [true, false]
+                      terms "is_book", [true, false]
+                    end
+                  end
+                end
+              end
             end
-
-            # filter do
-            #   _and [_cache: true] do
-            #     filters do
-            #       terms "summary",  []
-            #       # terms "divas"  # TODO: specified search
-            #     end
-            #   end
-            # end
 
             aggs do
               tags do
-                terms field: "tags",  size: 20, order: [_count: "desc"]
+                terms field: "tags", size: 20, order: [_count: "desc"]
               end
               toons do
                 terms field: "toons", size: 20, order: [_count: "desc"]
               end
               chars do
                 terms field: "chars", size: 20, order: [_count: "desc"]
-                # facet_filter do
-                #   _and [_cache: true] do
-                #     filters do
-                #       terms "review",  [true]
-                #     end
-                #   end
-                # end
               end
             end
 
@@ -176,22 +173,13 @@ defmodule Exantenna.Antenna do
 
         # https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html
         if word do
-          s = Keyword.delete(q[:search], :query) ++ Tirexs.Query.query do
-            multi_match word, ~w(title tags toons chars)
-          end
-          q = Keyword.put q, :search, s
+          s = Tirexs.Query.multi_match [word, ~w(title tags toons chars)]
+          q = put_in q, [:search, :query, :filtered, :query], s
         end
 
-        # if opt[:f][:summary] do
-        #   f = Keyword.delete(q[:search], :filter) ++ Tirexs.Query.Filter.filter do
-        #     _and [_cache: true] do
-        #       filters do
-        #         terms "summary",  [true]
-        #       end
-        #     end
-        #   end
-        #   q = Keyword.put q, :search, f
-        # end
+        if f = opt[:filter] do
+          q = put_in q, [:search, :query, :filtered, :filter], Es.Filter.is_(f)
+        end
 
         Es.Logger.ppdebug(q)
 
