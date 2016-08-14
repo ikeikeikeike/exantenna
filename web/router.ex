@@ -200,12 +200,13 @@ defmodule Exantenna.Router do
 
   end
 
-  scope "/v1", Exantenna.V1Api, as: "v1api" do
+  scope "/v1", Exantenna.Api.V1, as: "api_v1" do
     pipe_through :api
 
-    get "/parts.json", PartsController, :json
+    get "/parts.json",  PartsController, :json
+    get "/parts.xml",   PartsController, :json
     post "/parts.json", PartsController, :json
-    post "/parts.xml", PartsController, :json
+    post "/parts.xml",  PartsController, :json
     options "/parts.json", PartsController, :options
   end
 

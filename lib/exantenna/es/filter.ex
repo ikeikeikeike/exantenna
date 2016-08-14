@@ -5,32 +5,12 @@ defmodule Exantenna.Es.Filter do
   import Tirexs.Search
   require Tirexs.Query.Filter
 
-  def is_([is_summary: is_summary]) do
+  def is_(%{is_summary: is_summary, is_video: is_video, is_book: is_book}) do
     Tirexs.Query.Filter.filter do
       bool do
         must do
           terms "is_summary", [is_summary]
-        end
-      end
-    end
-    |> Keyword.get(:filter)
-  end
-
-  def is_([is_video: is_video]) do
-    Tirexs.Query.Filter.filter do
-      bool do
-        must do
           terms "is_video",   [is_video]
-        end
-      end
-    end
-    |> Keyword.get(:filter)
-  end
-
-  def is_([is_book: is_book]) do
-    Tirexs.Query.Filter.filter do
-      bool do
-        must do
           terms "is_book",    [is_book]
         end
       end
@@ -38,31 +18,7 @@ defmodule Exantenna.Es.Filter do
     |> Keyword.get(:filter)
   end
 
-  def is_(is_summary: is_summary, is_video: is_video) do
-    Tirexs.Query.Filter.filter do
-      bool do
-        must do
-          terms "is_summary", [is_summary]
-          terms "is_video",   [is_video]
-        end
-      end
-    end
-    |> Keyword.get(:filter)
-  end
-
-  def is_([is_summary: is_summary, is_book: is_book]) do
-    Tirexs.Query.Filter.filter do
-      bool do
-        must do
-          terms "is_summary", [is_summary]
-          terms "is_book",    [is_book]
-        end
-      end
-    end
-    |> Keyword.get(:filter)
-  end
-
-  def is_([is_video: is_video, is_book: is_book]) do
+  def is_(%{is_video: is_video, is_book: is_book}) do
     Tirexs.Query.Filter.filter do
       bool do
         must do
@@ -74,12 +30,56 @@ defmodule Exantenna.Es.Filter do
     |> Keyword.get(:filter)
   end
 
-  def is_([is_summary: is_summary, is_video: is_video, is_book: is_book]) do
+  def is_(%{is_summary: is_summary, is_video: is_video}) do
     Tirexs.Query.Filter.filter do
       bool do
         must do
           terms "is_summary", [is_summary]
           terms "is_video",   [is_video]
+        end
+      end
+    end
+    |> Keyword.get(:filter)
+  end
+
+  def is_(%{is_summary: is_summary, is_book: is_book}) do
+    Tirexs.Query.Filter.filter do
+      bool do
+        must do
+          terms "is_summary", [is_summary]
+          terms "is_book",    [is_book]
+        end
+      end
+    end
+    |> Keyword.get(:filter)
+  end
+
+  def is_(%{is_summary: is_summary}) do
+    Tirexs.Query.Filter.filter do
+      bool do
+        must do
+          terms "is_summary", [is_summary]
+        end
+      end
+    end
+    |> Keyword.get(:filter)
+  end
+
+  def is_(%{is_video: is_video}) do
+    Tirexs.Query.Filter.filter do
+      bool do
+        must do
+          terms "is_video",   [is_video]
+        end
+      end
+    end
+    |> Keyword.get(:filter)
+  end
+
+  def is_(%{is_book: is_book}) do
+    Tirexs.Query.Filter.filter do
+      bool do
+        must do
           terms "is_book",    [is_book]
         end
       end

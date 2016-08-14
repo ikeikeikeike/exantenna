@@ -17,7 +17,12 @@ defmodule Exantenna.Es.Params do
     offset = options[:offset] || (page - 1) * per_page
     filter = options[:filter]
 
-    [page: page, per_page: per_page, offset: offset, filter: filter]
+    %{
+      page: page,
+      per_page: per_page,
+      offset: offset,
+      filter: filter
+    }
   end
 
 end
