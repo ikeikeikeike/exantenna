@@ -15,9 +15,14 @@ defmodule Exantenna.AntennaController do
       Antenna.essearch(words, params)
       |> Es.Paginator.paginate(Antenna.query_all, params)
 
+    options = Map.merge params, %{
+      "filter" => %{
+        is_summary: true
+      }
+    }
     summaries =
-      Antenna.essearch(words, params)
-      |> Es.Paginator.paginate(Antenna.query_all, params)
+      Antenna.essearch(words, options)
+      |> Es.Paginator.paginate(Antenna.query_all, options)
 
     divas =
       Diva.query_all(2)

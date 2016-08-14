@@ -17,7 +17,7 @@ defmodule Exantenna.ToonController do
   end
 
   def show(conn, %{"name" => name} = params) do
-    toon = Repo.get_by!(Toon.query_all, name: name)
+    toon = Repo.get_by!(Toon.query_all(2), name: name)
 
     antennas =
       Antenna.essearch(toon.name, params)

@@ -8,10 +8,15 @@ defmodule Exantenna.SummaryController do
 
   def index(conn, params) do
     words = params["q"]
+    options = Map.merge params, %{
+      "filter" => %{
+        is_summary: true
+      }
+    }
 
     antennas =
-      Antenna.essearch(words, params)
-      |> Es.Paginator.paginate(Antenna.query_all, params)
+      Antenna.essearch(words, options)
+      |> Es.Paginator.paginate(Antenna.query_all, options)
 
     #  diva: Q.fuzzy_find(Diva, words)
     render(conn, "index.html", antennas: antennas)

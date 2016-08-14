@@ -8,6 +8,7 @@ defmodule Exantenna.Helpers do
   alias Exantenna.Repo
   alias Exantenna.Toon
   alias Exantenna.Diva
+  alias Exantenna.Char
   alias Exantenna.Thumb
   alias Exantenna.Antenna
 
@@ -170,6 +171,16 @@ defmodule Exantenna.Helpers do
       |> models_thumb(antenna.video.metadatas)
       |> models_thumb(antenna.tags)
   end
+  def choose_thumb(%Diva{} = diva) do
+    thumb = pick(diva.thumbs)
+
+    Enum.reduce diva.antennas, thumb, fn antenna, acc ->
+      case acc do
+        nil -> choose_thumb(antenna, :diva)
+        acc -> acc
+      end
+    end
+  end
   def choose_thumb(%Toon{} = toon) do
     thumb = pick(toon.thumbs)
 
@@ -180,12 +191,12 @@ defmodule Exantenna.Helpers do
       end
     end
   end
-  def choose_thumb(%Diva{} = diva) do
-    thumb = pick(diva.thumbs)
+  def choose_thumb(%Char{} = char) do
+    thumb = pick(char.thumbs)
 
-    Enum.reduce diva.antennas, thumb, fn antenna, acc ->
+    Enum.reduce char.toons, thumb, fn toon, acc ->
       case acc do
-        nil -> choose_thumb(antenna, :diva)
+        nil -> choose_thumb(toon, :toon)
         acc -> acc
       end
     end
