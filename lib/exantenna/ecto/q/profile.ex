@@ -4,6 +4,11 @@ defmodule Exantenna.Ecto.Q.Profile do
   alias Exantenna.Score
   import Exantenna.Ecto.Extractor, only: [toname: 1]
 
+  def query(:score, m) do
+    from [c, s] in joinner(m),
+    order_by: [desc: s.count]
+  end
+
   @limit 99 * 99 * 99 * 99 * 10
 
   @kunrei_romaji ~w{
@@ -26,10 +31,10 @@ defmodule Exantenna.Ecto.Q.Profile do
     Enum.map(m[:value], fn letter ->
       qs =
         from [c, s] in joinner(m),
-           where: c.gyou == ^letter
-             and not is_nil(c.gyou),
-           # order_by: [asc: c.gyou],
-           limit: ^m[:limit]
+          where: c.gyou == ^letter
+            and not is_nil(c.gyou),
+          # order_by: [asc: c.gyou],
+          limit: ^m[:limit]
 
       {letter, Repo.all(qs)}
     end)
@@ -43,10 +48,10 @@ defmodule Exantenna.Ecto.Q.Profile do
     Enum.map(m[:value], fn blood ->
       qs =
         from [c, s] in joinner(m),
-           where: c.blood == ^blood
-             and not is_nil(c.blood),
-           # order_by: [asc: c.blood],
-           limit: ^m[:limit]
+          where: c.blood == ^blood
+            and not is_nil(c.blood),
+          # order_by: [asc: c.blood],
+          limit: ^m[:limit]
 
       {blood, Repo.all(qs)}
     end)
@@ -61,10 +66,10 @@ defmodule Exantenna.Ecto.Q.Profile do
     Enum.map(m[:value], fn bracup ->
       qs =
         from [c, s] in joinner(m),
-           where: c.bracup == ^bracup
-             and not is_nil(c.bracup),
-           # order_by: [asc: c.bust],
-           limit: ^m[:limit]
+          where: c.bracup == ^bracup
+            and not is_nil(c.bracup),
+          # order_by: [asc: c.bust],
+          limit: ^m[:limit]
 
       {bracup, Repo.all(qs)}
     end)
@@ -79,27 +84,18 @@ defmodule Exantenna.Ecto.Q.Profile do
     get :height, Map.merge(m, %{value: range, limit: 10})
   end
 
-  def get(:height, %{value: value} = m) when is_integer(value), do: get :height, Map.merge(m, %{value: [value]})
   def get(:height, %{value: value} = m) when is_list(value) do
-    values =
-      Enum.map value, fn v ->
-        if is_bitstring(v) do
-          {v, _} = Integer.parse v
-        end
-        v
-      end
-    get :height, Map.merge(m, %{value: values})
-  end
-  def get(:height, m) do
-    Enum.map(m[:value], fn height ->
+    value
+    |> toint
+    |> Enum.map(fn height ->
       qs =
         from [c, s] in joinner(m),
-           where: c.height >= ^height
-             and  c.height < ^(height + 5)
-             and  c.height > 130
-             and not is_nil(c.height),
-           # order_by: [asc: c.height],
-           limit: ^m[:limit]
+          where: c.height >= ^height
+            and  c.height < ^(height + 5)
+            and  c.height > 130
+            and not is_nil(c.height),
+          # order_by: [asc: c.height],
+          limit: ^m[:limit]
 
       {height, Repo.all(qs)}
     end)
@@ -110,27 +106,18 @@ defmodule Exantenna.Ecto.Q.Profile do
       [40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
     get :waist, Map.merge(m, %{value: range, limit: 10})
   end
-  def get(:waist, %{value: value} = m) when is_integer(value), do: get :waist, Map.merge(m, %{value: [value]})
   def get(:waist, %{value: value} = m) when is_list(value) do
-    values =
-      Enum.map value, fn v ->
-        if is_bitstring(v) do
-          {v, _} = Integer.parse v
-        end
-        v
-      end
-    get :waist, Map.merge(m, %{value: values})
-  end
-  def get(:waist, m) do
-    Enum.map(m[:value], fn waist ->
+    value
+    |> toint
+    |> Enum.map(fn waist ->
       qs =
         from [c, s] in joinner(m),
-           where: c.waist >= ^waist
-             and  c.waist < ^(waist + 5)
-             and  c.waist > 40
-             and not is_nil(c.waist),
-           # order_by: [asc: c.waist],
-           limit: ^m[:limit]
+          where: c.waist >= ^waist
+            and  c.waist < ^(waist + 5)
+            and  c.waist > 40
+            and not is_nil(c.waist),
+          # order_by: [asc: c.waist],
+          limit: ^m[:limit]
 
       {waist, Repo.all(qs)}
     end)
@@ -144,27 +131,18 @@ defmodule Exantenna.Ecto.Q.Profile do
       ]
     get :hip, Map.merge(m, %{value: range, limit: 10})
   end
-  def get(:hip, %{value: value} = m) when is_integer(value), do: get :hip, Map.merge(m, %{value: [value]})
   def get(:hip, %{value: value} = m) when is_list(value) do
-    values =
-      Enum.map value, fn v ->
-        if is_bitstring(v) do
-          {v, _} = Integer.parse v
-        end
-        v
-      end
-    get :hip, Map.merge(m, %{value: values})
-  end
-  def get(:hip, m) do
-    Enum.map(m[:value], fn hip ->
+    value
+    |> toint
+    |> Enum.map(fn hip ->
       qs =
         from [c, s] in joinner(m),
-           where: c.hip >= ^hip
-             and  c.hip < ^(hip + 5)
-             and  c.hip > 50
-             and not is_nil(c.hip),
-           # order_by: [asc: c.hip],
-           limit: ^m[:limit]
+          where: c.hip >= ^hip
+            and  c.hip < ^(hip + 5)
+            and  c.hip > 50
+            and not is_nil(c.hip),
+          # order_by: [asc: c.hip],
+          limit: ^m[:limit]
 
       {hip, Repo.all(qs)}
     end)
@@ -177,40 +155,33 @@ defmodule Exantenna.Ecto.Q.Profile do
     ]
     get :bust, Map.merge(m, %{value: range, limit: 10})
   end
-  def get(:bust, %{value: value} = m) when is_integer(value), do: get :bust, Map.merge(m, %{value: [value]})
   def get(:bust, %{value: value} = m) when is_list(value) do
-    values =
-      Enum.map value, fn v ->
-        if is_bitstring(v) do
-          {v, _} = Integer.parse v
-        end
-        v
-      end
-    get :bust, Map.merge(m, %{value: values})
-  end
-  def get(:bust, m) do
-    Enum.map(m[:value], fn bust ->
+    value
+    |> toint
+    |> Enum.map(fn bust ->
       qs =
         from [c, s] in joinner(m),
-           where: c.bust >= ^bust
-             and  c.bust < ^(bust + 5)
-             and  c.bust > 60
-             and not is_nil(c.bust),
-           # order_by: [asc: c.bust],
-           limit: ^m[:limit]
+          where: c.bust >= ^bust
+            and  c.bust < ^(bust + 5)
+            and  c.bust > 60
+            and not is_nil(c.bust),
+          # order_by: [asc: c.bust],
+          limit: ^m[:limit]
 
       {bust, Repo.all(qs)}
     end)
   end
 
   def get(:author, %{value: nil} = m) do
+    resouce = Map.merge(m, %{query: m[:mod]})
+
     qs =
-      from [c, s] in joinner(m),
-        select: [c.author],
-        where: not is_nil(c.author),
+      from [c, s] in joinner(resouce),
+        select: c.author,
+        where: not is_nil(c.author)
           and c.author != ""
-          and c.author != "-"
-        group_by: [c.author],
+          and c.author != "-",
+        group_by: c.author,
         order_by: [asc: c.author]
 
     get :author, Map.merge(m, %{value: Repo.all(qs), limit: 10})
@@ -219,23 +190,25 @@ defmodule Exantenna.Ecto.Q.Profile do
     Enum.map(m[:value], fn author ->
       qs =
         from [c, s] in joinner(m),
-           where: c.author == ^author
-             and not is_nil(c.author),
-           # order_by: [asc: c.author],
-           limit: ^m[:limit]
+          where: c.author == ^author
+            and not is_nil(c.author),
+          # order_by: [asc: c.author],
+          limit: ^m[:limit]
 
       {author, Repo.all(qs)}
     end)
   end
 
   def get(:works, %{value: nil} = m) do
+    resouce = Map.merge(m, %{query: m[:mod]})
+
     qs =
-      from [c, s] in joinner(m),
-        select: [c.works],
-        where: not is_nil(c.works),
+      from [c, s] in joinner(resouce),
+        select: c.works,
+        where: not is_nil(c.works)
           and c.works != ""
-          and c.works != "-"
-        group_by: [c.works],
+          and c.works != "-",
+        group_by: c.works,
         order_by: [asc: c.works]
 
     get :works, Map.merge(m, %{value: Repo.all(qs), limit: 10})
@@ -244,173 +217,200 @@ defmodule Exantenna.Ecto.Q.Profile do
     Enum.map(m[:value], fn works ->
       qs =
         from [c, s] in joinner(m),
-           where: c.works == ^works
-             and not is_nil(c.works),
-           # order_by: [asc: c.works],
-           limit: ^m[:limit]
+          where: c.works == ^works
+            and not is_nil(c.works),
+          # order_by: [asc: c.works],
+          limit: ^m[:limit]
 
       {works, Repo.all(qs)}
     end)
   end
 
-  def get(:month, mod, query, %{"year" => year, "month" => month}) do
-    {year, _} = Integer.parse(year)
-    {month, _} = Integer.parse(month)
-    next_month =
-      Timex.Date.from({year, month, 01})
+  def get(:month, %{value: %{"year" => _, "month" => _} = value} = m) do
+    {year, month} = toint(value)
+
+    thismonth =
+      Timex.Date.from({year, month , 01})
+
+    nextmonth =
+      thismonth
       |> Timex.Date.shift(months: 1)
 
+    qs =
+      from [c, s] in joinner(m),
+        where: not is_nil(c.birthday)
+          and c.birthday <  ^nextmonth
+          and c.birthday >= ^thismonth,
+        order_by: [asc: c.birthday]
+
     birthdays =
-      mod
-      |> select([p], p.birthday)
-      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-      # |> where([q], q.appeared > 0)
-      |> where([q], not is_nil(q.birthday))
-      |> where([q], q.birthday  < ^next_month)
-      |> where([q], q.birthday >= ^Timex.Date.from({year, month , 01}))
-      |> order_by([q], [asc: q.birthday])
+      qs
       |> Repo.all
-      |> Enum.uniq_by(fn birthday ->
-        if birthday, do: birthday.day
+      |> Enum.uniq_by(fn st ->
+        if st.birthday, do: st.birthday.day
+      end)
+      |> Enum.map(fn st ->
+        st.birthday
       end)
 
-    divas =
-      query
-      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-      # |> where([q], q.appeared > 0)
-      |> where([q], not is_nil(q.birthday))
-      |> where([q], q.birthday  < ^next_month)
-      |> where([q], q.birthday >= ^Timex.Date.from({year, month , 01}))
-      |> Repo.all
+    qs =
+      from [c, s] in joinner(m),
+        where: not is_nil(c.birthday)
+          and c.birthday <  ^nextmonth
+          and c.birthday >= ^thismonth
 
-    {birthdays, divas}
+    {birthdays, Repo.all(qs)}
   end
 
-  def get(:year, mod, query, %{"year" => year}) do
+
+  def get(:year, %{value: %{"year" => year}} = m) do
+    qs =
+      from [c, s] in joinner(m),
+        where: not is_nil(c.birthday)
+          and c.birthday <= ^"#{year}-12-31"
+          and c.birthday >= ^"#{year}-01-01",
+        order_by: [asc: c.birthday]
+
     birthdays =
-      mod
-      |> select([p], p.birthday)
-      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-      # |> where([q], q.appeared > 0)
-      |> where([q], not is_nil(q.birthday))
-      |> where([q], q.birthday <= ^"#{year}-12-31")
-      |> where([q], q.birthday >= ^"#{year}-01-01")
-      |> order_by([q], [asc: q.birthday])
+      qs
       |> Repo.all
-      |> Enum.uniq_by(fn birthday ->
-        if birthday, do: birthday.month
+      |> Enum.uniq_by(fn st ->
+        if st.birthday, do: st.birthday.month
+      end)
+      |> Enum.map(fn st ->
+        st.birthday
       end)
 
-   divas =
-      query
-      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-      # |> where([q], q.appeared > 0)
-      |> where([q], not is_nil(q.birthday))
-      |> where([q], q.birthday <= ^"#{year}-12-31")
-      |> where([q], q.birthday >= ^"#{year}-01-01")
-      |> Repo.all
+    qs =
+      from [c, s] in joinner(m),
+        where: not is_nil(c.birthday)
+          and c.birthday <= ^"#{year}-12-31"
+          and c.birthday >= ^"#{year}-01-01",
+        order_by: [asc: c.birthday]
 
-    {birthdays, divas}
+    {birthdays, Repo.all(qs)}
   end
 
-  def get(:birthday, mod) do
-    mod
-    |> group_by([p], p.birthday)
-    |> select([p], p.birthday)
-    |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-    # |> where([q], q.appeared > 0)
-    |> where([q], not is_nil(q.birthday))
-    |> order_by([q], [desc: q.birthday])
+  def get(:birthday, m) do
+    qs =
+      from [c, s] in joinner(m),
+        select: c.birthday,
+        where: not is_nil(c.birthday),
+        group_by: c.birthday,
+        order_by: [desc: c.birthday]
+
+    qs
     |> Repo.all
     |> Enum.uniq_by(fn birthday ->
       if birthday, do: birthday.year
     end)
   end
 
-  def get(:release_month, mod, query, %{"year" => year, "month" => month}) do
-    {year, _} = Integer.parse(year)
-    {month, _} = Integer.parse(month)
-    next_month =
-      Timex.Date.from({year, month, 01})
+  def get(:release_month, %{value: %{"year" => _, "month" => _} = value} = m) do
+    {year, month} = toint(value)
+
+    thismonth =
+      Timex.Date.from({year, month , 01})
+
+    nextmonth =
+      thismonth
       |> Timex.Date.shift(months: 1)
 
+    qs =
+      from [c, s] in joinner(m),
+        where: not is_nil(c.release_date)
+          and c.release_date <  ^nextmonth
+          and c.release_date >= ^thismonth,
+        order_by: [asc: c.release_date]
+
     releases =
-      mod
-      |> select([q], q.release_date)
-      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-      # |> where([q], q.appeared > 0)
-      |> where([q], not is_nil(q.release_date))
-      |> where([q], q.release_date  < ^next_month)
-      |> where([q], q.release_date >= ^Timex.Date.from({year, month , 01}))
-      |> order_by([q], [asc: q.release_date])
+      qs
       |> Repo.all
-      |> Enum.uniq_by(fn release_date ->
-        if release_date, do: release_date.day
+      |> Enum.uniq_by(fn st ->
+        if st.release_date, do: st.release_date.day
+      end)
+      |> Enum.map(fn st ->
+        st.release_date
       end)
 
-    divas =
-      query
-      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-      # |> where([q], q.appeared > 0)
-      |> where([q], not is_nil(q.release_date))
-      |> where([q], q.release_date  < ^next_month)
-      |> where([q], q.release_date >= ^Timex.Date.from({year, month , 01}))
-      |> Repo.all
+    qs =
+      from [c, s] in joinner(m),
+        where: not is_nil(c.release_date)
+          and c.release_date <  ^nextmonth
+          and c.release_date >= ^thismonth
 
-    {releases, divas}
+    {releases, Repo.all(qs)}
   end
 
-  def get(:release_year, mod, query, %{"year" => year}) do
+  def get(:release_year, %{value: %{"year" => year}} = m) do
+    qs =
+      from [c, s] in joinner(m),
+        where: not is_nil(c.release_date)
+          and c.release_date <= ^"#{year}-12-31"
+          and c.release_date >= ^"#{year}-01-01",
+        order_by: [asc: c.release_date]
+
     releases =
-      mod
-      |> select([p], p.release_date)
-      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-      # |> where([q], q.appeared > 0)
-      |> where([q], not is_nil(q.release_date))
-      |> where([q], q.release_date <= ^"#{year}-12-31")
-      |> where([q], q.release_date >= ^"#{year}-01-01")
-      |> order_by([q], [asc: q.release_date])
+      qs
       |> Repo.all
-      |> Enum.uniq_by(fn release_date ->
-        if release_date, do: release_date.month
+      |> Enum.uniq_by(fn st ->
+        if st.release_date, do: st.release_date.month
+      end)
+      |> Enum.map(fn st ->
+        st.release_date
       end)
 
-   toons =
-      query
-      |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-      # |> where([q], q.appeared > 0)
-      |> where([q], not is_nil(q.release_date))
-      |> where([q], q.release_date <= ^"#{year}-12-31")
-      |> where([q], q.release_date >= ^"#{year}-01-01")
-      |> Repo.all
+    qs =
+      from [c, s] in joinner(m),
+        where: not is_nil(c.release_date)
+          and c.release_date <= ^"#{year}-12-31"
+          and c.release_date >= ^"#{year}-01-01"
 
-    {releases, toons}
+    {releases, Repo.all(qs)}
   end
 
-  def get(:release, mod) do
-    mod
-    |> group_by([p], p.release_date)
-    |> select([p], p.release_date)
-    |> join(:inner, [c], s in ^joinner(mod), s.assoc_id == c.id and s.name == "video" and s.count > 0)
-    # |> where([q], q.appeared > 0)
-    |> where([q], not is_nil(q.release_date))
-    |> order_by([q], [desc: q.release_date])
+  def get(:release, m) do
+    qs =
+      from [c, s] in joinner(m),
+        select: c.release_date,
+        where: not is_nil(c.release_date),
+        group_by: c.release_date,
+        order_by: [desc: c.release_date]
+
+    qs
     |> Repo.all
     |> Enum.uniq_by(fn release_date ->
       if release_date, do: release_date.year
     end)
   end
 
+  def args(sub, mod),
+    do: %{sub: sub, mod: mod, query: mod,   value: nil, limit: nil}
   def args(sub, mod, query),
     do: %{sub: sub, mod: mod, query: query, value: nil, limit: nil}
-  def args(sub, mod, query, value) when is_bitstring(value),
+  def args(sub, mod, query, value) when is_bitstring(value) or is_integer(value),
     do: %{sub: sub, mod: mod, query: query, value: [value], limit: @limit}
   def args(sub, mod, query, value),
     do: %{sub: sub, mod: mod, query: query, value: value, limit: @limit}
-  def args(sub, mod, query, value, limit) when is_bitstring(value),
+  def args(sub, mod, query, value, limit) when is_bitstring(value) or is_integer(value),
     do: %{sub: sub, mod: mod, query: query, value: [value], limit: limit}
   def args(sub, mod, query, value, limit),
     do: %{sub: sub, mod: mod, query: query, value: value, limit: limit}
+
+  defp toint(numerics) when is_list(numerics) do
+    Enum.map numerics, fn v ->
+      if is_bitstring(v) do
+        {v, _} = Integer.parse v
+      end
+      v
+    end
+  end
+
+  defp toint(%{"year" => year, "month" => month}) do
+    {year, _} = Integer.parse(year)
+    {month, _} = Integer.parse(month)
+    {year, month}
+  end
 
   defp joinqs(mod), do: {"#{toname mod}s_scores", Score}
 

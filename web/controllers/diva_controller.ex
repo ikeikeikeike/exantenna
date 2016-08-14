@@ -5,14 +5,14 @@ defmodule Exantenna.DivaController do
   alias Exantenna.Repo
   alias Exantenna.Diva
   alias Exantenna.Antenna
+  alias Exantenna.Ecto.Q.Profile
   import Ecto.Query
 
   def index(conn, params) do
-    pager =
-      Diva.query_all(2)
-      # |> where([q], q.appeared > 0)
-      # |> order_by([q], [desc: q.appeared])
-      |> Repo.paginate(params)
+    sub = conn.private[:subdomain]
+
+    qs = Profile.query :score, Profile.args(sub, Diva, Diva.query_all(2))
+    pager = Repo.paginate(qs, params)
 
     render(conn, "index.html", pager: pager)
   end

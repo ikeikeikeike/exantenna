@@ -5,15 +5,20 @@ defmodule Exantenna.Diva.WaistController do
   alias Exantenna.Ecto.Q.Profile
 
   def index(conn, _params) do
-    waists = Profile.get :waist, Diva, Diva.query
+    sub = conn.private[:subdomain]
+    waists = Profile.get :waist, Profile.args(sub, Diva, Diva.query)
+
     render(conn, "index.html", waists: waists, nav: waists)
   end
 
   def sub(conn, %{"name" => name} = _params) do
+    sub = conn.private[:subdomain]
     numeric = List.first String.split(name, "-")
 
-    waists = Profile.get :waist, Diva, Diva.query, numeric
-    render(conn, "index.html", waists: waists, nav: Profile.get(:waist, Diva, Diva.query))
+    nav = Profile.get :waist, Profile.args(sub, Diva, Diva.query)
+    waists = Profile.get :waist, Profile.args(sub, Diva, Diva.query, numeric)
+
+    render(conn, "index.html", waists: waists, nav: nav)
   end
 
 end

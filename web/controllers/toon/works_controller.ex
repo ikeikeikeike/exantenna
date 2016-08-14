@@ -5,13 +5,18 @@ defmodule Exantenna.Toon.WorksController do
   alias Exantenna.Ecto.Q.Profile
 
   def index(conn, _params) do
-    works = Profile.get :works, Toon, Toon.query_all(3)
+    sub = conn.private[:subdomain]
+    works = Profile.get :works, Profile.args(sub, Toon, Toon.query)
+
     render(conn, "index.html", works: works, nav: works)
   end
 
   def sub(conn, %{"name" => name} = _params) do
-    works = Profile.get :works, Toon, Toon.query_all(3), name
-    render(conn, "index.html", works: works, nav: Profile.get(:works, Toon, Toon))
+    sub = conn.private[:subdomain]
+    nav = Profile.get :works, Profile.args(sub, Toon)
+    works = Profile.get :works, Toon, Profile.args(sub, Toon, Toon.query_all(3), name)
+
+    render(conn, "index.html", works: works, nav: nav)
   end
 
 end
