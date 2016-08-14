@@ -1,4 +1,4 @@
-defmodule Exantenna.V1Api.PartsView do
+defmodule Exantenna.Api.V1.PartsView do
   use Exantenna.Web, :view
 
   alias Exantenna.Ecto.Extractor

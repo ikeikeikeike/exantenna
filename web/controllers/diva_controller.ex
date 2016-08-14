@@ -6,7 +6,6 @@ defmodule Exantenna.DivaController do
   alias Exantenna.Diva
   alias Exantenna.Antenna
   alias Exantenna.Ecto.Q.Profile
-  import Ecto.Query
 
   def index(conn, params) do
     sub = conn.private[:subdomain]

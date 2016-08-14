@@ -5,17 +5,15 @@ defmodule Exantenna.CharController do
   alias Exantenna.Repo
   alias Exantenna.Char
   alias Exantenna.Antenna
-  import Ecto.Query
+  alias Exantenna.Ecto.Q.Profile
 
   def index(conn, params) do
-    chars =
-      Char.query  # TODO: query_all or query
-      # |> where([q], q.appeared > 0)
-      # |> order_by([q], [desc: q.appeared])
-      |> limit(100)
-      |> Repo.all
+    sub = conn.private[:subdomain]
 
-    render(conn, "index.html", chars: chars)
+    qs = Profile.query :score, Profile.args(sub, Char, Char.query_all(2))
+    pager = Repo.paginate(qs, params)
+
+    render(conn, "index.html", pager: pager)
   end
 
   def show(conn, %{"name" => name} = params) do
