@@ -18,7 +18,7 @@ defmodule Exantenna.Diva.BustController do
     nav = Profile.get :bust, Profile.args(sub, Diva, Diva.query)
     busts = Profile.get :bust, Profile.args(sub, Diva, Diva.query, numeric)
 
-    render(conn, "index.html", busts: busts, nav: Profile.get(:bust, Diva, Diva.query))
+    render(conn, "index.html", busts: busts, nav: nav)
   end
 
 end
