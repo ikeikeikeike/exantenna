@@ -31,11 +31,17 @@ defmodule Exantenna.Char do
     field :blood, :string
     field :birthday, Ecto.Date
 
+    field :outline, :string
+    field :product, :string
+
     timestamps
   end
 
   @required_fields ~w(name)
-  @optional_fields ~w(alias kana romaji gyou height weight bust bracup waist hip blood birthday)
+  @optional_fields ~w(
+    alias kana romaji gyou height weight bust
+    bracup waist hip blood birthday product outline
+  )
 
   @relational_fields ~w(tags thumbs toons)a
 

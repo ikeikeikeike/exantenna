@@ -17,11 +17,13 @@ defmodule Exantenna.Tag do
     field :orig, :string
     field :gyou, :string
 
+    field :outline, :string
+
     timestamps
   end
 
   @required_fields ~w(name)
-  @optional_fields ~w(kana romaji orig gyou)
+  @optional_fields ~w(kana romaji orig gyou outline)
 
   @relational_fields ~w(antennas scores thumbs chars toons)a
 

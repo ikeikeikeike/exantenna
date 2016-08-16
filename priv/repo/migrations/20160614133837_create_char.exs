@@ -20,6 +20,9 @@ defmodule Exantenna.Repo.Migrations.CreateChar do
       add :blood, :string
       add :birthday, :date
 
+      add :outline, :text
+      add :product, :string
+
       timestamps
     end
     create unique_index(:chars, [:name, :alias], name: :chars_name_alias_index)

@@ -20,6 +20,8 @@ defmodule Exantenna.Repo.Migrations.CreateDiva do
       add :blood, :string
       add :birthday, :date
 
+      add :outline, :text
+
       timestamps
     end
     create unique_index(:divas, [:name, :alias], name: :divas_name_alias_index)

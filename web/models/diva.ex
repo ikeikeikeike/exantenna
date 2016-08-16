@@ -29,13 +29,15 @@ defmodule Exantenna.Diva do
     field :blood, :string
     field :birthday, Ecto.Date
 
+    field :outline, :string
+
     timestamps
   end
 
   @required_fields ~w(name)
   @optional_fields ~w(
     alias kana romaji gyou height weight bust bracup
-    waist hip blood birthday
+    waist hip blood birthday outline
   )
 
   @relational_fields ~w(antennas thumbs)a

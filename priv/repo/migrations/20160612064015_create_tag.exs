@@ -9,6 +9,8 @@ defmodule Exantenna.Repo.Migrations.CreateTag do
       add :orig, :string
       add :gyou, :string
 
+      add :outline, :text
+
       timestamps
     end
 
