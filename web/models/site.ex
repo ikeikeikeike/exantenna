@@ -2,15 +2,15 @@ defmodule Exantenna.Site do
   use Exantenna.Web, :model
 
   schema "sites" do
+    has_one :video_metadata, Exantenna.VideoMetadata
+    has_many :thumbs, {"sites_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
+
     field :name, :string
 
     field :url, :string
     field :domain, :string
 
     field :rss, :string
-
-    has_one :video_metadata, Exantenna.VideoMetadata
-    has_many :thumbs, {"sites_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
 
     timestamps
   end

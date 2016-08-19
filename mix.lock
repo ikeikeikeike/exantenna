@@ -66,6 +66,7 @@
   "timex": {:hex, :timex, "2.2.1", "0d69012a7fd69f4cbdaa00cc5f2a5f30f1bed56072fb362ed4bddf60db343022", [:mix], [{:combine, "~> 0.7", [hex: :combine, optional: false]}, {:gettext, "~> 0.10", [hex: :gettext, optional: false]}, {:tzdata, "~> 0.1.8 or ~> 0.5", [hex: :tzdata, optional: false]}]},
   "timex_ecto": {:hex, :timex_ecto, "1.1.3", "7a53a0781db7b15de604ffe244c7ed5347bdbf6ce045f6a8fc492f4994a1e32b", [:mix], [{:ecto, "~> 1.1 or ~> 2.0 or ~> 2.0.0-rc3", [hex: :ecto, optional: false]}, {:timex, "~> 2.1", [hex: :timex, optional: false]}]},
   "tirexs": {:hex, :tirexs, "0.8.3", "bff2905dd9d9eb5d22e2f593e9582b171b98847290765dc1765e217bb8eda981", [:mix], [{:exjsx, "~> 3.2.0", [hex: :exjsx, optional: false]}]},
+  "tributary": {:git, "https://github.com/DavidAntaramian/tributary.git", "e8d6e0157d8991988a06e47bc14ea7cfa15e45ac", []},
   "tzdata": {:hex, :tzdata, "0.5.8", "a4ffe564783c6519e4df230a5d0e1cf44b7db7f576bcae76d05540b5da5b6143", [:mix], [{:hackney, "~> 1.0", [hex: :hackney, optional: false]}]},
   "ua_inspector": {:hex, :ua_inspector, "0.11.1", "dd7a7cd7541bb2cc750af50973adcccca171bcbc38fc6c8145e94a0e51150e5d", [:mix], [{:poolboy, "~> 1.0", [hex: :poolboy, optional: false]}]},
   "ueberauth": {:hex, :ueberauth, "0.2.0", "9160c601b468c6692462a56be7ad8890d1a2d84519d7d9c4541da5b07d6495e1", [:mix], [{:plug, "~> 1.0", [hex: :plug, optional: false]}]},

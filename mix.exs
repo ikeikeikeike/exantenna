@@ -74,6 +74,7 @@ defmodule Exantenna.Mixfile do
       {:common_device_detector, github: "ikeikeikeike/common_device_detector"},
       {:html_entities, "~> 0.3"},
       {:cors_plug, "~> 1.1"},
+      {:tributary, github: "DavidAntaramian/tributary"},
     ]
   end
 

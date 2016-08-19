@@ -24,6 +24,25 @@ defmodule Exantenna.Antenna do
   @required_fields ~w()
   @optional_fields ~w()
   @relational_fields ~w(blog entry metadata video picture summary penalty tags)a
+  @esreindex_fields [
+      :metadata,
+      :summary,
+      :divas,
+      :tags,
+      entry: [
+        :thumbs
+      ],
+      picture: [
+        :thumbs
+      ],
+      video: [
+        metadatas: [
+          :site
+        ],
+      ],
+      toons: [:chars]
+    ]
+
   @full_relational_fields [
       :metadata,
       :scores,  # node in,out score
@@ -218,13 +237,14 @@ defmodule Exantenna.Antenna do
     end
   end
 
+  def search_data(%{metadata: nil}), do: nil
   def search_data(model) do
     meta = model.metadata
 
     published_at =
       case Timex.Ecto.DateTime.cast(meta.published_at) do
         {:ok, at} -> Timex.format!(at, "{ISO}")
-        _ -> meta.published_at
+        published_at -> published_at
       end
 
     chars =
@@ -246,7 +266,10 @@ defmodule Exantenna.Antenna do
     ]
   end
 
-  def esreindex, do: Es.Index.reindex __MODULE__, Repo.all(query_all)
+  def esreindex do
+    q = from e in __MODULE__, preload: ^@esreindex_fields
+    Es.Index.reindex __MODULE__, Repo.stream(q, chunk_size: 20000)
+  end
 
   def create_esindex(name \\ nil) do
     Tirexs.DSL.define(fn ->
