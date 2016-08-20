@@ -9,6 +9,7 @@ defmodule Exantenna.AntennaController do
   import Ecto.Query
 
   def index(conn, params) do
+    sub = conn.private[:subdomain]
     words = params["q"]
 
     antennas =
@@ -25,16 +26,12 @@ defmodule Exantenna.AntennaController do
       |> Es.Paginator.paginate(Antenna.query_all, options)
 
     divas =
-      Diva.query_all(2)
-      # |> where([q], q.appeared > 0)
-      # |> order_by([q], [desc: q.appeared])
+      Q.Profile.query(:score, Q.Profile.args(sub, Diva, Diva.query_all(2)))
       |> limit(4)
       |> Repo.all
 
     toons =
-      Toon.query_all(2)
-      # |> where([q], q.appeared > 0)
-      # |> order_by([q], [desc: q.appeared])
+      Q.Profile.query(:score, Q.Profile.args(sub, Toon, Toon.query_all(2)))
       |> limit(4)
       |> Repo.all
 

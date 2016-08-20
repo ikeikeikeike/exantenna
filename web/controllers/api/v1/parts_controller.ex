@@ -15,14 +15,15 @@ defmodule Exantenna.Api.V1.PartsController do
         # "2d" -> %{is_2d: true}
         # _    -> %{}
       # end
+    # TODO: below
     filter =
       case params["media_type"] do
-        # "movie" -> %{is_video: true}
-        # "image" -> %{is_book: true}
-        # _       -> %{}
-        "movie" -> %{is_summary: true, is_video: true}
-        "image" -> %{is_summary: true, is_book: true}
-        _       -> %{is_summary: true}
+        "movie" -> %{is_video: true}
+        "image" -> %{is_book: true}
+        _       -> %{}
+        # "movie" -> %{is_summary: true, is_video: true}
+        # "image" -> %{is_summary: true, is_book: true}
+        # _       -> %{is_summary: true}
       end
 
     per_page = (params["per_item"] || 5) |> to_i

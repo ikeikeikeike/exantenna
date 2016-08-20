@@ -1,9 +1,14 @@
 defmodule Exantenna.Word.Around do
   @moduledoc false
 
+  def ten(locale, nil), do: nil
   def ten(locale, number) when not is_number(number) do
-    {n, _} = Integer.parse(number)
-    ten(locale, n)
+    case Integer.parse(number) do
+      {n, _} ->
+        ten(locale, n)
+      :error ->
+        ten(locale, nil)
+    end
   end
 
   def ten(locale, number) when is_number(number) do
@@ -51,9 +56,14 @@ defmodule Exantenna.Word.Around do
     end
   end
 
+  def five(locale, nil), do: nil
   def five(locale, number) when not is_number(number) do
-    {n, _} = Integer.parse(number)
-    five(locale, n)
+    case Integer.parse(number) do
+      {n, _} ->
+        five(locale, n)
+      :error ->
+        five(locale, nil)
+    end
   end
 
   def five(locale, number) when is_number(number) do

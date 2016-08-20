@@ -44,8 +44,9 @@ config :exantenna, Exantenna.Repo,
   password: "postgres",
   database: "exantenna_dev",
   hostname: "localhost",
-  pool_size: 20
-  # timeout: 300000,
+  pool_size: 10,
+  timeout: 300000  # XXX: For Develop
   # ownership_timeout: 300000
 
+import_config "sitemeta.dev.secret.exs"
 import_config "dev.secret.exs"

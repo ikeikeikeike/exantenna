@@ -213,7 +213,21 @@ defmodule Exantenna.Antenna do
     end
   end
 
-  def esaggs(field) do
+  def esaggs(field), do: esaggs field, nil
+  def esaggs(field, opts) when is_list(opts), do: esaggs field, Enum.into(opts, %{})
+  def esaggs(field, opts) do
+    {is_book, is_video} =
+      case opts do
+        %{book: true, video: true}  ->
+          {[true], [true]}
+        %{book: true}  ->
+          {[true], [true, false]}
+        %{video: true} ->
+          {[true, false], [true]}
+        _              ->
+          {[true, false], [true, false]}
+      end
+
     result =
       Tirexs.DSL.define fn ->
         import Tirexs.Search
@@ -221,6 +235,18 @@ defmodule Exantenna.Antenna do
 
         q =
           search [index: esindex, fields: [], from: 0, size: 0] do
+            query do
+              filtered do
+                filter do
+                  bool do
+                    must do
+                      terms "is_book", is_book
+                      terms "is_video", is_video
+                    end
+                  end
+                end
+              end
+            end
             aggs do
               values do
                 terms field: field, size: 50000, order: [_count: "desc"]

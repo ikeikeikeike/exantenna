@@ -420,10 +420,15 @@ defmodule Exantenna.Ecto.Q.Profile do
              where: s.assoc_id == c.id
                and  s.count > 0
 
-    if m[:sub] do
-      qs = from [c, s] in qs,
-           where: s.name == ^"#{m[:sub]}_appeared"
-    end
+    qs =
+      case m do
+        %{sub: nil, mod: mod} ->
+          from [c, s] in qs,
+            where: s.name == ^Score.name_appeared(toname(mod))
+        %{sub: sub, mod: mod} ->
+          from [c, s] in qs,
+            where: s.name == ^Score.name_appeared(sub, toname(mod))
+      end
 
     qs
   end
