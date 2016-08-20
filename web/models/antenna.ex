@@ -242,10 +242,13 @@ defmodule Exantenna.Antenna do
     meta = model.metadata
 
     published_at =
-      case Timex.Ecto.DateTime.cast(meta.published_at) do
+      case Timex.Ecto.DateTime.cast(meta.published_at || meta.inserted_at) do
         {:ok, at} -> Timex.format!(at, "{ISO}")
-        published_at -> published_at
+        :error    -> nil
+        date      -> date
       end
+
+    # IO.inspect "#{inspect published_at}: #{inspect meta.inserted_at}-#{inspect meta.published_at}"
 
     chars =
       Enum.flat_map model.toons, fn toon ->
@@ -268,7 +271,7 @@ defmodule Exantenna.Antenna do
 
   def esreindex do
     q = from e in __MODULE__, preload: ^@esreindex_fields
-    Es.Index.reindex __MODULE__, Repo.stream(q, chunk_size: 20000)
+    Es.Index.reindex __MODULE__, Repo.stream(q, chunk_size: 10000)
   end
 
   def create_esindex(name \\ nil) do

@@ -11,17 +11,21 @@ defmodule Exantenna.Es.Document do
   def put_document(models, name, mod) do
     idx = [type: mod.estype, index: mod.esindex(name)]
 
-    data =
-      models
-      |> Stream.map(&mod.search_data(&1))
-      |> Stream.filter(fn item -> ! Blank.blank?(item) end)
+    models
+    |> Stream.map(&mod.search_data(&1))
+    |> Stream.filter(fn item -> ! Blank.blank?(item) end)
+    |> Stream.chunk(50000, 50000, [])
+    |> Stream.each(fn data ->
+      # XXX: Making payload is so slowly.
+      payload =
+        bulk do
+          index idx, data
+        end
 
-    payload =
-      bulk do
-        index idx, data
-      end
+      Tirexs.bump!(payload)._bulk({[refresh: true]})
+    end)
+    |> Stream.run
 
-    Tirexs.bump!(payload)._bulk({[refresh: true]})
   end
 
   def delete_document(model), do: delete_document model, Es.Index.name_index(model.__struct__)
@@ -32,12 +36,20 @@ defmodule Exantenna.Es.Document do
   def delete_document(models, name, mod) do
     idx = [type: mod.estype, index: mod.esindex(name)]
 
-    payload =
-      bulk do
-        delete idx, Stream.map(models, &mod.search_data(&1))
-      end
+    models
+    |> Stream.map(&mod.search_data(&1))
+    |> Stream.filter(fn item -> ! Blank.blank?(item) end)
+    |> Stream.chunk(50000, 50000, [])
+    |> Stream.each(fn data ->
+      # XXX: Making payload is so slowly.
+      payload =
+        bulk do
+          delete idx, data
+        end
 
-    Tirexs.bump!(payload)._bulk({[refresh: true]})
+      Tirexs.bump!(payload)._bulk({[refresh: true]})
+    end)
+    |> Stream.run
   end
 
 end
