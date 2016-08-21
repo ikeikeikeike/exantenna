@@ -29,6 +29,16 @@ defmodule Exantenna.Mixfile do
         :phoenix_html_simplified_helpers,
         :common_device_detector,
         :html_entities,
+        :scrivener_ecto,
+        :tributary,
+        :scrivener_html,
+        :phoenix_html_sanitizer,
+        :simple_format,
+        :guardian,
+        :cors_plug,
+        :tirexs,
+        :rdtype,
+        :mailgun,
       ],
       included_applications: [
       ]
@@ -75,6 +85,7 @@ defmodule Exantenna.Mixfile do
       {:html_entities, "~> 0.3"},
       {:cors_plug, "~> 1.1"},
       {:tributary, github: "DavidAntaramian/tributary"},
+      {:exrm, "~> 1.0"},
     ]
   end
 
