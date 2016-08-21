@@ -41,3 +41,4 @@ erl_crash.dump
 /web/templates
 /prod-do
 /build
+/config/myhost
