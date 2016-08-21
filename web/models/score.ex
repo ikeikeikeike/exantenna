@@ -22,13 +22,24 @@ defmodule Exantenna.Score do
     video_tag_appeared video_char_appeared video_diva_appeared video_toon_appeared
   )
 
-  def name_appeared(name), do: "#{name}_appeared"
-  def name_appeared(subdomain, name), do: "#{subdomain}_#{name}_appeared"
-
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> validate_inclusion(:name, @names)
+  end
+
+  def name_appeared(name), do: "#{name}_appeared"
+  def name_appeared(subdomain, name), do: "#{subdomain}_#{name}_appeared"
+
+  def appeared(model, subdomain, name) when is_list(model) do
+    model
+    |> Enum.filter(&(&1.name == "#{subdomain}_#{name}_appeared"))
+    |> List.first
+  end
+  def appeared(model, name) when is_list(model) do
+    model
+    |> Enum.filter(&(&1.name == "#{name}_appeared"))
+    |> List.first
   end
 
 end

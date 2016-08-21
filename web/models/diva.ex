@@ -40,7 +40,7 @@ defmodule Exantenna.Diva do
     waist hip blood birthday outline
   )
 
-  @relational_fields ~w(antennas thumbs)a
+  @relational_fields ~w(antennas thumbs scores)a
 
   def full_relational_fields, do: @full_relational_fields
   @full_relational_fields @relational_fields

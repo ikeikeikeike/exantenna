@@ -36,7 +36,7 @@ defmodule Exantenna.Toon do
   @required_fields ~w(name)
   @optional_fields ~w(alias kana romaji gyou url author works release_date outline)
 
-  @relational_fields ~w(antennas tags thumbs chars)a
+  @relational_fields ~w(antennas tags thumbs chars scores)a
 
   @full_relational_fields @relational_fields
   def full_relational_fields, do: @full_relational_fields

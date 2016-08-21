@@ -10,8 +10,9 @@ defmodule Exantenna.Repo.Migrations.CreateDivasScores do
 
       timestamps
     end
-    create unique_index(:divas_scores, [:assoc_id, :name], name: :divas_scores_assoc_id_name_index)
-    create index(:divas_scores, [:count])
+    create index(:divas_scores, [:assoc_id, :name, :count])
+    create index(:divas_scores, [:assoc_id, :count])
+
   end
 
 end

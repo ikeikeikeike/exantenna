@@ -25,7 +25,7 @@ defmodule Exantenna.Tag do
   @required_fields ~w(name)
   @optional_fields ~w(kana romaji orig gyou outline)
 
-  @relational_fields ~w(antennas scores thumbs chars toons)a
+  @relational_fields ~w(antennas scores thumbs chars toons scores)a
 
   def full_relational_fields, do: @full_relational_fields
   @full_relational_fields @relational_fields

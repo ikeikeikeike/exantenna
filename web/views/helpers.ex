@@ -10,6 +10,7 @@ defmodule Exantenna.Helpers do
   alias Exantenna.Diva
   alias Exantenna.Char
   alias Exantenna.Thumb
+  alias Exantenna.Score
   alias Exantenna.Antenna
 
   @doc """
@@ -201,6 +202,31 @@ defmodule Exantenna.Helpers do
       end
     end
   end
+  def choose_thumb(%Antenna{} = antenna, :fallback) do
+    nil
+    |> models_thumb(antenna.toons, [:chars])
+    |> models_thumb(antenna.divas)
+    |> models_thumb(antenna.toons)
+  end
+  def choose_thumb(%Antenna{} = antenna, :backup) do
+    choose_thumb(antenna, :picture)
+  end
+  def choose_thumb(%{antennas: _} = model, :fallback) do
+    Enum.reduce Enum.reverse(model.antennas), nil, fn antenna, acc ->
+      case acc do
+        nil -> choose_thumb(antenna, :entry)
+        acc -> acc
+      end
+    end
+  end
+  def choose_thumb(%{antennas: _} = model, :backup) do
+    Enum.reduce model.antennas, nil, fn antenna, acc ->
+      case acc do
+        nil -> choose_thumb(antenna, :picture)
+        acc -> acc
+      end
+    end
+  end
 
   def models_thumb(%Thumb{} = thumb, _models), do: thumb
   def models_thumb(thumb, models) do
@@ -225,6 +251,12 @@ defmodule Exantenna.Helpers do
     end
 
     thumb
+  end
+
+  def ordering(models, :child, :available) do
+    Enum.sort models, fn a, b ->
+      blank?(pick(b.thumbs))
+    end
   end
 
   def anstget(%Antenna{} = antenna), do: antenna
@@ -265,5 +297,9 @@ defmodule Exantenna.Helpers do
 
     Enum.random icons
   end
+
+  def appeared(scores, nil, model), do: appeared scores, model
+  def appeared(scores, subdomain, model), do: Score.appeared scores, subdomain, model_to_string(model)
+  def appeared(scores, model), do: Score.appeared scores, model_to_string(model)
 
 end

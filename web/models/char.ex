@@ -43,7 +43,7 @@ defmodule Exantenna.Char do
     bracup waist hip blood birthday product outline
   )
 
-  @relational_fields ~w(tags thumbs toons)a
+  @relational_fields ~w(tags thumbs toons scores)a
 
   def full_relational_fields, do: @full_relational_fields
   @full_relational_fields @relational_fields
