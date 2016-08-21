@@ -29,6 +29,7 @@ defmodule Exantenna.Mixfile do
         :phoenix_html_simplified_helpers,
         :common_device_detector,
         :html_entities,
+        :scrivener,
         :scrivener_ecto,
         :tributary,
         :scrivener_html,
