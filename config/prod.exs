@@ -13,11 +13,13 @@ use Mix.Config
 # which you typically run after static files are built.
 myhost = String.replace(File.read!("config/myhost"), "\n", "")
 
-config :exantenna, Exantenna.Endpoint,
   # http: [port: {:system, "PORT"}],
+config :exantenna, Exantenna.Endpoint,
   http: [port: 5700],
   url: [host: myhost, port: 80],
-  cache_static_manifest: "priv/static/manifest.json"
+  cache_static_manifest: "priv/static/manifest.json",
+  server: true
+
 
 # Do not print debug messages in production
 config :logger, level: :info,
