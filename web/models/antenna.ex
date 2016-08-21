@@ -43,6 +43,47 @@ defmodule Exantenna.Antenna do
       toons: [:chars]
     ]
 
+  @show_relational_fields [
+      :metadata,
+      :scores,  # node in,out score
+      :penalty,
+      :summary,
+      blog: [
+        :thumbs,
+        :penalty,
+        :scores,  # domain score + in,out score
+        :verifiers
+      ],
+      entry: [
+        :thumbs
+      ],
+      video: [
+        metadatas: [
+          :thumbs,
+          site: [:thumbs],
+        ],
+      ],
+      picture: [
+        :thumbs
+      ],
+      tags: [
+        :scores,
+        :thumbs
+      ],
+      divas: [
+        :scores,
+        :thumbs
+      ],
+      toons: [
+        :scores,
+        :thumbs,
+        chars: [
+          :scores,
+          :thumbs
+        ],
+      ],
+    ]
+
   @full_relational_fields [
       :metadata,
       :scores,  # node in,out score
@@ -84,6 +125,11 @@ defmodule Exantenna.Antenna do
   def query do
     from e in __MODULE__,
     preload: ^@relational_fields
+  end
+
+  def query_all(:show) do
+    from e in __MODULE__,
+    preload: ^@show_relational_fields
   end
 
   def query_all do

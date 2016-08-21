@@ -22,11 +22,11 @@ defmodule Exantenna.EntryController do
   end
 
   def show(conn, %{"id" => id} = params) do
-    antenna = Repo.get!(Antenna.query_all, id)
+    antenna = Repo.get!(Antenna.query_all(:show), id)
 
     antennas =
       Antenna.essearch(antenna.metadata.title, params)
-      |> Es.Paginator.paginate(Antenna.query_all, params)
+      |> Es.Paginator.paginate(Antenna.query_all(:show), params)
 
     render(conn, "show.html", antenna: antenna, antennas: antennas, summaries: antennas)
   end
