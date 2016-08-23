@@ -6,7 +6,7 @@ defmodule Exantenna.Diva.BracupController do
 
   def index(conn, _params) do
     sub = conn.private[:subdomain]
-    bracups = Profile.get :bracup, Profile.args(sub, Diva, Diva.query)
+    bracups = Profile.get :bracup, Profile.args(sub, Diva, Diva.query_all(2))
 
     render(conn, "index.html", bracups: bracups, nav: bracups)
   end
@@ -14,7 +14,7 @@ defmodule Exantenna.Diva.BracupController do
   def sub(conn, %{"name" => name} = _params) do
     sub = conn.private[:subdomain]
     nav = Profile.get :bracup, Profile.args(sub, Diva, Diva.query)
-    bracups = Profile.get :bracup, Profile.args(sub, Diva, Diva.query, name)
+    bracups = Profile.get :bracup, Profile.args(sub, Diva, Diva.query_all(2), name)
 
     render(conn, "index.html", bracups: bracups, nav: nav)
   end

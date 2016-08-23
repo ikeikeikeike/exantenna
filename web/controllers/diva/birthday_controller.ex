@@ -6,14 +6,14 @@ defmodule Exantenna.Diva.BirthdayController do
 
   def month(conn, %{"year" => _, "month" => _} = params) do
     sub = conn.private[:subdomain]
-    {birthdays, divas} = Profile.get :month, Profile.args(sub, Diva, Diva.query, params)
+    {birthdays, divas} = Profile.get :month, Profile.args(sub, Diva, Diva.query_all(2), params)
 
     render(conn, "month.html", birthdays: birthdays, divas: divas)
   end
 
   def year(conn, %{"year" => _} = params) do
     sub = conn.private[:subdomain]
-    {birthdays, divas} = Profile.get :year, Profile.args(sub, Diva, Diva.query, params)
+    {birthdays, divas} = Profile.get :year, Profile.args(sub, Diva, Diva.query_all(2), params)
 
     render(conn, "year.html", birthdays: birthdays, divas: divas)
   end

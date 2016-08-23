@@ -3,7 +3,7 @@ defmodule Exantenna.Mixfile do
 
   def project do
     [app: :exantenna,
-     version: "0.0.1",
+     version: version,
      elixir: "~> 1.2",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
@@ -11,6 +11,12 @@ defmodule Exantenna.Mixfile do
      start_permanent: Mix.env == :prod,
      aliases: aliases,
      deps: deps]
+  end
+
+  defp version do
+    v = "0.0.4"
+    File.write! "VERSION", v
+    v
   end
 
   # Configuration for the OTP application.

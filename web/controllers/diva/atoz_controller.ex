@@ -6,7 +6,7 @@ defmodule Exantenna.Diva.AtozController do
 
   def index(conn, _params) do
     sub = conn.private[:subdomain]
-    letters = Profile.get :atoz, Profile.args(sub, Diva, Diva.query)
+    letters = Profile.get :atoz, Profile.args(sub, Diva, Diva.query_all(2))
 
     render(conn, "index.html", letters: letters, nav: letters)
   end
@@ -14,7 +14,7 @@ defmodule Exantenna.Diva.AtozController do
   def sub(conn, %{"name" => name} = _params) do
     sub = conn.private[:subdomain]
     nav = Profile.get(:atoz, Profile.args(sub, Diva, Diva.query))
-    letters = Profile.get :atoz, Profile.args(sub, Diva, Diva.query, name)
+    letters = Profile.get :atoz, Profile.args(sub, Diva, Diva.query_all(2), name)
 
     render(conn, "index.html", letters: letters, nav: nav)
   end

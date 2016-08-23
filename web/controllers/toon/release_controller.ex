@@ -6,14 +6,14 @@ defmodule Exantenna.Toon.ReleaseController do
 
   def month(conn, %{"year" => _, "month" => _} = params) do
     sub = conn.private[:subdomain]
-    {releases, toons} = Profile.get :release_month, Profile.args(sub, Toon, Toon.query, params)
+    {releases, toons} = Profile.get :release_month, Profile.args(sub, Toon, Toon.query_all(2), params)
 
     render(conn, "month.html", releases: releases, toons: toons)
   end
 
   def year(conn, %{"year" => _} = params) do
     sub = conn.private[:subdomain]
-    {releases, toons} = Profile.get :release_year, Profile.args(sub, Toon, Toon.query, params)
+    {releases, toons} = Profile.get :release_year, Profile.args(sub, Toon, Toon.query_all(2), params)
 
     render(conn, "year.html", releases: releases, toons: toons)
   end

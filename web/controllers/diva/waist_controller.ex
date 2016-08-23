@@ -6,7 +6,7 @@ defmodule Exantenna.Diva.WaistController do
 
   def index(conn, _params) do
     sub = conn.private[:subdomain]
-    waists = Profile.get :waist, Profile.args(sub, Diva, Diva.query)
+    waists = Profile.get :waist, Profile.args(sub, Diva, Diva.query_all(2))
 
     render(conn, "index.html", waists: waists, nav: waists)
   end
@@ -16,7 +16,7 @@ defmodule Exantenna.Diva.WaistController do
     numeric = List.first String.split(name, "-")
 
     nav = Profile.get :waist, Profile.args(sub, Diva, Diva.query)
-    waists = Profile.get :waist, Profile.args(sub, Diva, Diva.query, numeric)
+    waists = Profile.get :waist, Profile.args(sub, Diva, Diva.query_all(2), numeric)
 
     render(conn, "index.html", waists: waists, nav: nav)
   end
