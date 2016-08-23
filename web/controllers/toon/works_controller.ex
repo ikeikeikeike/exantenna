@@ -14,7 +14,7 @@ defmodule Exantenna.Toon.WorksController do
   def sub(conn, %{"name" => name} = _params) do
     sub = conn.private[:subdomain]
     nav = Profile.get :works, Profile.args(sub, Toon)
-    works = Profile.get :works, Toon, Profile.args(sub, Toon, Toon.query_all(3), name)
+    works = Profile.get :works, Profile.args(sub, Toon, Toon.query_all(3), name)
 
     render(conn, "index.html", works: works, nav: nav)
   end
