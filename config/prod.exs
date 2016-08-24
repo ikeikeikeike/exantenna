@@ -109,6 +109,7 @@ config :quantum,
       task: "Exantenna.Builders.Score.inscore_into",
       args: []
     ]
+  ]
 
 import_config "sitemeta.prod.secret.exs"
 import_config "prod.secret.exs"

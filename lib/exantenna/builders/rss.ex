@@ -10,7 +10,7 @@ defmodule Exantenna.Builders.Rss do
   require Logger
   # TODO: Move logger to kickking module like shell
 
-  def feed_into([]), do feed_into
+  def feed_into([]), do: feed_into
   def feed_into do
     blogs = # Repo.get Blog, 1
       Blog.query
