@@ -10,6 +10,7 @@ defmodule Exantenna.Builders.Score do
   require Logger
 
   # Launch this per 11 min (in 0, 11, 22, 33, 44, 55)
+  def inscore_into([]), do: inscore_into
   def inscore_into do
     blogs = Repo.all Blog
 

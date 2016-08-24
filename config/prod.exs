@@ -71,5 +71,44 @@ config :logger, level: :info
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
 
+config :quantum,
+  # global?: true,
+  cron: [
+    # sitemaps_gen_sitemap: [
+      # schedule: "43 */4 * * *",
+      # task: "Sitemaps.gen_sitemap",
+      # args: []
+    # ],
+    appear_aggs_tag: [
+      schedule: "0 0 * * *",
+      task: "Exantenna.Builders.Appear.aggs",
+      args: [Exantenna.Tag]
+    ],
+    appear_aggs_diva: [
+      schedule: "0 5 * * *",
+      task: "Exantenna.Builders.Appear.aggs",
+      args: [Exantenna.Diva]
+    ],
+    appear_aggs_char: [
+      schedule: "0 10 * * *",
+      task: "Exantenna.Builders.Appear.aggs",
+      args: [Exantenna.Char]
+    ],
+    appear_aggs_toon: [
+      schedule: "0 15 * * *",
+      task: "Exantenna.Builders.Appear.aggs",
+      args: [Exantenna.Toon]
+    ],
+    rss_feed_into: [
+      schedule: "0 50 */3 * *",
+      task: "Exantenna.Builders.Rss.feed_into",
+      args: []
+    ],
+    score_inscore_into: [
+      schedule: "11/* * * * *",
+      task: "Exantenna.Builders.Score.inscore_into",
+      args: []
+    ]
+
 import_config "sitemeta.prod.secret.exs"
 import_config "prod.secret.exs"

@@ -14,7 +14,7 @@ defmodule Exantenna.Mixfile do
   end
 
   defp version do
-    v = "0.0.7"
+    v = "0.0.10"
     File.write! "VERSION", v
     v
   end
@@ -43,6 +43,7 @@ defmodule Exantenna.Mixfile do
         :tirexs,
         :rdtype,
         :mailgun,
+        :quantum
       ],
       included_applications: [
        :scrivener,
@@ -93,6 +94,7 @@ defmodule Exantenna.Mixfile do
       {:cors_plug, "~> 1.1"},
       {:tributary, github: "DavidAntaramian/tributary"},
       {:exrm, "~> 1.0"},
+      {:quantum, "~> 1.7"},
     ]
   end
 
