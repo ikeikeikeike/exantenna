@@ -81,7 +81,7 @@ defmodule Exantenna.Builders.Appear do
           changeset =
             model
             |> Repo.preload(:scores)
-            |> mod.aggs_changeset(%{"scores" => scores})
+            |> mod.score_changeset(%{"scores" => scores})
 
           case Repo.update(changeset) do
             {:error, reason} ->

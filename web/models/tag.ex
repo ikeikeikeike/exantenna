@@ -81,7 +81,7 @@ defmodule Exantenna.Tag do
     put_assoc(change(antenna), :tags, tags)
   end
 
-  def aggs_changeset(model, params \\ :invalid) do
+  def score_changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> cast_assoc(:scores, required: true)

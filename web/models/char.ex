@@ -101,7 +101,7 @@ defmodule Exantenna.Char do
     put_assoc(change(antenna), :toons, toons)
   end
 
-  def aggs_changeset(model, params \\ :invalid) do
+  def score_changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> cast_assoc(:scores, required: true)

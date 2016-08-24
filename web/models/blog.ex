@@ -101,4 +101,10 @@ defmodule Exantenna.Blog do
     |> changeset(params)
   end
 
+  def score_changeset(model, params \\ :invalid) do
+    model
+    |> cast(params, @required_fields, @optional_fields)
+    |> cast_assoc(:scores, required: true)
+  end
+
 end
