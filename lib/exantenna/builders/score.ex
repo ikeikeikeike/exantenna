@@ -2,6 +2,7 @@ defmodule Exantenna.Builders.Score do
 
   import Ecto.Query, only: [from: 1, from: 2]
 
+  alias Exantenna.Blank
   alias Exantenna.Repo
   alias Exantenna.Blog
   alias Exantenna.Score
@@ -24,7 +25,10 @@ defmodule Exantenna.Builders.Score do
 
     Enum.each blogs, fn blog ->
 
-      if count = inlogs[blog.url] do
+      count = inlogs[blog.url]
+
+      unless Blank.blank?(count) do
+
         query =
           from s in table,
             where: s.assoc_id == ^blog.id
@@ -34,11 +38,15 @@ defmodule Exantenna.Builders.Score do
           |> Repo.all
           |> make_scores(count, blog)
 
+        require IEx; IEx.pry
+
         Repo.transaction fn ->
           changeset =
             blog
             |> Repo.preload(:scores)
             |> Blog.score_changeset(%{"scores" => scores})
+
+          require IEx; IEx.pry
 
           case Repo.update(changeset) do
             {:error, reason} ->
