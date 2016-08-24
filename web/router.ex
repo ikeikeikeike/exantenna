@@ -24,11 +24,8 @@ defmodule Exantenna.Router do
     [host: host, port: port] =
       Application.get_env(:exantenna, Exantenna.Endpoint)[:url]
 
-    fqdn = "#{host}:#{port}"
-
     plug CORSPlug,
-      origin:      [fqdn, "http://#{fqdn}", "https://#{fqdn}"],
-      credentials: true,
+      credentials: false,
       methods:     ["POST", "OPTIONS"]
 
   end
