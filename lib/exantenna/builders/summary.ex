@@ -58,7 +58,7 @@ defmodule Exantenna.Builders.Summary do
         struct an, [summary: nil, summary_id: nil]
       end)
 
-    Es.Document.delete_document(removeable)
+    Es.Document.put_document(removeable)
 
     qs =
       from a in Antenna.query_all(:esreindex),
@@ -67,7 +67,7 @@ defmodule Exantenna.Builders.Summary do
         order_by: [desc: a.inserted_at],
         limit: 500
 
-    insertable =
+    updateable =
       qs
       |> Repo.all
       |> Enum.shuffle
@@ -77,7 +77,7 @@ defmodule Exantenna.Builders.Summary do
         Repo.update! m
       end)
 
-    Es.Document.put_document(insertable)
+    Es.Document.put_document(updateable)
   end
 
 end
