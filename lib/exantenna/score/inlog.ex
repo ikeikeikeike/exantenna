@@ -3,7 +3,7 @@ defmodule Exantenna.Score.Inlog do
   alias Exantenna.Blank
   alias Exantenna.Redis
 
-  @host  Application.get_env(:exantenna, :url)[:host]
+  @host  Application.get_env(:exantenna, Exantenna.Endpoint)[:url][:host]
   @ua_ptn ~r(Mozilla|Opera)
   @accept_ptn ~r/.*(text|html,application|xhtml)/
 

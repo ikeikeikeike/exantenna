@@ -105,10 +105,11 @@ config :quantum,
       args: []
     ],
     score_inscore_into: [
-      schedule: "11/* * * * *",
+      schedule: "*/11 * * * *",
       task: "Exantenna.Builders.Score.inscore_into",
       args: []
     ]
+  ]
 
 import_config "sitemeta.prod.secret.exs"
 import_config "prod.secret.exs"
