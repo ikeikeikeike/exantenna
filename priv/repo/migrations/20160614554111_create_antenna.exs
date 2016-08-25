@@ -8,7 +8,7 @@ defmodule Exantenna.Repo.Migrations.CreateAntenna do
       add :entry_id, references(:entries, on_delete: :nothing)
       add :video_id, references(:videos, on_delete: :nothing)
       add :picture_id, references(:pictures, on_delete: :nothing)
-      add :summary_id, references(:summaries, on_delete: :nothing)
+      add :summary_id
 
       timestamps
     end

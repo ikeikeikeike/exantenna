@@ -100,7 +100,7 @@ config :quantum,
       args: [Exantenna.Toon]
     ],
     summary_aggs: [
-      schedule: "*/11 * * * *",
+      schedule: "45 * * * *",
       task: "Exantenna.Builders.Summary.aggs",
       args: []
     ],

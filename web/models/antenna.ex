@@ -9,10 +9,10 @@ defmodule Exantenna.Antenna do
     belongs_to :metadata, Exantenna.Metadata
     belongs_to :video, Exantenna.Video
     belongs_to :picture, Exantenna.Picture
-    belongs_to :summary, Exantenna.Summary
+    belongs_to :summary, Exantenna.Summary, on_replace: :delete
 
     has_one :penalty, {"antennas_penalties", Exantenna.Penalty}, foreign_key: :assoc_id
-    has_many :scores, {"antennas_scores", Exantenna.Score}, foreign_key: :assoc_id
+    has_many :scores, {"antennas_scores", Exantenna.Score}, foreign_key: :assoc_id, on_replace: :delete
 
     many_to_many :tags, Exantenna.Tag, join_through: "antennas_tags" # , on_delete: :delete_all, on_replace: :delete
     many_to_many :divas, Exantenna.Diva, join_through: "antennas_divas" # , on_delete: :delete_all, on_replace: :delete
@@ -121,6 +121,7 @@ defmodule Exantenna.Antenna do
       ],
     ]
   def full_relational_fields, do: @full_relational_fields
+  def esreindex_fields, do: @esreindex_fields
 
   def query do
     from e in __MODULE__,
@@ -130,6 +131,11 @@ defmodule Exantenna.Antenna do
   def query_all(:show) do
     from e in __MODULE__,
     preload: ^@show_relational_fields
+  end
+
+  def query_all(:esreindex) do
+    from e in __MODULE__,
+    preload: ^@esreindex_fields
   end
 
   def query_all do
@@ -170,6 +176,12 @@ defmodule Exantenna.Antenna do
       join: m in Metadata,
         on: m.id == q.metadata_id,
       where: m.url == ^url
+  end
+
+  def summary_changeset(model, params \\ :invalid) do
+    model
+    |> cast(params, [], [])
+    |> cast_assoc(:summary, required: true)
   end
 
   use Exantenna.Es

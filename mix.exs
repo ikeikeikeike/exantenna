@@ -14,7 +14,8 @@ defmodule Exantenna.Mixfile do
   end
 
   defp version do
-    v = "0.0.15"
+
+    v = "0.0.16"
     File.write! "VERSION", v
     v
   end
@@ -95,6 +96,7 @@ defmodule Exantenna.Mixfile do
       {:tributary, github: "DavidAntaramian/tributary"},
       {:exrm, "~> 1.0"},
       {:quantum, "~> 1.7"},
+      {:wakaway, "~> 0.5"},
     ]
   end
 
