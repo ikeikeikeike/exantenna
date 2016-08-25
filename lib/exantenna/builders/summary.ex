@@ -10,6 +10,7 @@ defmodule Exantenna.Builders.Summary do
 
   def aggs do
     Exantenna.Builders.Score.inscore_into
+
   end
 
 end

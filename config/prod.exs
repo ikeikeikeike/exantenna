@@ -80,33 +80,33 @@ config :quantum,
       # args: []
     # ],
     appear_aggs_tag: [
-      schedule: "0 0 * * *",
+      schedule: "0 20 * * *",
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Tag]
     ],
     appear_aggs_diva: [
-      schedule: "0 5 * * *",
+      schedule: "0 30 * * *",
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Diva]
     ],
     appear_aggs_char: [
-      schedule: "0 10 * * *",
+      schedule: "0 40 * * *",
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Char]
     ],
     appear_aggs_toon: [
-      schedule: "0 15 * * *",
+      schedule: "0 50 * * *",
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Toon]
     ],
-    rss_feed_into: [
-      schedule: "0 50 */3 * *",
-      task: "Exantenna.Builders.Rss.feed_into",
+    summary_aggs: [
+      schedule: "*/11 * * * *",
+      task: "Exantenna.Builders.Summary.aggs",
       args: []
     ],
-    score_inscore_into: [
-      schedule: "*/11 * * * *",
-      task: "Exantenna.Builders.Score.inscore_into",
+    rss_feed_into: [
+      schedule: "0 0 */3 * *",
+      task: "Exantenna.Builders.Rss.feed_into",
       args: []
     ]
   ]

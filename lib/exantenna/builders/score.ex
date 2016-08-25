@@ -10,8 +10,7 @@ defmodule Exantenna.Builders.Score do
 
   require Logger
 
-  # Launch this per 11 min (in 0, 11, 22, 33, 44, 55)
-  def inscore_into([]), do: inscore_into
+  # Launch this per a hour or it also launchs before summary batch.
   def inscore_into do
     blogs = Repo.all Blog
 
@@ -23,11 +22,10 @@ defmodule Exantenna.Builders.Score do
       |> Inlog.resource
       |> Inlog.scoring
 
-    Enum.each blogs, fn blog ->
+    Enum.map(blogs, fn blog ->
 
       count = inlogs[blog.url]
-
-      unless Blank.blank?(count) do
+      if count > 0 do
 
         query =
           from s in table,
@@ -38,15 +36,11 @@ defmodule Exantenna.Builders.Score do
           |> Repo.all
           |> make_scores(count, blog)
 
-        require IEx; IEx.pry
-
         Repo.transaction fn ->
           changeset =
             blog
             |> Repo.preload(:scores)
             |> Blog.score_changeset(%{"scores" => scores})
-
-          require IEx; IEx.pry
 
           case Repo.update(changeset) do
             {:error, reason} ->
@@ -58,12 +52,26 @@ defmodule Exantenna.Builders.Score do
           end
         end
       end
-    end
+    end)
+    |> Enum.filter(fn trans ->
+      case trans do
+        {:ok, %Blog{}} -> true
+        _              -> false
+      end
+    end)
+    |> Enum.map(fn trans ->
+      {:ok, blog} = trans
+       blog
+    end)
   end
 
   defp make_scores([], count, blog) do
     [
       %{
+        "assoc_id" => blog.id,
+        "name" => Score.const_in_hourly,
+        "count" => count
+      }, %{
         "assoc_id" => blog.id,
         "name" => Score.const_in_daily,
         "count" => count
@@ -112,38 +120,38 @@ defmodule Exantenna.Builders.Score do
   defp sum(%Score{} = model, bool, num) when is_boolean(bool) and is_integer(num) do
     case bool do
       true  ->
-        struct model, [count: 0]
+        0
       false ->
-        struct model, [count: model.count + num]
+        model.count + num
     end
   end
   @const_hourly Score.const_in_hourly
   defp sum(%Score{name: @const_hourly} = model, dt, count) do
-    sum model, model.updated_at > Timex.end_of_hour(dt), count
+    sum model, Timex.end_of_hour(model.updated_at) < dt, count
   end
   @const_daily Score.const_in_daily
   defp sum(%Score{name: @const_daily} = model, dt, count) do
-    sum model, model.updated_at > Timex.end_of_day(dt), count
+    sum model, Timex.end_of_day(model.updated_at) < dt, count
   end
   @const_weekly Score.const_in_weekly
   defp sum(%Score{name: @const_weekly} = model, dt, count) do
-    sum model, model.updated_at > Timex.end_of_week(dt), count
+    sum model, Timex.end_of_week(model.updated_at) < dt, count
   end
   @const_monthly Score.const_in_monthly
   defp sum(%Score{name: @const_monthly} = model, dt, count) do
-    sum model, model.updated_at > Timex.end_of_month(dt), count
+    sum model, Timex.end_of_month(model.updated_at) < dt, count
   end
   @const_quarterly Score.const_in_quarterly
   defp sum(%Score{name: @const_quarterly} = model, dt, count) do
-    sum model, model.updated_at > Timex.end_of_quarter(dt), count
+    sum model, Timex.end_of_quarter(model.updated_at) < dt, count
   end
   @const_biannually Score.const_in_biannually
   defp sum(%Score{name: @const_biannually} = model, dt, count) do
-    sum model, model.updated_at > end_of_biannual(dt), count
+    sum model, end_of_biannual(model.updated_at) < dt, count
   end
   @const_yearly Score.const_in_yearly
   defp sum(%Score{name: @const_yearly} = model, dt, count) do
-    sum model, model.updated_at > Timex.end_of_year(dt), count
+    sum model, Timex.end_of_year(model.updated_at) < dt, count
   end
   @const_totally Score.const_in_totally
   defp sum(%Score{name: @const_totally} = model, dt, count) do
