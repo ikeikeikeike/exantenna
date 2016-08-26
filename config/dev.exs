@@ -48,5 +48,45 @@ config :exantenna, Exantenna.Repo,
   timeout: 300000  # XXX: For Develop
   # ownership_timeout: 300000
 
+config :quantum,
+  # global?: true,
+  cron: [
+    # sitemaps_gen_sitemap: [
+      # schedule: "43 */4 * * *",
+      # task: "Sitemaps.gen_sitemap",
+      # args: []
+    # ],
+    appear_aggs_tag: [
+      schedule: "0 * * * *",
+      task: "Exantenna.Builders.Appear.aggs",
+      args: [Exantenna.Tag]
+    ],
+    appear_aggs_diva: [
+      schedule: "10 * * * *",
+      task: "Exantenna.Builders.Appear.aggs",
+      args: [Exantenna.Diva]
+    ],
+    appear_aggs_char: [
+      schedule: "20 * * * *",
+      task: "Exantenna.Builders.Appear.aggs",
+      args: [Exantenna.Char]
+    ],
+    appear_aggs_toon: [
+      schedule: "30 * * * *",
+      task: "Exantenna.Builders.Appear.aggs",
+      args: [Exantenna.Toon]
+    ],
+    summary_aggs: [
+      schedule: "40 * * * *",
+      task: "Exantenna.Builders.Summary.aggs",
+      args: []
+    ],
+    rss_feed_into: [
+      schedule: "50 * * * *",
+      task: "Exantenna.Builders.Rss.feed_into",
+      args: []
+    ]
+  ]
+
 import_config "sitemeta.dev.secret.exs"
 import_config "dev.secret.exs"

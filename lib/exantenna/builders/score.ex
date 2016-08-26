@@ -127,7 +127,7 @@ defmodule Exantenna.Builders.Score do
   end
   @const_hourly Score.const_in_hourly
   defp sum(%Score{name: @const_hourly} = model, dt, count) do
-    sum model, Timex.end_of_hour(model.updated_at) < dt, count
+    sum model, end_of_hour(model.updated_at) < dt, count
   end
   @const_daily Score.const_in_daily
   defp sum(%Score{name: @const_daily} = model, dt, count) do
