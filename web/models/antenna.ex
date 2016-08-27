@@ -178,6 +178,11 @@ defmodule Exantenna.Antenna do
       where: m.url == ^url
   end
 
+  def changeset(model, params \\ :invalid) do
+    model
+    |> cast(params, @required_fields, @optional_fields)
+  end
+
   def summary_changeset(model, params \\ :invalid) do
     model
     |> cast(params, [], [])

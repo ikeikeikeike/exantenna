@@ -41,9 +41,12 @@ defmodule Exantenna.Services.Antenna do
     "images" => _, "tags" => _, "pictures" => _, "videos" => _} = item
   ) do
     Repo.transaction fn ->
+
       try do
         antenna =
-          Repo.insert!(antenna)
+          antenna
+          |> Antenna.changeset(%{})
+          |> Repo.insert!
           |> Repo.preload(Antenna.full_relational_fields)
 
         item = additional_value(item)

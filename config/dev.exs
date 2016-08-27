@@ -57,32 +57,32 @@ config :quantum,
       # args: []
     # ],
     appear_aggs_tag: [
-      schedule: "0 * * * *",
+      schedule: "0 */5 * * *",
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Tag]
     ],
     appear_aggs_diva: [
-      schedule: "10 * * * *",
+      schedule: "10 */5 * * *",
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Diva]
     ],
     appear_aggs_char: [
-      schedule: "20 * * * *",
+      schedule: "20 */5 * * *",
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Char]
     ],
     appear_aggs_toon: [
-      schedule: "30 * * * *",
+      schedule: "30 */5 * * *",
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Toon]
     ],
     summary_aggs: [
-      schedule: "40 * * * *",
+      schedule: "40 */5 * * *",
       task: "Exantenna.Builders.Summary.aggs",
       args: []
     ],
     rss_feed_into: [
-      schedule: "50 * * * *",
+      schedule: "50 */5 * * *",
       task: "Exantenna.Builders.Rss.feed_into",
       args: []
     ]
