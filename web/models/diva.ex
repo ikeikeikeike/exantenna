@@ -74,21 +74,29 @@ defmodule Exantenna.Diva do
 
   def item_changeset(%Antenna{toons: _toons} = antenna, item \\ :invalid) do
     adding =
-      Enum.reduce item["videos"], [], fn tpl, result ->
+      Enum.reduce(item["videos"], [], fn tpl, result ->
         r =
           Enum.flat_map elem(tpl, 1), fn vid ->
             vid["divas"] || []
           end
 
         result ++ r
-      end
+      end)
+      |> Enum.map(fn name ->
+        %{name: name}
+      end)
 
     exists =
       ConCache.get_or_store(:divas, "divaname:all", fn ->
         Enum.map Repo.all(__MODULE__), &(&1.name)
       end)
       |> Exantenna.Filter.right_names(item)
-      |> Enum.filter(fn name -> ! (name in adding) end)
+      |> Enum.filter(fn name ->
+        ! (name in adding)
+      end)
+      |> Enum.map(fn name ->
+        %{name: name}
+      end)
 
     divas =
       Exantenna.Ecto.Changeset.get_or_changeset(__MODULE__, adding) ++

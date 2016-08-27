@@ -74,6 +74,9 @@ defmodule Exantenna.Tag do
         acc ++ String.split(name, [" ", "　", "・"])
       end)
       |> Enum.uniq
+      |> Enum.map(fn name ->
+        %{name: name}
+      end)
 
     tags =
       Exantenna.Ecto.Changeset.get_or_changeset(__MODULE__, adding)

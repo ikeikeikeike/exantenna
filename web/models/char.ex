@@ -86,7 +86,7 @@ defmodule Exantenna.Char do
         Exantenna.Filter.right_name?(char, item, filters)
       end)
       |> Enum.map(fn char ->
-        char[:name]
+        %{name: char[:name]}
       end)
 
     chars =

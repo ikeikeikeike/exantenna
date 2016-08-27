@@ -13,7 +13,7 @@ defmodule Exantenna.Toon do
     has_many :scores, {"toons_scores", Exantenna.Score}, foreign_key: :assoc_id, on_replace: :delete
 
     many_to_many :tags, Tag, join_through: "toons_tags"
-    many_to_many :chars, Char, join_through: "toons_chars"
+    many_to_many :chars, Char, join_through: "toons_chars", on_replace: :delete
     many_to_many :antennas, Antenna, join_through: "antennas_toons"
 
     field :name, :string
@@ -80,7 +80,7 @@ defmodule Exantenna.Toon do
         Exantenna.Filter.right_name?(toon, item, filters)
       end)
       |> Enum.map(fn toon ->
-        toon[:name]
+        %{name: toon[:name]}
       end)
 
     toons =

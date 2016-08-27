@@ -37,12 +37,12 @@ defmodule Exantenna.Ecto.Changeset do
     merge(changeset, mergeset)
   end
 
-  def get_or_changeset(mod, names) when is_list(names),
-    do: Enum.map names, &get_or_changeset(mod, &1)
-  def get_or_changeset(mod, name) do
-    case Repo.get_by(mod, name: name) do
+  def get_or_changeset(mod, queryables) when is_list(queryables),
+    do: Enum.map queryables, &get_or_changeset(mod, &1)
+  def get_or_changeset(mod, queryable) do
+    case Repo.get_by(mod, queryable) do
       nil ->
-        apply mod, :changeset, [mod.__struct__, %{name: name}]
+        apply mod, :changeset, [mod.__struct__, queryable]
       model ->
         model
     end
