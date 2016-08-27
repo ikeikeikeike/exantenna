@@ -330,8 +330,9 @@ defmodule Exantenna.Antenna do
   def search_data(model) do
     meta = model.metadata
 
+    # meta.published_at || meta.inserted_at
     published_at =
-      case Timex.Ecto.DateTime.cast(meta.published_at || meta.inserted_at) do
+      case Timex.Ecto.DateTime.cast(meta.inserted_at) do
         {:ok, at} -> Timex.format!(at, "{ISO}")
         :error    -> nil
         date      -> date
