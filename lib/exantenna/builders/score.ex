@@ -18,7 +18,8 @@ defmodule Exantenna.Builders.Score do
 
     inlogs =
       blogs
-      |> Enum.map(&(&1.url))
+      |> Enum.map(& &1.url)
+      |> Enum.filter(& ! Blank.blank?(&1))
       |> Inlog.resource
       |> Inlog.scoring
 
