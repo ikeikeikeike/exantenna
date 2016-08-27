@@ -25,7 +25,7 @@ defmodule Exantenna.Builders.Score do
 
     Enum.map(blogs, fn blog ->
 
-      count = inlogs[blog.url]
+      count = inlogs[blog.url] || 0
       if count > 0 do
 
         query =
