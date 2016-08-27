@@ -8,10 +8,10 @@ defmodule Exantenna.SummaryController do
 
   def index(conn, params) do
     words = params["q"]
-    options = Map.merge params, %{
-      "filter" => %{
+    options = %{
+      "filter" => Map.merge(Map.get(params, "filter", %{}), %{
         is_summary: true
-      }
+      })
     }
 
     antennas =

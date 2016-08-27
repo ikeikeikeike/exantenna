@@ -64,7 +64,7 @@ defmodule Exantenna.Builders.Summary do
       from a in Antenna.query_all(:esreindex),
         join: b in Blog,
         where: b.id in ^ids,
-        order_by: [desc: a.inserted_at],
+        order_by: [desc: a.id],
         limit: 500
 
     updateable =
