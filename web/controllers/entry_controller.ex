@@ -17,10 +17,6 @@ defmodule Exantenna.EntryController do
     render(conn, "index.html", antennas: antennas)
   end
 
-  def show(conn, %{"id" => _id, "title" => _title} = params) do
-    show conn, params
-  end
-
   def show(conn, %{"id" => id} = params) do
     antenna = Repo.get!(Antenna.query_all(:show), id)
 
@@ -29,6 +25,10 @@ defmodule Exantenna.EntryController do
       |> Es.Paginator.paginate(Antenna.query_all(:show), params)
 
     render(conn, "show.html", antenna: antenna, antennas: antennas, summaries: antennas)
+  end
+
+  def show(conn, %{"id" => _id, "title" => _title} = params) do
+    show conn, params
   end
 
 end

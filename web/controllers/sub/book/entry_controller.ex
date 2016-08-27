@@ -17,18 +17,14 @@ defmodule Exantenna.Sub.Book.EntryController do
     |> Exantenna.EntryController.index(params)
   end
 
-  def show(conn, %{"id" => _id, "title" => _title} = params) do
-    show conn, params
-  end
-
   def show(conn, %{"id" => id} = params) do
     conn
     |> put_view(Book.EntryView)
     |> Exantenna.EntryController.show(params)
   end
 
-  def view(conn, %{"id" => _id, "title" => _title} = params) do
-    view conn, params
+  def show(conn, %{"id" => _id, "title" => _title} = params) do
+    show conn, params
   end
 
   def view(conn, %{"id" => id} = params) do
@@ -41,6 +37,10 @@ defmodule Exantenna.Sub.Book.EntryController do
     conn
     |> put_layout({Book.LayoutView, "view.html"})
     |> render(Book.EntryView, "view.html", antenna: antenna, antennas: [])
+  end
+
+  def view(conn, %{"id" => _id, "title" => _title} = params) do
+    view conn, params
   end
 
 end

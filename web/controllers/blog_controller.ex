@@ -6,10 +6,6 @@ defmodule Exantenna.BlogController do
 
   import Ecto.Query
 
-  def show(conn, %{"id" => _id, "title" => _title} = params) do
-    show conn, params
-  end
-
   def show(conn, %{"id" => id} = params) do
     pager =
       Antenna.query_all
@@ -20,5 +16,10 @@ defmodule Exantenna.BlogController do
 
     render(conn, "index.html", pager: pager)
   end
+
+  def show(conn, %{"id" => _id, "title" => _title} = params) do
+    show conn, params
+  end
+
 
 end

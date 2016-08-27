@@ -6,6 +6,8 @@ defmodule Exantenna.Helpers do
   use Phoenix.HTML
 
   alias Exantenna.Repo
+
+  alias Exantenna.Tag
   alias Exantenna.Toon
   alias Exantenna.Diva
   alias Exantenna.Char
@@ -178,6 +180,16 @@ defmodule Exantenna.Helpers do
     Enum.reduce diva.antennas, thumb, fn antenna, acc ->
       case acc do
         nil -> choose_thumb(antenna, :diva)
+        acc -> acc
+      end
+    end
+  end
+  def choose_thumb(%Tag{} = tag) do
+    thumb = pick(tag.thumbs)
+
+    Enum.reduce tag.antennas, thumb, fn antenna, acc ->
+      case acc do
+        nil -> choose_thumb(antenna, :toon)
         acc -> acc
       end
     end

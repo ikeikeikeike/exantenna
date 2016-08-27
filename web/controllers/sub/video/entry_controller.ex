@@ -17,14 +17,14 @@ defmodule Exantenna.Sub.Video.EntryController do
     |> Exantenna.EntryController.index(params)
   end
 
-  def show(conn, %{"id" => _id, "title" => _title} = params) do
-    show conn, params
-  end
-
   def show(conn, %{"id" => id} = params) do
     conn
     |> put_view(Video.EntryView)
     |> Exantenna.EntryController.show(params)
+  end
+
+  def show(conn, %{"id" => _id, "title" => _title} = params) do
+    show conn, params
   end
 
 end

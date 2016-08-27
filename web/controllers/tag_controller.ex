@@ -22,13 +22,13 @@ defmodule Exantenna.TagController do
   end
 
   def show(conn, %{"name" => name} = params) do
-    diva = Repo.get_by!(Tag.query_all(2), name: name)
+    tag = Repo.get_by!(Tag.query_all(2), name: name)
 
     antennas =
-      Antenna.essearch(diva.name, params)
+      Antenna.essearch(tag.name, params)
       |> Es.Paginator.paginate(Antenna.query_all, params)
 
-    render(conn, "show.html", diva: diva, antennas: antennas)
+    render(conn, "show.html", tag: tag, antennas: antennas)
   end
 
   def suggest(conn, %{"search" => search}) do
