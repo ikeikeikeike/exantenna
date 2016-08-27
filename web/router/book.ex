@@ -24,6 +24,7 @@ defmodule Exantenna.Router.Book do
     scope "/s" do
       # TODO: need to redirect under line from /book/viewer:id and /book/viewer:id/:title by nginx
       get "/:id/viewer", EntryController, :view
+      get "/:id/viewer/:title", EntryController, :view
 
       get "/:id", EntryController, :show
       get "/:id/:title", EntryController, :show
@@ -70,6 +71,7 @@ defmodule Exantenna.Router.Book do
     end
 
     scope "/feed" do
+      get "/", FeedController, :xml
       get "/rdf.xml", FeedController, :xml
       get "/rss.xml", FeedController, :xml
       get "/atom.xml", FeedController, :xml
@@ -84,6 +86,7 @@ defmodule Exantenna.Router.Book do
     get "/toons", ToonController, :index
     get "/animes.html", ToonController, :index  # TODO: to be redirect
     get "/toon/:name", ToonController, :show
+    get "/anime/:name", ToonController, :show  # TODO: to be redirect
 
     get "/characters", CharController, :index
     get "/characters.html", CharController, :index  # TODO: to be redirect

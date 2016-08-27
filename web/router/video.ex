@@ -67,6 +67,7 @@ defmodule Exantenna.Router.Video do
     end
 
     scope "/feed" do
+      get "/", FeedController, :xml
       get "/rdf.xml", FeedController, :xml
       get "/rss.xml", FeedController, :xml
       get "/atom.xml", FeedController, :xml
@@ -81,6 +82,7 @@ defmodule Exantenna.Router.Video do
     get "/toons", ToonController, :index
     get "/animes.html", ToonController, :index  # TODO: to be redirect
     get "/toon/:name", ToonController, :show
+    get "/anime/:name", ToonController, :show  # TODO: to be redirect
 
     get "/characters", CharController, :index
     get "/characters.html", CharController, :index  # TODO: to be redirect
