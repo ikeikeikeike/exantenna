@@ -17,6 +17,7 @@ defmodule Exantenna.AntennaController do
       |> Es.Paginator.paginate(Antenna.query_all, params)
 
     options = %{
+      "sort" => :random,
       "filter" => Map.merge(Map.get(params, "filter", %{}), %{
         is_summary: true
       })

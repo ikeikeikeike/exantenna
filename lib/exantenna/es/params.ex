@@ -16,12 +16,16 @@ defmodule Exantenna.Es.Params do
     per_page = (options[:limit] || options[:per_page] || options[:page_size] || @default_page_size)
     offset = options[:offset] || (page - 1) * per_page
     filter = options[:filter]
+    aggs = options[:aggs]
+    sort = options[:sort]
 
     %{
       page: page,
       per_page: per_page,
       offset: offset,
-      filter: filter
+      filter: filter,
+      aggs: aggs,
+      sort: sort,
     }
   end
 

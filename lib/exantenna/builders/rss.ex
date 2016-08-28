@@ -16,6 +16,7 @@ defmodule Exantenna.Builders.Rss do
       Blog.query
       |> Blog.available
       |> Repo.all
+      |> Enum.shuffle  # TODO: shuffle logic
 
     Enum.map blogs, fn blog ->
       blog = Blog.feed_changeset(blog, Feed.get(blog.rss))

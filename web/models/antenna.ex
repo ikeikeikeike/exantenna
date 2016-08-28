@@ -191,7 +191,7 @@ defmodule Exantenna.Antenna do
 
   use Exantenna.Es
 
-  def essearch(nil), do: essearch(nil, [])
+  def essearch, do: essearch(nil, [])
   def essearch(word), do: essearch(word, [])
   def essearch("", options), do: essearch(nil, options)
   def essearch(word, options) do
@@ -219,7 +219,6 @@ defmodule Exantenna.Antenna do
 
         q =
           search [index: esindex, fields: [], from: offset, size: per_page] do
-
             query do
               filtered do
                 query do
@@ -236,23 +235,6 @@ defmodule Exantenna.Antenna do
                 end
               end
             end
-
-            aggs do
-              tags do
-                terms field: "tags",  size: 20, order: [_count: "desc"]
-              end
-              toons do
-                terms field: "toons", size: 20, order: [_count: "desc"]
-              end
-              chars do
-                terms field: "chars", size: 20, order: [_count: "desc"]
-              end
-            end
-
-            sort do
-              [published_at: [order: "desc"]]
-            end
-
           end
 
         # https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html
@@ -261,9 +243,21 @@ defmodule Exantenna.Antenna do
           q = put_in q, [:search, :query, :filtered, :query], s
         end
 
-        if f = opt[:filter] do
-          q = put_in q, [:search, :query, :filtered, :filter], Es.Filter.is_(f)
+        if s = opt[:filter] do
+          q = put_in q, [:search, :query, :filtered, :filter], Es.Filter.is_(s)
         end
+
+        if s = opt[:aggs] do
+          q = put_in q, [:search, :aggs], Es.Aggs.is_(s)
+        end
+
+        q = put_in(q, [:search, :sort],
+          case opt[:sort] do
+            nil ->
+              Es.Sort.is_(%{published_at: :desc})
+            s   ->
+              Es.Sort.is_(s)
+          end)
 
         Es.Logger.ppdebug(q)
 
