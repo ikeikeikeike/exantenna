@@ -37,15 +37,16 @@ defmodule Exantenna.Builders.Summary do
       |> WalkersAliasMethod.resource
 
     ids =
-      Enum.map 1..500, fn _ ->
+      Enum.map(1..500, fn _ ->
         WalkersAliasMethod.choice(resource)
-      end
+      end)
+      |> Enum.filter(& &1)
 
     qs =
       from a in Antenna.query_all(:esreindex),
         join: s in Summary,
         where: s.id == a.summary_id,
-        order_by: [asc: a.inserted_at],
+        order_by: [desc: a.id],
         limit: 500
 
     removeable =
@@ -62,8 +63,7 @@ defmodule Exantenna.Builders.Summary do
 
     qs =
       from a in Antenna.query_all(:esreindex),
-        join: b in Blog,
-        where: b.id in ^ids,
+        where: a.blog_id in ^ids,
         order_by: [desc: a.id],
         limit: 500
 

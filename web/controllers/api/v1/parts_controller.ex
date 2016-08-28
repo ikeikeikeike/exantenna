@@ -32,6 +32,7 @@ defmodule Exantenna.Api.V1.PartsController do
     end
 
     options = %{
+      sort: :random,
       filter: filter,
       per_page: per_page,
     }
