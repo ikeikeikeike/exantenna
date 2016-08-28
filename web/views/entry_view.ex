@@ -1,20 +1,7 @@
 defmodule Exantenna.EntryView do
   use Exantenna.Web, :view
 
-  # def page_title(:index, assigns) do
-    # params = assigns.conn.params
-    # title =
-      # cond do
-        # ! Blank.blank? params["tag"]  -> gettext "%{word} showing %{num} results", word: params["tag"],  num: number_with_delimiter(assigns.entries.total_entries)
-        # ! Blank.blank? params["diva"] -> gettext "%{word} showing %{num} results", word: params["diva"], num: number_with_delimiter(assigns.entries.total_entries)
-        # ! Blank.blank? params["q"]    -> gettext "%{word} Found %{num} results",   word: params["q"],    num: number_with_delimiter(assigns.entries.total_entries)
-        # true                          -> nil
-      # end
-
-    # (if title, do: title <> " - ", else: "") <> gettext("Default Page Title")
-  # end
-  # def page_title(:show, assigns),    do: truncate(assigns[:entry].title, length: 100) <> " - " <> gettext("Default Page Title")
-  # def page_title(_, _),              do: gettext "Default Page Title"
+  defdelegate page_title(any, assigns), to: Exantenna.Sitemeta, as: :listed_page_title
 
   # def page_keywords(:index, assigns) do
     # params = assigns.conn.params
