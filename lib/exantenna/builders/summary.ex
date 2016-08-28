@@ -14,6 +14,7 @@ defmodule Exantenna.Builders.Summary do
 
   require Logger
 
+  # TODO: below
   # Find entry 10 days ago and not pushed entry yet.
 
   # The following is terminated ::

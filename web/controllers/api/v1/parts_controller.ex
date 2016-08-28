@@ -5,6 +5,7 @@ defmodule Exantenna.Api.V1.PartsController do
   alias Exantenna.Repo
   alias Exantenna.Char
   alias Exantenna.Antenna
+  alias Exantenna.Ecto.Extractor
 
   import Exantenna.Imitation.Converter, only: [to_i: 1]
 
@@ -18,12 +19,12 @@ defmodule Exantenna.Api.V1.PartsController do
     # TODO: below
     filter =
       case params["media_type"] do
-        "movie" -> %{is_video: true}
-        "image" -> %{is_book: true}
-        _       -> %{}
-        # "movie" -> %{is_summary: true, is_video: true}
-        # "image" -> %{is_summary: true, is_book: true}
-        # _       -> %{is_summary: true}
+        # "movie" -> %{is_video: true}
+        # "image" -> %{is_book: true}
+        # _       -> %{}
+        "movie" -> %{is_summary: true, is_video: true}
+        "image" -> %{is_summary: true, is_book: true}
+        _       -> %{is_summary: true}
       end
 
     per_page = (params["per_item"] || 5) |> to_i
@@ -39,14 +40,19 @@ defmodule Exantenna.Api.V1.PartsController do
 
     words = params["q"]
 
-    antennas =
+    entries =
       ConCache.get_or_store :apiv1, "parts:#{words}:#{inspect options}", fn ->
-        Antenna.essearch(words, options)
-        |> Es.Paginator.paginate(Antenna.query_all, options)
+        antennas =
+          Antenna.essearch(words, options)
+          |> Es.Paginator.paginate(Antenna.query_all, options)
+
+        Enum.filter antennas.entries, fn an ->
+          length(Extractor.thumb(an)) > 0
+        end
       end
 
     conn
-    |> render("parts.json", antennas: antennas.entries)
+    |> render("parts.json", antennas: entries)
   end
 
 end
