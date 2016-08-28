@@ -314,4 +314,11 @@ defmodule Exantenna.Helpers do
   def appeared(scores, subdomain, model), do: Score.appeared scores, subdomain, model_to_string(model)
   def appeared(scores, model), do: Score.appeared scores, model_to_string(model)
 
+  def view_embed_on_safety(embed_code) do
+    case Floki.find(embed_code, "iframe") do
+      [] -> raw embed_code
+      _  -> PhoenixHtmlSanitizer.Helpers.sanitize embed_code, :full_html
+    end
+  end
+
 end
