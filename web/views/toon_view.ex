@@ -4,6 +4,6 @@ defmodule Exantenna.ToonView do
   def render("suggest.json", %{names: names}),
     do: Exantenna.SuggestView.render("suggest.json", %{names: names})
 
-  defdelegate page_title(any, assigns), to: Exantenna.Sitemeta, as: :profile_page_title
+  defdelegate page_title(any, assigns), to: Exantenna.Sitemeta, as: :page_title
 
 end

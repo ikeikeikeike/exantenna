@@ -1,6 +1,5 @@
 defmodule Exantenna.Diva.BracupView do
   use Exantenna.Web, :view
-  alias Exantenna.Word.Month
 
   def page_title(:index, assigns), do: gettext("diva bracup index page title") <> " - " <> gettext("Default Page Title")
   def page_title(_, _), do: gettext("diva bracup index page title") <> " - " <> gettext("Default Page Title")

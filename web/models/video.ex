@@ -11,13 +11,13 @@ defmodule Exantenna.Video do
     has_one :antenna, Antenna
     has_many :metadatas, VideoMetadata
 
-    # XXX: consider to make allow field for allowing book or video site'
+    field :elements, :integer
 
     timestamps
   end
 
   @required_fields ~w()
-  @optional_fields ~w()
+  @optional_fields ~w(elements)
 
   def full_relational_fields, do: @full_relational_fields
   @full_relational_fields [
@@ -71,7 +71,7 @@ defmodule Exantenna.Video do
       end
 
     video
-    |> changeset(%{metadatas: metadatas})
+    |> changeset(%{metadatas: metadatas, elements: length(metadatas)})
     |> cast_assoc(:metadatas, required: false)
   end
 

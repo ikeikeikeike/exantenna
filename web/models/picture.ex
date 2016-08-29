@@ -6,13 +6,13 @@ defmodule Exantenna.Picture do
     has_one :antenna, Exantenna.Antenna
     has_many :thumbs, {"pictures_thumbs", Exantenna.Thumb}, foreign_key: :assoc_id, on_delete: :delete_all
 
-    # XXX: consider to make allow field for allowing book or video site'
+    field :elements, :integer
 
     timestamps
   end
 
   @required_fields ~w()
-  @optional_fields ~w()
+  @optional_fields ~w(elements)
 
   def full_relational_fields, do: @full_relational_fields
   @full_relational_fields [
@@ -42,7 +42,7 @@ defmodule Exantenna.Picture do
 
   def item_changeset(%Antenna{picture: picture} = _antenna, item \\ :invalid) do
     picture
-    |> changeset(%{})
+    |> changeset(%{elements: length(item["pictures"])})
     |> Exantenna.Ecto.Changeset.thumbs_changeset(item["pictures"])
   end
 
