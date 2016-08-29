@@ -31,6 +31,8 @@ defmodule Exantenna.Sitemeta do
   defp get_title(%{antenna: model}), do: model.metadata.seo_title
   defp get_title(%{toon: model}), do: model.name
   defp get_title(%{diva: model}), do: model.name
+  defp get_title(%{char: model}), do: model.name
+  defp get_title(%{tag: model}), do: model.name
 
   defp get_total(%{pager: pager}), do: pager.total_entries
   defp get_total(%{antennas: pager}), do: pager.total_entries
