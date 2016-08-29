@@ -1,7 +1,9 @@
 defmodule Exantenna.Sitemeta do
+  use Phoenix.HTML.SimplifiedHelpers
   import Exantenna.Gettext
   import Exantenna.Blank
-  use Phoenix.HTML.SimplifiedHelpers
+
+  alias Exantenna.Helpers, as: H
 
   def page_title(:index, assigns) do
     params = assigns.conn.params
@@ -17,7 +19,7 @@ defmodule Exantenna.Sitemeta do
         true                       -> gettext "%{num} results", num: num
       end
 
-    (if title, do: title <> " - ", else: "") <> gettext("Default Page Title")
+    (if title, do: title <> " - ", else: "") <> gettext("%{sitetitle}", sitetitle: H.sitemeta(assigns.conn.private[:subdomain], :title))
   end
   def page_title(:show, assigns) do
     word = truncate(get_title(assigns), length: 100)
