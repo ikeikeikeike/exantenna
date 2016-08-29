@@ -14,7 +14,7 @@ defmodule Exantenna.Sitemeta do
         ! blank?(params["toon"])   -> gettext "%{word} showing %{num} results", word: params["toon"],   num: num
         ! blank?(params["search"]) -> gettext "%{word} Found %{num} results",   word: params["search"], num: num
         ! blank?(params["q"])      -> gettext "%{word} Found %{num} results",   word: params["q"],      num: num
-        true                       -> gettext "Showing %{num} results", num: num
+        true                       -> gettext "%{num} results", num: num
       end
 
     (if title, do: title <> " - ", else: "") <> gettext("Default Page Title")

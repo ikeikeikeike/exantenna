@@ -4,6 +4,9 @@ defmodule Exantenna.CharView do
   def render("suggest.json", %{names: names}),
     do: Exantenna.SuggestView.render("suggest.json", %{names: names})
 
+  def page_title(:index, assigns), do:
+    gettext("Char View Title") <> " " <> Exantenna.Sitemeta.page_title(:index, assigns)
+
   defdelegate page_title(any, assigns), to: Exantenna.Sitemeta, as: :page_title
 
 end
