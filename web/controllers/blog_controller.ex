@@ -17,7 +17,7 @@ defmodule Exantenna.BlogController do
       |> Repo.paginate(params)
       |> Paginator.addition
 
-    render(conn, "index.html", blog: blog, pager: pager)
+    render(conn, "show.html", blog: blog, pager: pager)
   end
 
   def show(conn, %{"id" => _id, "title" => _title} = params) do
