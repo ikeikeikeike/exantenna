@@ -19,15 +19,27 @@ defmodule Exantenna.Services.Antenna do
   alias Exantenna.Es
   alias Exantenna.Translator
 
+  # TODO: Fix below. why the data inserted twice ?
+  # ** (Ecto.MultipleResultsError) expected at most one result but got 2 in query:
+
+  # from a in Exantenna.Antenna,
+  #   join: m in Exantenna.Metadata,
+  #   on: m.id == a.metadata_id,
+  #   where: m.url == ^"http://xxxxxxxxxxxx/xxxxxx.html",
+  #   preload: [[:metadata, :scores, :penalty, :summary, {:blog, [:thumbs, :penalty, :scores, :verifiers]}, {:entry, [:thumbs]}, {:video, [metadatas: [:thumbs, {:site, [:thumbs]}]]}, {:picture, [:thumbs]}, {:tags, [:thumbs]}, {:divas, [:thumbs]}, {:toons, [:thumbs, {:chars, [:thumbs]}]}]]
+  #
   def add_by(%Blog{}, nil), do: {:warn, "nil value"}
   def add_by(%Blog{}, %{"url" => url}) when is_nil(url), do: {:error, "Item's url was nil"}
   def add_by(%Blog{} = blog, item) do
+
+    # XXX: Temporary fix. coz of above's reason.
     antenna =
       Antenna.where_url(Antenna.query_all, item["url"])
-      |> Repo.one
+      |> Repo.all
 
+    # XXX: Temporary fix
     antenna =
-      if antenna, do: antenna, else: %Antenna{
+      if length(antenna) > 0, do: %Antenna{id: 101010}, else: %Antenna{
         blog: blog,      entry: %Entry{},     metadata: %Metadata{},
         video: %Video{}, picture: %Picture{}, # summary: %Summary{},
         tags: [],        divas: [],           toons: []

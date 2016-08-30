@@ -17,7 +17,7 @@ defmodule Exantenna.CharController do
   end
 
   def show(conn, %{"name" => name} = params) do
-    char = Repo.get_by!(Char.query_all, name: name)
+    char = Repo.get_by!(Char.query_all(2), name: name)
 
     antennas =
       Antenna.essearch(char.name, params)

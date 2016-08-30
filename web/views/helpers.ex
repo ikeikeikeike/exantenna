@@ -209,7 +209,7 @@ defmodule Exantenna.Helpers do
 
     Enum.reduce char.toons, thumb, fn toon, acc ->
       case acc do
-        nil -> choose_thumb(toon, :toon)
+        nil -> choose_thumb(toon)
         acc -> acc
       end
     end
