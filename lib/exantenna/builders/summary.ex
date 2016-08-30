@@ -47,8 +47,8 @@ defmodule Exantenna.Builders.Summary do
       from a in Antenna.query_all(:esreindex),
         join: s in Summary,
         where: s.id == a.summary_id,
-        order_by: [desc: a.id],
-        limit: 500
+        order_by: [asc: a.id],
+        limit: 450
 
     removeable =
       qs
