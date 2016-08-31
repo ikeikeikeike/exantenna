@@ -11,7 +11,7 @@ defmodule Exantenna.Score do
   end
 
   @required_fields ~w(assoc_id name)
-  @optional_fields ~w(count)
+  @optional_fields ~w(count updated_at)
 
   @names ~w(
     domain
