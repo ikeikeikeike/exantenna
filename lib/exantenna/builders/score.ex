@@ -66,56 +66,67 @@ defmodule Exantenna.Builders.Score do
     end)
   end
 
-  defp make_scores([], count, blog) do
-    [
-      %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_hourly,
-        "count" => count
-      }, %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_daily,
-        "count" => count
-      }, %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_weekly,
-        "count" => count
-      }, %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_monthly,
-        "count" => count
-      }, %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_quarterly,
-        "count" => count
-      }, %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_biannually,
-        "count" => count
-      }, %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_yearly,
-        "count" => count
-      }, %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_totally,
-        "count" => count
-      }
-    ]
-  end
+  defp make_scores(scores, count, blog) when is_list(scores) do
+    templates =
+      [
+        %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_hourly,
+          "count" => count
+        }, %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_daily,
+          "count" => count
+        }, %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_weekly,
+          "count" => count
+        }, %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_monthly,
+          "count" => count
+        }, %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_quarterly,
+          "count" => count
+        }, %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_biannually,
+          "count" => count
+        }, %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_yearly,
+          "count" => count
+        }, %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_totally,
+          "count" => count
+        }
+      ]
 
-  defp make_scores(scores, count, _blog) when is_list(scores) do
     dt = Timex.DateTime.now
 
-    Enum.reduce scores, [], fn score, acc ->
-      param = %{
-        "assoc_id" => score.assoc_id,
-        "name" => score.name,
-        "count" => sum(score, dt, count)
-      }
+    Enum.reduce templates, [], fn param, acc ->
+      exists =
+        Enum.filter scores, fn score ->
+          param["assoc_id"] == score.assoc_id
+        end
+
+      param =
+        case exists do
+          [score] ->
+            %{
+              "assoc_id" => score.assoc_id,
+              "name" => score.name,
+              "count" => sum(score, dt, count)
+            }
+          []      ->
+            param
+        end
 
       acc ++ [param]
     end
+
   end
 
   defp sum(%Score{} = model, bool, num) when is_boolean(bool) and is_integer(num) do
