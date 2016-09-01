@@ -66,97 +66,109 @@ defmodule Exantenna.Builders.Score do
     end)
   end
 
-  defp make_scores([], count, blog) do
-    [
-      %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_hourly,
-        "count" => count
-      }, %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_daily,
-        "count" => count
-      }, %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_weekly,
-        "count" => count
-      }, %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_monthly,
-        "count" => count
-      }, %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_quarterly,
-        "count" => count
-      }, %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_biannually,
-        "count" => count
-      }, %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_yearly,
-        "count" => count
-      }, %{
-        "assoc_id" => blog.id,
-        "name" => Score.const_in_totally,
-        "count" => count
-      }
-    ]
-  end
+  defp make_scores(scores, count, blog) when is_list(scores) do
+    template =
+      [
+        %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_hourly,
+          "count" => count
+        }, %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_daily,
+          "count" => count
+        }, %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_weekly,
+          "count" => count
+        }, %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_monthly,
+          "count" => count
+        }, %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_quarterly,
+          "count" => count
+        }, %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_biannually,
+          "count" => count
+        }, %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_yearly,
+          "count" => count
+        }, %{
+          "assoc_id" => blog.id,
+          "name" => Score.const_in_totally,
+          "count" => count
+        }
+      ]
 
-  defp make_scores(scores, count, _blog) when is_list(scores) do
     dt = Timex.DateTime.now
 
-    Enum.reduce scores, [], fn score, acc ->
-      param = %{
-        "assoc_id" => score.assoc_id,
-        "name" => score.name,
-        "count" => sum(score, dt, count)
-      }
+    Enum.reduce template, [], fn param, acc ->
+      exists =
+        Enum.filter scores, fn score ->
+          param["name"] == score.name
+        end
+
+      param =
+        case exists do
+          [score] ->
+            %{
+              "assoc_id" => score.assoc_id,
+              "name" => score.name,
+              "count" => sum(score, dt, count)
+            }
+          []      ->
+            param
+        end
 
       acc ++ [param]
     end
   end
 
-  defp sum(%Score{} = model, bool, num) when is_boolean(bool) and is_integer(num) do
-    case bool do
-      true  ->
-        0
-      false ->
+  defp sum(%Score{} = model, left, right, num) when is_integer(num) do
+    case Timex.compare(left, right) do
+      1  ->
         model.count + num
+      0  ->
+        0
+      -1 ->
+        0
     end
-  end
-  @const_hourly Score.const_in_hourly
-  defp sum(%Score{name: @const_hourly} = model, dt, count) do
-    sum model, end_of_hour(model.updated_at) < dt, count
-  end
-  @const_daily Score.const_in_daily
-  defp sum(%Score{name: @const_daily} = model, dt, count) do
-    sum model, Timex.end_of_day(model.updated_at) < dt, count
-  end
-  @const_weekly Score.const_in_weekly
-  defp sum(%Score{name: @const_weekly} = model, dt, count) do
-    sum model, Timex.end_of_week(model.updated_at) < dt, count
-  end
-  @const_monthly Score.const_in_monthly
-  defp sum(%Score{name: @const_monthly} = model, dt, count) do
-    sum model, Timex.end_of_month(model.updated_at) < dt, count
-  end
-  @const_quarterly Score.const_in_quarterly
-  defp sum(%Score{name: @const_quarterly} = model, dt, count) do
-    sum model, Timex.end_of_quarter(model.updated_at) < dt, count
-  end
-  @const_biannually Score.const_in_biannually
-  defp sum(%Score{name: @const_biannually} = model, dt, count) do
-    sum model, end_of_biannual(model.updated_at) < dt, count
-  end
-  @const_yearly Score.const_in_yearly
-  defp sum(%Score{name: @const_yearly} = model, dt, count) do
-    sum model, Timex.end_of_year(model.updated_at) < dt, count
   end
   @const_totally Score.const_in_totally
   defp sum(%Score{name: @const_totally} = model, dt, count) do
-    sum model, false, count
+    model.count + count
+  end
+  @const_hourly Score.const_in_hourly
+  defp sum(%Score{name: @const_hourly} = model, dt, count) do
+    sum model, end_of_hour(model.updated_at), dt, count
+  end
+  @const_daily Score.const_in_daily
+  defp sum(%Score{name: @const_daily} = model, dt, count) do
+    sum model, Timex.end_of_day(model.updated_at), dt, count
+  end
+  @const_weekly Score.const_in_weekly
+  defp sum(%Score{name: @const_weekly} = model, dt, count) do
+    sum model, Timex.end_of_week(model.updated_at), dt, count
+  end
+  @const_monthly Score.const_in_monthly
+  defp sum(%Score{name: @const_monthly} = model, dt, count) do
+    sum model, Timex.end_of_month(model.updated_at), dt, count
+  end
+  @const_quarterly Score.const_in_quarterly
+  defp sum(%Score{name: @const_quarterly} = model, dt, count) do
+    sum model, Timex.end_of_quarter(model.updated_at), dt, count
+  end
+  @const_biannually Score.const_in_biannually
+  defp sum(%Score{name: @const_biannually} = model, dt, count) do
+    sum model, end_of_biannual(model.updated_at), dt, count
+  end
+  @const_yearly Score.const_in_yearly
+  defp sum(%Score{name: @const_yearly} = model, dt, count) do
+    sum model, Timex.end_of_year(model.updated_at), dt, count
   end
 
   def end_of_hour(dt) do

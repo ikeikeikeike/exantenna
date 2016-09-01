@@ -1,6 +1,7 @@
 defmodule Exantenna.Antenna do
   use Exantenna.Web, :model
 
+  alias Exantenna.Thumb
   alias Exantenna.Metadata
 
   schema "antennas" do
@@ -20,6 +21,8 @@ defmodule Exantenna.Antenna do
 
     timestamps
   end
+
+  @order_by fn m -> from m, order_by: [desc: :id] end
 
   @required_fields ~w()
   @optional_fields ~w()
@@ -49,37 +52,75 @@ defmodule Exantenna.Antenna do
       :penalty,
       :summary,
       blog: [
-        :thumbs,
         :penalty,
         :scores,  # domain score + in,out score
-        :verifiers
+        :verifiers,
+        thumbs: @order_by.(Thumb),
       ],
       entry: [
-        :thumbs
+        thumbs: @order_by.(Thumb),
       ],
       video: [
         metadatas: [
-          :thumbs,
-          site: [:thumbs],
+          thumbs: @order_by.(Thumb),
+          site: [
+            thumbs: @order_by.(Thumb),
+          ],
         ],
       ],
       picture: [
-        :thumbs
+        thumbs: @order_by.(Thumb),
       ],
       tags: [
         :scores,
-        :thumbs
+        thumbs: @order_by.(Thumb),
       ],
       divas: [
         :scores,
-        :thumbs
+        thumbs: @order_by.(Thumb),
       ],
       toons: [
         :scores,
-        :thumbs,
+        thumbs: @order_by.(Thumb),
         chars: [
           :scores,
-          :thumbs
+          thumbs: @order_by.(Thumb),
+        ],
+      ],
+    ]
+
+  @index_relational_fields [
+      :metadata,
+      # :penalty,
+      :summary,
+      blog: [
+        thumbs: @order_by.(Thumb),
+        # :penalty,
+      ],
+      entry: [
+        thumbs: @order_by.(Thumb),
+      ],
+      video: [
+        metadatas: [
+          thumbs: @order_by.(Thumb),
+          site: [
+            thumbs: @order_by.(Thumb)
+          ],
+        ],
+      ],
+      picture: [
+        thumbs: @order_by.(Thumb),
+      ],
+      tags: [
+        thumbs: @order_by.(Thumb),
+      ],
+      divas: [
+        thumbs: @order_by.(Thumb),
+      ],
+      toons: [
+        thumbs: @order_by.(Thumb),
+        chars: [
+          thumbs: @order_by.(Thumb),
         ],
       ],
     ]
@@ -90,33 +131,35 @@ defmodule Exantenna.Antenna do
       :penalty,
       :summary,
       blog: [
-        :thumbs,
         :penalty,
         :scores,  # domain score + in,out score
-        :verifiers
+        :verifiers,
+        thumbs: @order_by.(Thumb),
       ],
       entry: [
-        :thumbs
+        thumbs: @order_by.(Thumb),
       ],
       video: [
         metadatas: [
-          :thumbs,
-          site: [:thumbs],
+          thumbs: @order_by.(Thumb),
+          site: [
+            thumbs: @order_by.(Thumb)
+          ],
         ],
       ],
       picture: [
-        :thumbs
+        thumbs: @order_by.(Thumb)
       ],
       tags: [
-        :thumbs
+        thumbs: @order_by.(Thumb)
       ],
       divas: [
-        :thumbs
+        thumbs: @order_by.(Thumb)
       ],
       toons: [
-        :thumbs,
+        thumbs: @order_by.(Thumb),
         chars: [
-          :thumbs
+          thumbs: @order_by.(Thumb)
         ],
       ],
     ]
@@ -336,16 +379,16 @@ defmodule Exantenna.Antenna do
 
     chars =
       Enum.flat_map model.toons, fn toon ->
-        Enum.map toon.chars, &(&1.name)
+        Enum.map toon.chars, & &1.name
       end
 
     [
       id: model.id,
       title: meta.title,
       published_at: published_at,
-      tags: Enum.map(model.tags, &(&1.name)),
-      divas: Enum.map(model.divas, &(&1.name)),
-      toons: Enum.map(model.toons, &(&1.name)),
+      tags: Enum.map(model.tags, & &1.name),
+      divas: Enum.map(model.divas, & &1.name),
+      toons: Enum.map(model.toons, & &1.name),
       chars: chars,
       is_summary: Exantenna.Filter.allow?(:summary, model),
       is_video: Exantenna.Filter.allow?(:video, model),

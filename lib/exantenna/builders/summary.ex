@@ -14,6 +14,8 @@ defmodule Exantenna.Builders.Summary do
 
   require Logger
 
+  @limit 750
+
   # TODO: below
   # Find entry 10 days ago and not pushed entry yet.
 
@@ -35,38 +37,21 @@ defmodule Exantenna.Builders.Summary do
       |> Enum.reduce(%{}, fn b, acc ->
         Map.merge acc, %{b.assoc_id => b.count}
       end)
-      |> WalkersAliasMethod.resource
+      |> WalkersAliasMethod.resource  # TODO: Fix right of expression: WalkersAliasMethod.resource %{1 => 0, 2 => 0}
 
     ids =
-      Enum.map(1..500, fn _ ->
+      Enum.map(1..@limit, fn _ ->
         WalkersAliasMethod.choice(resource)
       end)
       |> Enum.filter(& &1)
+      # |> Enum.uniq
 
-    qs =
-      from a in Antenna.query_all(:esreindex),
-        join: s in Summary,
-        where: s.id == a.summary_id,
-        order_by: [asc: a.id],
-        limit: 450
-
-    removeable =
-      qs
-      |> Repo.all
-      |> Enum.map(fn an ->
-        m = Summary.changeset an.summary, %{}
-        Repo.delete! m
-
-        struct an, [summary: nil, summary_id: nil]
-      end)
-
-    Es.Document.put_document(removeable)
-
+    # TODO: must fix logic below to better with selected ids.
     qs =
       from a in Antenna.query_all(:esreindex),
         where: a.blog_id in ^ids,
         order_by: [desc: a.id],
-        limit: 500
+        limit: ^@limit
 
     updateable =
       qs
@@ -77,6 +62,27 @@ defmodule Exantenna.Builders.Summary do
         m = Antenna.summary_changeset an, %{summary: %{sort: index}}
         Repo.update! m
       end)
+
+    if length(updateable) > div(@limit, 2) do
+      qs =
+        from a in Antenna.query_all(:esreindex),
+          join: s in Summary,
+          where: s.id == a.summary_id,
+          order_by: [asc: a.id],
+          limit: ^div(@limit, 2)
+
+      removeable =
+        qs
+        |> Repo.all
+        |> Enum.map(fn an ->
+          m = Summary.changeset an.summary, %{}
+          Repo.delete! m
+
+          struct an, [summary: nil, summary_id: nil]
+        end)
+
+      Es.Document.put_document(removeable)
+    end
 
     Es.Document.put_document(updateable)
   end

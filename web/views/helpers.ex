@@ -121,7 +121,12 @@ defmodule Exantenna.Helpers do
   # def better(%Thumb{} = thumb), do: thumb
   # def better(thumbs) when is_list(thumbs), do: List.first thumbs
 
-  def thumbs_all(%Antenna{} = antenna), do: Exantenna.Ecto.Extractor.thumb antenna
+  def thumbs_all(%Char{} = model) do
+    model.toons
+    |> Enum.flat_map(& thumbs_all(&1))
+    |> Enum.uniq
+  end
+  def thumbs_all(model), do: Exantenna.Ecto.Extractor.thumb model
 
   def choose_thumb(%Antenna{} = antenna, :entry) do
     choose_thumb(antenna)
@@ -295,6 +300,15 @@ defmodule Exantenna.Helpers do
   def sitemeta(domain, key), do: Application.get_env(:exantenna, :sitemetas)[domain][key]
 
   def fallback, do: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+
+  def enc(:json, model, thumbs) when is_list(thumbs) do
+    ConCache.get_or_store :encjson, "#{model_to_string model}:#{model.id}", fn ->
+      Poison.encode! thumbs
+    end
+  end
+  def enc(:json, model) do
+    enc :json, model, thumbs_all(model)
+  end
 
   def random_icon_selector(name \\ "glyphicon") do
     icons =
