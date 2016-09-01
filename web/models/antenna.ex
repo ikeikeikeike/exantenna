@@ -22,7 +22,7 @@ defmodule Exantenna.Antenna do
     timestamps
   end
 
-  @qs_thumbs fn m -> from m, order_by: [desc: :id], limit: 500 end
+  @qs_thumbs fn m -> from m, order_by: [desc: :id] end
   @qs_thumbs_limit fn m, limit -> from m, order_by: [desc: :id], limit: ^limit end
 
   @required_fields ~w()
@@ -60,13 +60,13 @@ defmodule Exantenna.Antenna do
         # thumbs: @qs_thumbs.({"blogs_thumbs", Thumb}),
       # ],
       entry: [
-        thumbs: @qs_thumbs_limit.({"entries_thumbs", Thumb}, 10),
+        thumbs: @qs_thumbs.({"entries_thumbs", Thumb}),
       ],
       video: [
         metadatas: [
           :site,
           # site: [ thumbs: @qs_thumbs.({"sites_thumbs", Thumb}), ],
-          thumbs: @qs_thumbs_limit.({"video_metadatas_thumbs", Thumb}, 2),
+          thumbs: @qs_thumbs.({"video_metadatas_thumbs", Thumb}),
         ],
       ],
       picture: [
@@ -74,18 +74,18 @@ defmodule Exantenna.Antenna do
       ],
       tags: [
         :scores,
-        thumbs: @qs_thumbs_limit.({"tags_thumbs", Thumb}, 2),
+        thumbs: @qs_thumbs.({"tags_thumbs", Thumb}),
       ],
       divas: [
         :scores,
-        thumbs: @qs_thumbs_limit.({"divas_thumbs", Thumb}, 2),
+        thumbs: @qs_thumbs.({"divas_thumbs", Thumb}),
       ],
       toons: [
         :scores,
-        thumbs: @qs_thumbs_limit.({"toons_thumbs", Thumb}, 2),
+        thumbs: @qs_thumbs.({"toons_thumbs", Thumb}),
         chars: [
           :scores,
-          thumbs: @qs_thumbs_limit.({"chars_thumbs", Thumb}, 2),
+          thumbs: @qs_thumbs.({"chars_thumbs", Thumb}),
         ],
       ],
     ]
@@ -101,28 +101,28 @@ defmodule Exantenna.Antenna do
         # # :penalty,
       # ],
       entry: [
-        thumbs: @qs_thumbs_limit.({"entries_thumbs", Thumb}, 5),
+        thumbs: @qs_thumbs.({"entries_thumbs", Thumb}),
       ],
       video: [
         metadatas: [
           :site,
-          thumbs: @qs_thumbs_limit.({"video_metadatas_thumbs", Thumb}, 5),
           # site: [ thumbs: @qs_thumbs_limit.({"sites_thumbs", Thumb}) ],
+          thumbs: @qs_thumbs.({"video_metadatas_thumbs", Thumb}),
         ],
       ],
       picture: [
-        thumbs: @qs_thumbs_limit.({"pictures_thumbs", Thumb}, 5),
+        thumbs: @qs_thumbs.({"pictures_thumbs", Thumb}),
       ],
       tags: [
-        thumbs: @qs_thumbs_limit.({"tags_thumbs", Thumb}, 5),
+        thumbs: @qs_thumbs.({"tags_thumbs", Thumb}),
       ],
       divas: [
-        thumbs: @qs_thumbs_limit.({"divas_thumbs", Thumb}, 5),
+        thumbs: @qs_thumbs.({"divas_thumbs", Thumb}),
       ],
       toons: [
-        thumbs: @qs_thumbs_limit.({"toons_thumbs", Thumb}, 5),
+        thumbs: @qs_thumbs.({"toons_thumbs", Thumb}),
         chars: [
-          thumbs: @qs_thumbs_limit.({"chars_thumbs", Thumb}, 5),
+          thumbs: @qs_thumbs.({"chars_thumbs", Thumb}),
         ],
       ],
     ]
@@ -153,14 +153,18 @@ defmodule Exantenna.Antenna do
         thumbs: @qs_thumbs.({"pictures_thumbs", Thumb})
       ],
       tags: [
+        :scores,
         thumbs: @qs_thumbs.({"tags_thumbs", Thumb})
       ],
       divas: [
+        :scores,
         thumbs: @qs_thumbs.({"divas_thumbs", Thumb})
       ],
       toons: [
+        :scores,
         thumbs: @qs_thumbs.({"toons_thumbs", Thumb}),
         chars: [
+          :scores,
           thumbs: @qs_thumbs.({"chars_thumbs", Thumb})
         ],
       ],
