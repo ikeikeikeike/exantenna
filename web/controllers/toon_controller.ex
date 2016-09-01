@@ -10,14 +10,14 @@ defmodule Exantenna.ToonController do
   def index(conn, params) do
     sub = conn.private[:subdomain]
 
-    qs = Profile.query :score, Profile.args(sub, Toon, Toon.query_all(2))
+    qs = Profile.query :score, Profile.args(sub, Toon, Toon.query_all(1))
     pager = Repo.paginate(qs, params)
 
     render(conn, "index.html", pager: pager)
   end
 
   def show(conn, %{"name" => name} = params) do
-    toon = Repo.get_by!(Toon.query_all(2), name: name)
+    toon = Repo.get_by!(Toon.query_all(1), name: name)
 
     antennas =
       Antenna.essearch(toon.name, params)

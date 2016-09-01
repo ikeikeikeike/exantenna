@@ -10,14 +10,14 @@ defmodule Exantenna.DivaController do
   def index(conn, params) do
     sub = conn.private[:subdomain]
 
-    qs = Profile.query :score, Profile.args(sub, Diva, Diva.query_all(2))
+    qs = Profile.query :score, Profile.args(sub, Diva, Diva.query_all(1))
     pager = Repo.paginate(qs, params)
 
     render(conn, "index.html", pager: pager)
   end
 
   def show(conn, %{"name" => name} = params) do
-    diva = Repo.get_by!(Diva.query_all(2), name: name)
+    diva = Repo.get_by!(Diva.query_all(1), name: name)
 
     antennas =
       Antenna.essearch(diva.name, params)

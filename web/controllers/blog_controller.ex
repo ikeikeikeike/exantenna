@@ -8,7 +8,7 @@ defmodule Exantenna.BlogController do
   import Ecto.Query
 
   def show(conn, %{"id" => id} = params) do
-    blog = Repo.get_by!(Blog.query_all, id: id)
+    blog = Repo.get_by!(Blog.query_all(1), id: id)
 
     pager =
       Antenna.query_all

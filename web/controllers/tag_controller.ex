@@ -12,7 +12,7 @@ defmodule Exantenna.TagController do
 
   def index(conn, params) do
     pager =
-      Tag.query_all(2)
+      Tag.query_all(1)
       # |> where([q], q.appeared > 0)
       # |> order_by([q], [desc: q.appeared])
       |> Repo.paginate(params)
@@ -22,7 +22,7 @@ defmodule Exantenna.TagController do
   end
 
   def show(conn, %{"name" => name} = params) do
-    tag = Repo.get_by!(Tag.query_all(2), name: name)
+    tag = Repo.get_by!(Tag.query_all(1), name: name)
 
     antennas =
       Antenna.essearch(tag.name, params)

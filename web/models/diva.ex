@@ -57,7 +57,8 @@ defmodule Exantenna.Diva do
 
   def query_all(limit) do
     antennas =
-      from q in Antenna.query_all,
+      from q in Antenna.query_all(:index),
+        order_by: [desc: q.id],
         limit: ^limit
 
     from q in query,

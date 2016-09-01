@@ -52,6 +52,16 @@ defmodule Exantenna.Blog do
     antenna: Antenna.full_relational_fields
   ]
 
+  @index_relational_fields [
+    :user,
+    :thumbs,
+    :penalty,
+    :scores,
+    :verifiers,
+    antenna: Antenna.index_relational_fields
+  ]
+
+
   def query do
     from e in __MODULE__,
     preload: ^@relational_fields
@@ -60,6 +70,16 @@ defmodule Exantenna.Blog do
   def query_all do
     from e in __MODULE__,
     preload: ^@full_relational_fields
+  end
+
+  def query_all(limit) do
+    antennas =
+      from q in Antenna.query_all(:index),
+        order_by: [desc: q.id],
+        limit: ^limit
+
+    from q in query,
+    preload: [antenna: ^antennas]
   end
 
   def available(query) do
