@@ -392,16 +392,16 @@ defmodule Exantenna.Antenna do
 
     chars =
       Enum.flat_map model.toons, fn toon ->
-        Enum.map toon.chars, &(&1.name)
+        Enum.map toon.chars, & &1.name
       end
 
     [
       id: model.id,
       title: meta.title,
       published_at: published_at,
-      tags: Enum.map(model.tags, &(&1.name)),
-      divas: Enum.map(model.divas, &(&1.name)),
-      toons: Enum.map(model.toons, &(&1.name)),
+      tags: Enum.map(model.tags, & &1.name),
+      divas: Enum.map(model.divas, & &1.name),
+      toons: Enum.map(model.toons, & &1.name),
       chars: chars,
       is_summary: Exantenna.Filter.allow?(:summary, model),
       is_video: Exantenna.Filter.allow?(:video, model),
