@@ -11,7 +11,7 @@ defmodule Exantenna.EntryController do
 
     antennas =
       Antenna.essearch(words, params)
-      |> Es.Paginator.paginate(Antenna.query_all, params)
+      |> Es.Paginator.paginate(Antenna.query_all(:index), params)
 
     #  diva: Q.fuzzy_find(Diva, words)
     render(conn, "index.html", antennas: antennas)
@@ -22,7 +22,7 @@ defmodule Exantenna.EntryController do
 
     antennas =
       Antenna.essearch(antenna.metadata.title, params)
-      |> Es.Paginator.paginate(Antenna.query_all(:show), params)
+      |> Es.Paginator.paginate(Antenna.query_all(:index), params)
 
     render(conn, "show.html", antenna: antenna, antennas: antennas, summaries: antennas)
   end

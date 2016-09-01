@@ -38,6 +38,14 @@ defmodule Exantenna.Ecto.Extractor do
           acc ++ defget(model.thumbs, [])
          end)
   end
+  def thumb(%{antenna: antenna}) do
+    thumb antenna
+  end
+  def thumb(%{antennas: antennas}) do
+    antennas
+    |> Enum.flat_map(& thumb(&1))
+    |> Enum.uniq
+  end
 
   defp defget(model, default) do
     case model do

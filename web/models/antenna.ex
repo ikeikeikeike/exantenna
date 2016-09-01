@@ -1,6 +1,7 @@
 defmodule Exantenna.Antenna do
   use Exantenna.Web, :model
 
+  alias Exantenna.Thumb
   alias Exantenna.Metadata
 
   schema "antennas" do
@@ -21,6 +22,9 @@ defmodule Exantenna.Antenna do
     timestamps
   end
 
+  @qs_thumbs fn m -> from m, order_by: [desc: :id], limit: 500 end
+  @qs_thumbs_limit fn m, limit -> from m, order_by: [desc: :id], limit: ^limit end
+
   @required_fields ~w()
   @optional_fields ~w()
   @relational_fields ~w(blog entry metadata video picture summary penalty tags)a
@@ -33,7 +37,7 @@ defmodule Exantenna.Antenna do
         :thumbs
       ],
       picture: [
-        :thumbs
+        thumbs: @qs_thumbs.({"pictures_thumbs", Thumb}),
       ],
       video: [
         metadatas: [
@@ -45,41 +49,80 @@ defmodule Exantenna.Antenna do
 
   @show_relational_fields [
       :metadata,
-      :scores,  # node in,out score
-      :penalty,
+      # :scores,  # node in,out score
+      # :penalty,
       :summary,
-      blog: [
-        :thumbs,
-        :penalty,
-        :scores,  # domain score + in,out score
-        :verifiers
-      ],
+      :blog,
+      # blog: [
+        # :penalty,
+        # :scores,  # domain score + in,out score
+        # :verifiers,
+        # thumbs: @qs_thumbs.({"blogs_thumbs", Thumb}),
+      # ],
       entry: [
-        :thumbs
+        thumbs: @qs_thumbs_limit.({"entries_thumbs", Thumb}, 5),
       ],
       video: [
         metadatas: [
-          :thumbs,
-          site: [:thumbs],
+          :site,
+          # site: [ thumbs: @qs_thumbs.({"sites_thumbs", Thumb}), ],
+          thumbs: @qs_thumbs_limit.({"video_metadatas_thumbs", Thumb}, 5),
         ],
       ],
       picture: [
-        :thumbs
+        thumbs: @qs_thumbs_limit.({"pictures_thumbs", Thumb}, 5),
       ],
       tags: [
         :scores,
-        :thumbs
+        thumbs: @qs_thumbs_limit.({"tags_thumbs", Thumb}, 5),
       ],
       divas: [
         :scores,
-        :thumbs
+        thumbs: @qs_thumbs_limit.({"divas_thumbs", Thumb}, 5),
       ],
       toons: [
         :scores,
-        :thumbs,
+        thumbs: @qs_thumbs_limit.({"toons_thumbs", Thumb}, 5),
         chars: [
           :scores,
-          :thumbs
+          thumbs: @qs_thumbs_limit.({"chars_thumbs", Thumb}, 5),
+        ],
+      ],
+    ]
+
+  @index_relational_fields [
+      :metadata,
+      # :scores,  # node in,out score
+      # :penalty,
+      :summary,
+      :blog,
+      # blog: [
+        # thumbs: @qs_thumbs_limit.({"blogs_thumbs", Thumb}),
+        # # :penalty,
+      # ],
+      entry: [
+        thumbs: @qs_thumbs_limit.({"entries_thumbs", Thumb}, 5),
+      ],
+      video: [
+        metadatas: [
+          :site,
+          thumbs: @qs_thumbs_limit.({"video_metadatas_thumbs", Thumb}, 5),
+          # site: [ thumbs: @qs_thumbs_limit.({"sites_thumbs", Thumb}) ],
+        ],
+      ],
+      picture: [
+        thumbs: @qs_thumbs_limit.({"pictures_thumbs", Thumb}, 5),
+      ],
+      tags: [
+        thumbs: @qs_thumbs_limit.({"tags_thumbs", Thumb}, 5),
+      ],
+      divas: [
+        thumbs: @qs_thumbs_limit.({"divas_thumbs", Thumb}, 5),
+      ],
+      toons: [
+        thumbs: @qs_thumbs_limit.({"toons_thumbs", Thumb}, 5),
+        chars: [
+          thumbs: @qs_thumbs_limit.({"chars_thumbs", Thumb}, 5),
         ],
       ],
     ]
@@ -90,36 +133,39 @@ defmodule Exantenna.Antenna do
       :penalty,
       :summary,
       blog: [
-        :thumbs,
         :penalty,
         :scores,  # domain score + in,out score
-        :verifiers
+        :verifiers,
+        thumbs: @qs_thumbs.({"blogs_thumbs", Thumb}),
       ],
       entry: [
-        :thumbs
+        thumbs: @qs_thumbs.({"entries_thumbs", Thumb}),
       ],
       video: [
         metadatas: [
-          :thumbs,
-          site: [:thumbs],
+          thumbs: @qs_thumbs.({"video_metadatas_thumbs", Thumb}),
+          site: [
+            thumbs: @qs_thumbs.({"sites_thumbs", Thumb})
+          ],
         ],
       ],
       picture: [
-        :thumbs
+        thumbs: @qs_thumbs.({"pictures_thumbs", Thumb})
       ],
       tags: [
-        :thumbs
+        thumbs: @qs_thumbs.({"tags_thumbs", Thumb})
       ],
       divas: [
-        :thumbs
+        thumbs: @qs_thumbs.({"divas_thumbs", Thumb})
       ],
       toons: [
-        :thumbs,
+        thumbs: @qs_thumbs.({"toons_thumbs", Thumb}),
         chars: [
-          :thumbs
+          thumbs: @qs_thumbs.({"chars_thumbs", Thumb})
         ],
       ],
     ]
+
   def full_relational_fields, do: @full_relational_fields
   def esreindex_fields, do: @esreindex_fields
 
@@ -128,9 +174,19 @@ defmodule Exantenna.Antenna do
     preload: ^@relational_fields
   end
 
+  def query_all(:view) do
+    from e in __MODULE__,
+    preload: ^@show_relational_fields
+  end
+
   def query_all(:show) do
     from e in __MODULE__,
     preload: ^@show_relational_fields
+  end
+
+  def query_all(:index) do
+    from e in __MODULE__,
+    preload: ^@index_relational_fields
   end
 
   def query_all(:esreindex) do

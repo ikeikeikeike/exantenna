@@ -1,6 +1,8 @@
 defmodule Exantenna.Thumb do
   use Exantenna.Web, :model
 
+  @json_fields ~w(name src ext mime width height)
+  @derive {Poison.Encoder, only: Enum.map(@json_fields, & String.to_atom(&1))}
   schema "thumbs" do
     field :assoc_id, :integer
 
