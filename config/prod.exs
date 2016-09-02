@@ -125,7 +125,7 @@ config :quantum,
       task: "Exantenna.Builders.Rss.feed_into",
       args: [:todays_access]
     ],
-    # Unkiking numbers(like primes): 1,7,11,13,17,19,23
+    # Unkicking numbers(like primes): 1,7,11,13,17,19,23
     rss_feed_into_todays_access_primes: [
       schedule: "20 1,7,11,13,17,19,23 * * *",
       task: "Exantenna.Builders.Rss.feed_into",
