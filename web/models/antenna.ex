@@ -89,6 +89,42 @@ defmodule Exantenna.Antenna do
 
   @index_relational_fields [
       :metadata,
+      # :penalty,
+      :summary,
+      blog: [
+        :thumbs
+        # :penalty,
+      ],
+      entry: [
+        :thumbs
+      ],
+      video: [
+        metadatas: [
+          :thumbs,
+          site: [
+            :thumbs
+          ],
+        ],
+      ],
+      picture: [
+        :thumbs
+      ],
+      tags: [
+        :thumbs
+      ],
+      divas: [
+        :thumbs
+      ],
+      toons: [
+        :thumbs,
+        chars: [
+          :thumbs
+        ],
+      ],
+    ]
+
+  @index_relational_fields [
+      :metadata,
       # :scores,  # node in,out score
       # :penalty,
       :summary,
