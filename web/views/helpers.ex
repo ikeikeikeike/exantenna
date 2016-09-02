@@ -4,6 +4,7 @@ defmodule Exantenna.Helpers do
   """
 
   use Phoenix.HTML
+  import Ecto.Query, only: [from: 1, from: 2]
 
   alias Exantenna.Repo
 
@@ -14,6 +15,8 @@ defmodule Exantenna.Helpers do
   alias Exantenna.Thumb
   alias Exantenna.Score
   alias Exantenna.Antenna
+
+  alias Exantenna.Filter
 
   @doc """
   Generates tag for inlined form input errors.
@@ -279,12 +282,38 @@ defmodule Exantenna.Helpers do
   def anstget(%Antenna{} = antenna), do: antenna
   def anstget(%{antenna: antenna}), do: anstget antenna
 
-  def prev_blog(%Antenna{} = antenna) do
-    Repo.one Antenna.prev_blog(Antenna.query_all, antenna)
+  def prev_blog(%Plug.Conn{} = conn, %Antenna{} = antenna) do
+    {queryable, allow_number} =
+      case Exantenna.Domain.Filter.what(conn) do
+        "book"  ->
+          {Picture, Filter.allow_picture_elements}
+        "video" ->
+          {Video, Filter.allow_video_elements}
+      end
+
+    qs =
+      from [_, _] in Antenna.prev_blog(Antenna.query_all(:index), antenna),
+        join: c in ^queryable,
+        where: c.elements >= ^allow_number
+
+    Repo.one qs
   end
 
-  def next_blog(%Antenna{} = antenna) do
-    Repo.one Antenna.next_blog(Antenna.query_all, antenna)
+  def next_blog(%Plug.Conn{} = conn, %Antenna{} = antenna) do
+    {queryable, allow_number} =
+      case Exantenna.Domain.Filter.what(conn) do
+        "book"  ->
+          {Picture, Filter.allow_picture_elements}
+        "video" ->
+          {Video, Filter.allow_video_elements}
+      end
+
+    qs =
+      from [_, _] in Antenna.next_blog(Antenna.query_all(:index), antenna),
+        join: c in ^queryable,
+        where: c.elements >= ^allow_number
+
+    Repo.one qs
   end
 
   def dynamical_path(method, args) do

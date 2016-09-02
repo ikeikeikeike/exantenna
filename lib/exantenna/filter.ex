@@ -39,8 +39,14 @@ defmodule Exantenna.Filter do
     end)
   end
 
+  @allow_video_elements 1
+  @allow_picture_elements 5
+
+  def allow_video_elements, do: @allow_video_elements
+  def allow_picture_elements, do: @allow_picture_elements
+
   def allow?(:summary, %Antenna{} = antenna), do: !!antenna.summary
-  def allow?(:book, %Antenna{} = antenna), do: 5 < length(Extractor.thumb(antenna))
+  def allow?(:book, %Antenna{} = antenna), do: @allow_picture_elements < length(Extractor.thumb(antenna))
   def allow?(:video, %Antenna{} = antenna) do
     antenna.video
     |> Map.get(:metadatas, [])

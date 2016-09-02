@@ -8,7 +8,7 @@ defmodule Exantenna.Builders.Rss do
   alias Exantenna.Redis.Item
 
   require Logger
-  # TODO: Move logger to kickking module like shell
+  # TODO: Move logger to kickking module that's like shell
 
   def feed_into([]), do: feed_into
   def feed_into do
