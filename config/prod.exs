@@ -134,5 +134,11 @@ config :quantum,
     ],
   ]
 
+config :sitemap, [
+  host: "http://#{myhost}",
+  public_path: "",
+  files_path: "static/",
+]
+
 import_config "sitemeta.prod.secret.exs"
 import_config "prod.secret.exs"

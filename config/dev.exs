@@ -49,5 +49,11 @@ config :exantenna, Exantenna.Repo,
   timeout: 300000  # XXX: For Develop
   # ownership_timeout: 300000
 
+config :sitemap, [
+  host: "http://127.0.0.1",
+  public_path: "",
+  files_path: "log/",
+]
+
 import_config "sitemeta.dev.secret.exs"
 import_config "dev.secret.exs"
