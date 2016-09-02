@@ -45,6 +45,7 @@ defmodule Exantenna.Mixfile do
         :mailgun,
         :quantum,
         :wakaway,
+        :sitemap,
       ],
       included_applications: [
        :scrivener,
@@ -97,6 +98,7 @@ defmodule Exantenna.Mixfile do
       {:exrm, "~> 1.0"},
       {:quantum, "~> 1.7"},
       {:wakaway, "~> 0.5"},
+      {:sitemap, ">= 0.0.0"},
     ]
   end
 
