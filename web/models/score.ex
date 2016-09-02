@@ -37,8 +37,8 @@ defmodule Exantenna.Score do
 
   @names
   |> Enum.each fn name ->
-    def unquote(:"get_#{name}")(model) when is_list(model) do
-      model
+    def unquote(:"get_#{name}")(models) when is_list(models) do
+      models
       |> Enum.filter(& &1.name == "#{unquote(name)}")
       |> List.first
     end

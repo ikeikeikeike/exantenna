@@ -81,35 +81,57 @@ config :quantum,
       # args: []
     # ],
     appear_aggs_tag: [
-      schedule: "10 5 * * *", # every AM05:10 UTC
+      schedule: "15 5 * * *", # every AM05:10 UTC
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Tag]
     ],
     appear_aggs_diva: [
-      schedule: "20 5 * * *", # every AM05:10 UTC
+      schedule: "25 5 * * *", # every AM05:10 UTC
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Diva]
     ],
     appear_aggs_char: [
-      schedule: "30 5 * * *", # every AM05:10 UTC
+      schedule: "35 5 * * *", # every AM05:10 UTC
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Char]
     ],
     appear_aggs_toon: [
-      schedule: "40 5 * * *", # every AM05:10 UTC
+      schedule: "45 5 * * *", # every AM05:10 UTC
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Toon]
     ],
     summary_aggs: [
-      schedule: "50 * * * *", # every 1 hour
+      schedule: "55 * * * *",
       task: "Exantenna.Builders.Summary.aggs",
       args: []
     ],
-    rss_feed_into: [
-      schedule: "*/30 * * * *", # # every 1 hour
+    rss_feed_into_everything: [
+      schedule: "50 */5 * * *",
       task: "Exantenna.Builders.Rss.feed_into",
-      args: []
-    ]
+      args: [:everything]
+    ],
+    rss_feed_into_begginer: [
+      schedule: "40 */4 * * *",
+      task: "Exantenna.Builders.Rss.feed_into",
+      args: [:begginer]
+    ],
+    rss_feed_into_no_penalty: [
+      schedule: "30 */3 * * *",
+      task: "Exantenna.Builders.Rss.feed_into",
+      args: [:no_penalty]
+    ],
+    rss_feed_into_todays_access: [
+      schedule: "10 */2 * * *",
+      task: "Exantenna.Builders.Rss.feed_into",
+      args: [:todays_access]
+    ],
+    # Unkiking numbers(like primes): 1,7,11,13,17,19,23
+    rss_feed_into_todays_access_primes: [
+      schedule: "20 1,7,11,13,17,19,23 * * *",
+      task: "Exantenna.Builders.Rss.feed_into",
+      args: [:begginer]
+      # args: [:todays_access]  # TODO: Gonna be changing to :todays_access when this system are accessed by many blogs.
+    ],
   ]
 
 import_config "sitemeta.prod.secret.exs"

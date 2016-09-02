@@ -11,10 +11,23 @@ defmodule Exantenna.Penalty do
   @required_fields ~w(assoc_id)
   @optional_fields ~w(penalty)
 
-  @penaltytypes ~w(beginning soft hard ban)
+  @penaltytypes ~w(beginning none soft hard ban)
 
+  """
+  - Insert one of item(page) into antenna model by kiked rss batch for every blogs in currently status.
+  - Consider blog parts and dayly(hourly) score for inserting item.
+  - work in progress
+  """
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
+  @penaltytypes
+  |> Enum.each fn name ->
+    def unquote(:"const_#{name}")() do
+      unquote name
+    end
+  end
+
 end

@@ -84,8 +84,8 @@ defmodule Exantenna.Blog do
 
   def available(query) do
     from e in query,
-      where: e.rss != "" and
-             not is_nil(e.rss)
+      where: e.rss != ""
+        and not is_nil(e.rss)
   end
 
   def changeset(model, params \\ :invalid) do
