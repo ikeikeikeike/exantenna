@@ -138,7 +138,7 @@ defmodule Exantenna.Helpers do
   end
   def thumbs_all(%Char{} = model) do
     thumbs =
-      model.toons
+      Extractor.defget(model.toons, [])
       |> Enum.flat_map(&thumbs_all &1)
 
     model.thumbs ++ thumbs
