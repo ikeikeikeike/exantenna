@@ -4,6 +4,7 @@ defmodule Exantenna.Score.Inlog do
   alias Exantenna.Redis
 
   @host Application.get_env(:exantenna, Exantenna.Endpoint)[:url][:host]
+  @parts "/parts.json"
   @ua_ptn ~r(Mozilla|Opera)
   @accept_ptn ~r/.*(text|html,application|xhtml)/
 
@@ -50,7 +51,8 @@ defmodule Exantenna.Score.Inlog do
   #
   def inlog?(%{
     "referer" => ref, "http_host" => host,
-    "accept" => accept, "user-agent" => ua
+    "accept" => accept, "user-agent" => ua,
+    "request_uri" => requri
   }) do
 
     accept =
@@ -64,6 +66,8 @@ defmodule Exantenna.Score.Inlog do
       Blank.blank?(ref) ->
         false
       String.contains?(ref, @host) ->
+        false
+      String.contains?(requri, @parts) ->
         false
       URI.parse(ref).host == host ->
         false

@@ -12,15 +12,18 @@ defmodule Exantenna.Sitemap do
 
   alias Exantenna.Router.Helpers
 
+  def gen_sitemap([]), do: gen_sitemap
   def gen_sitemap do
     metas = Application.get_env(:exantenna, :sitemetas)
 
+    require IEx; IEx.pry
     Enum.each metas, fn {name, meta} ->
       gen_sitemap name, meta[:fqdn]
     end
   end
 
   def gen_sitemap(name, host) do
+    require IEx; IEx.pry
     create [filename: "#{name}.sitemap", host: host] do
 
       antennas =
