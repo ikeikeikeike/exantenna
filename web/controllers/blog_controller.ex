@@ -13,22 +13,31 @@ defmodule Exantenna.BlogController do
 
   def show(conn, %{"id" => id} = params) do
     blog = Repo.get_by!(Blog.query_all(1), id: id)
-    qs = Antenna.query_all(:index)
+    queryable = Antenna.query_all(:index)
 
     queryable =
       case Exantenna.Domain.Filter.what(conn) do
         "video" ->
-          from q in qs, join: c in Video, where: c.elements >= ^Filter.allow_video_elements
+          from q in queryable,
+            join: c in Video,
+            where: q.video_id == c.id
+              and c.elements >= ^Filter.allow_video_elements
         "book"  ->
-          from q in qs, join: c in Picture, where: c.elements >= ^Filter.allow_picture_elements
+          from q in queryable,
+            join: c in Picture,
+            where: q.picture_id == c.id
+              and c.elements >= ^Filter.allow_picture_elements
         _       ->
-          from q in qs
+          queryable
       end
+
+    queryable =
+      from q in queryable,
+        where: q.blog_id == ^id,
+        order_by: [desc: q.id]
 
     pager =
       queryable
-      |> where([q], q.blog_id == ^id)
-      |> order_by([q], [desc: q.id])
       |> Repo.paginate(params)
       |> Paginator.addition
 

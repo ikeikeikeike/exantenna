@@ -82,7 +82,7 @@ defmodule Exantenna.Builders.Rss do
 
     queryable =
       from f in Blog.query,
-        where: j.id in ^allows
+        where: f.id in ^allows
 
     blogs =
       queryable

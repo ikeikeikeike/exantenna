@@ -4,6 +4,7 @@ defmodule Exantenna.Sitemap do
   alias Exantenna.Repo
 
   alias Exantenna.Tag
+  alias Exantenna.Blog
   alias Exantenna.Diva
   alias Exantenna.Toon
   alias Exantenna.Char
@@ -24,6 +25,10 @@ defmodule Exantenna.Sitemap do
 
       antennas =
         Antenna
+        |> Repo.all
+
+      blogs =
+        Blog
         |> Repo.all
 
       divas =

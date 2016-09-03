@@ -38,16 +38,20 @@ defmodule Exantenna.Ecto.Extractor do
           acc ++ defget(model.thumbs, [])
          end)
   end
-  def thumb(%{antenna: antenna}) do
-    thumb antenna
+  def thumb(%{antenna: antenna} = model) do
+    Map.get(model, :thumbs, []) ++ thumb(antenna)
+    |> Enum.uniq
   end
-  def thumb(%{antennas: antennas}) do
-    antennas
-    |> Enum.flat_map(& thumb(&1))
+  def thumb(%{antennas: antennas} = model) do
+    thumbs =
+      antennas
+      |> Enum.flat_map(& thumb(&1))
+
+    Map.get(model, :thumbs, []) ++ thumbs
     |> Enum.uniq
   end
 
-  defp defget(model, default) do
+  def defget(model, default) do
     case model do
       %Ecto.Association.NotLoaded{} -> default
       _ -> model

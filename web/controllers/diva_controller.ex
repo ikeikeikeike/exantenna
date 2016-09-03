@@ -21,7 +21,7 @@ defmodule Exantenna.DivaController do
 
     antennas =
       Antenna.essearch(diva.name, params)
-      |> Es.Paginator.paginate(Antenna.query_all, params)
+      |> Es.Paginator.paginate(Antenna.query_all(:index), params)
 
     render(conn, "show.html", diva: diva, antennas: antennas)
   end

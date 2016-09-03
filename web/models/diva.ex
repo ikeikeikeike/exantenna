@@ -41,9 +41,8 @@ defmodule Exantenna.Diva do
   )
 
   @relational_fields ~w(antennas thumbs scores)a
-
-  def full_relational_fields, do: @full_relational_fields
   @full_relational_fields @relational_fields
+  def full_relational_fields, do: @full_relational_fields
 
   def query do
     from e in __MODULE__,
@@ -61,7 +60,7 @@ defmodule Exantenna.Diva do
         order_by: [desc: q.id],
         limit: ^limit
 
-    from q in query,
+    from q in query_all,
     preload: [antennas: ^antennas]
   end
 

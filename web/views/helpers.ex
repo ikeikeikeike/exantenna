@@ -12,11 +12,14 @@ defmodule Exantenna.Helpers do
   alias Exantenna.Toon
   alias Exantenna.Diva
   alias Exantenna.Char
+  alias Exantenna.Video
+  alias Exantenna.Picture
   alias Exantenna.Thumb
   alias Exantenna.Score
   alias Exantenna.Antenna
 
   alias Exantenna.Filter
+  alias Exantenna.Ecto.Extractor
 
   @doc """
   Generates tag for inlined form input errors.
@@ -102,7 +105,7 @@ defmodule Exantenna.Helpers do
   end
 
   defdelegate blank?(word), to: Exantenna.Blank, as: :blank?
-  defdelegate model_to_string(model), to: Exantenna.Ecto.Extractor, as: :model_to_string
+  defdelegate model_to_string(model), to: Extractor, as: :model_to_string
 
   def human_datetime(datetime) do
     Timex.format! datetime, "%F %R", :strftime
@@ -124,12 +127,24 @@ defmodule Exantenna.Helpers do
   # def better(%Thumb{} = thumb), do: thumb
   # def better(thumbs) when is_list(thumbs), do: List.first thumbs
 
-  def thumbs_all(%Char{} = model) do
-    model.toons
-    |> Enum.flat_map(& thumbs_all(&1))
+  def thumbs_all(%Toon{} = model) do
+    thumbs =
+      Extractor.defget(model.chars, [])
+      |> Enum.flat_map(& &1.thumbs)
+      |> Enum.uniq
+
+    thumbs ++ Extractor.thumb(model)
     |> Enum.uniq
   end
-  def thumbs_all(model), do: Exantenna.Ecto.Extractor.thumb model
+  def thumbs_all(%Char{} = model) do
+    thumbs =
+      model.toons
+      |> Enum.flat_map(&thumbs_all &1)
+
+    model.thumbs ++ thumbs
+    |> Enum.uniq
+  end
+  def thumbs_all(model), do: Extractor.thumb model
 
   def choose_thumb(%Antenna{} = antenna, :entry) do
     choose_thumb(antenna)
@@ -292,7 +307,7 @@ defmodule Exantenna.Helpers do
       end
 
     qs =
-      from [_, _] in Antenna.prev_blog(Antenna.query_all(:index), antenna),
+      from _ in Antenna.prev_blog(Antenna.query_all(:index), antenna),
         join: c in ^queryable,
         where: c.elements >= ^allow_number
 
@@ -309,7 +324,7 @@ defmodule Exantenna.Helpers do
       end
 
     qs =
-      from [_, _] in Antenna.next_blog(Antenna.query_all(:index), antenna),
+      from _ in Antenna.next_blog(Antenna.query_all(:index), antenna),
         join: c in ^queryable,
         where: c.elements >= ^allow_number
 
@@ -331,7 +346,7 @@ defmodule Exantenna.Helpers do
   def fallback, do: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
 
   def enc(:json, model, thumbs) when is_list(thumbs) do
-    ConCache.get_or_store :encjson, "#{model_to_string model}:#{model.id}", fn ->
+    ConCache.get_or_store :encjson, "#{model_to_string model}:#{model.id}:#{length thumbs}", fn ->
       Poison.encode! thumbs
     end
   end

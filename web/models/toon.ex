@@ -37,9 +37,21 @@ defmodule Exantenna.Toon do
   @optional_fields ~w(alias kana romaji gyou url author works release_date outline)
 
   @relational_fields ~w(antennas tags thumbs chars scores)a
+  @index_relational_fields [
+    :antennas,
+    :thumbs,
+    :scores,
+    tags: [
+      :thumbs
+    ],
+    chars: [
+      :thumbs
+    ]
+  ]
+  @full_relational_fields @index_relational_fields
 
-  @full_relational_fields @relational_fields
   def full_relational_fields, do: @full_relational_fields
+  def index_relational_fields, do: @index_relational_fields
 
   def query do
     from e in __MODULE__,
@@ -51,13 +63,18 @@ defmodule Exantenna.Toon do
     preload: ^@full_relational_fields
   end
 
+  def query_all(:index) do
+    from e in __MODULE__,
+    preload: ^@index_relational_fields
+  end
+
   def query_all(limit) do
     antennas =
       from q in Antenna.query_all(:index),
         order_by: [desc: q.id],
         limit: ^limit
 
-    from q in query,
+    from q in query_all(:index),
     preload: [antennas: ^antennas]
   end
 

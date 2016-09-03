@@ -65,7 +65,12 @@ defmodule Exantenna.Char do
         limit: ^limit
 
     from q in query,
-    preload: [toons: [antennas: ^antennas]]
+    preload: [
+      toons: [
+        :thumbs,
+        antennas: ^antennas
+      ]
+    ]
   end
 
   def changeset(model, params \\ :invalid) do
