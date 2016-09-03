@@ -37,6 +37,7 @@ erl_crash.dump
 /web/static/js
 /web/static/css
 
+/log
 /tags
 /web/templates
 /prod-do

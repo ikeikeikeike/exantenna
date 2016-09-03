@@ -157,27 +157,27 @@ defmodule Exantenna.Sitemap do
         end
 
         Enum.each blogs, fn m ->
-          add Helpers.entrydiva_path(Exantenna.Endpoint, :show, m.id),
+          add Helpers.blog_path(Exantenna.Endpoint, :show, m.id),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 
         Enum.each tags, fn m ->
-          add Helpers.entrytag_path(Exantenna.Endpoint, :show, m.name),
+          add Helpers.tag_path(Exantenna.Endpoint, :show, m.name),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 
         Enum.each divas, fn m ->
-          add Helpers.entrydiva_path(Exantenna.Endpoint, :show, m.name),
+          add Helpers.diva_path(Exantenna.Endpoint, :show, m.name),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 
         Enum.each toons, fn m ->
-          add Helpers.entrytag_path(Exantenna.Endpoint, :show, m.name),
+          add Helpers.tag_path(Exantenna.Endpoint, :show, m.name),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 
         Enum.each chars, fn m ->
-          add Helpers.entrytag_path(Exantenna.Endpoint, :show, m.name),
+          add Helpers.tag_path(Exantenna.Endpoint, :show, m.name),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 

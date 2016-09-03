@@ -14,6 +14,10 @@ defmodule Exantenna.Router.Video do
   end
 
   scope "/", Exantenna.Sub.Video do
+    get "/robots.txt", RobotController, :index
+  end
+
+  scope "/", Exantenna.Sub.Video do
     pipe_through :browser # Use the default browser stack
 
     get "/", AntennaController, :index

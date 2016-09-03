@@ -14,6 +14,10 @@ defmodule Exantenna.Router.Book do
   end
 
   scope "/", Exantenna.Sub.Book do
+    get "/robots.txt", RobotController, :index
+  end
+
+  scope "/", Exantenna.Sub.Book do
     pipe_through :browser # Use the default browser stack
 
     get "/", AntennaController, :index

@@ -200,6 +200,10 @@ defmodule Exantenna.Router do
 
   end
 
+  scope "/", Exantenna do
+    get "/robots.txt", RobotController, :index
+  end
+
   scope "/v1", Exantenna.Api.V1, as: "api_v1" do
     pipe_through :api
 
