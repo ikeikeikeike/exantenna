@@ -298,37 +298,15 @@ defmodule Exantenna.Helpers do
   def anstget(%{antenna: antenna}), do: anstget antenna
 
   def prev_blog(%Plug.Conn{} = conn, %Antenna{} = antenna) do
-    {queryable, allow_number} =
-      case Exantenna.Domain.Filter.what(conn) do
-        "book"  ->
-          {Picture, Filter.allow_picture_elements}
-        "video" ->
-          {Video, Filter.allow_video_elements}
-      end
-
-    qs =
-      from _ in Antenna.prev_blog(Antenna.query_all(:index), antenna),
-        join: c in ^queryable,
-        where: c.elements >= ^allow_number
-
-    Repo.one qs
+    Antenna.prev_blog(Antenna.query_all(:index), antenna)
+    |> Exantenna.Domain.Q.allowed_join(conn)
+    |> Repo.one
   end
 
   def next_blog(%Plug.Conn{} = conn, %Antenna{} = antenna) do
-    {queryable, allow_number} =
-      case Exantenna.Domain.Filter.what(conn) do
-        "book"  ->
-          {Picture, Filter.allow_picture_elements}
-        "video" ->
-          {Video, Filter.allow_video_elements}
-      end
-
-    qs =
-      from _ in Antenna.next_blog(Antenna.query_all(:index), antenna),
-        join: c in ^queryable,
-        where: c.elements >= ^allow_number
-
-    Repo.one qs
+    Antenna.next_blog(Antenna.query_all(:index), antenna)
+    |> Exantenna.Domain.Q.allowed_join(conn)
+    |> Repo.one
   end
 
   def dynamical_path(method, args) do

@@ -13,23 +13,9 @@ defmodule Exantenna.BlogController do
 
   def show(conn, %{"id" => id} = params) do
     blog = Repo.get_by!(Blog.query_all(1), id: id)
-    queryable = Antenna.query_all(:index)
-
     queryable =
-      case Exantenna.Domain.Filter.what(conn) do
-        "video" ->
-          from q in queryable,
-            join: c in Video,
-            where: q.video_id == c.id
-              and c.elements >= ^Filter.allow_video_elements
-        "book"  ->
-          from q in queryable,
-            join: c in Picture,
-            where: q.picture_id == c.id
-              and c.elements >= ^Filter.allow_picture_elements
-        _       ->
-          queryable
-      end
+      Antenna.query_all(:index)
+      |> Exantenna.Domain.Q.allowed_join(conn)
 
     queryable =
       from q in queryable,

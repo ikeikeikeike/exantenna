@@ -21,6 +21,7 @@ defmodule Exantenna.Builders.Rss do
   - For dont have penalty
   """
 
+  def feed_into,     do: feed_into :everything
   def feed_into([]), do: feed_into :everything
   def feed_into(:everything) do
     blogs = # Repo.get Blog, 1

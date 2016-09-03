@@ -39,15 +39,15 @@ defmodule Exantenna.Ecto.Extractor do
          end)
   end
   def thumb(%{antenna: antenna} = model) do
-    Map.get(model, :thumbs, []) ++ thumb(antenna)
+    defget(model.thumbs, []) ++ thumb(antenna)
     |> Enum.uniq
   end
   def thumb(%{antennas: antennas} = model) do
     thumbs =
-      antennas
+      defget(antennas, [])
       |> Enum.flat_map(& thumb(&1))
 
-    Map.get(model, :thumbs, []) ++ thumbs
+    defget(model.thumbs, []) ++ thumbs
     |> Enum.uniq
   end
 

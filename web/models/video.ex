@@ -5,6 +5,8 @@ defmodule Exantenna.Video do
   alias Exantenna.VideoMetadata
   alias Exantenna.Redis.Imginfo
 
+  import Exantenna.Blank
+
   @json_fields ~w(metadatas)
   @derive {Poison.Encoder, only: Enum.map(@json_fields, &(String.to_atom(&1)))}
   schema "videos" do
@@ -47,7 +49,7 @@ defmodule Exantenna.Video do
 
   def item_changeset(%Antenna{video: video} = _antenna, item \\ :invalid) do
     metadatas =
-      Enum.reduce item["videos"], [], fn tpl, result ->
+      Enum.reduce(item["videos"], [], fn tpl, result ->
         r =
           Enum.map elem(tpl, 1), fn vid ->
             %{
@@ -68,7 +70,10 @@ defmodule Exantenna.Video do
           end
 
         result ++ r
-      end
+      end)
+      |> Enum.filter(fn meta ->
+        !blank?(meta[:embed_code]) || !blank?(meta[:url])
+      end)
 
     video
     |> changeset(%{metadatas: metadatas, elements: length(metadatas)})
