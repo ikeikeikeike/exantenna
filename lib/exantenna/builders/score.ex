@@ -24,33 +24,30 @@ defmodule Exantenna.Builders.Score do
       |> Inlog.scoring
 
     Enum.map(blogs, fn blog ->
-
       count = inlogs[blog.url] || 0
-      if count > 0 do
 
-        query =
-          from s in table,
-            where: s.assoc_id == ^blog.id
+      query =
+        from s in table,
+          where: s.assoc_id == ^blog.id
 
-        scores =
-          query
-          |> Repo.all
-          |> make_scores(count, blog)
+      scores =
+        query
+        |> Repo.all
+        |> make_scores(count, blog)
 
-        Repo.transaction fn ->
-          changeset =
+      Repo.transaction fn ->
+        changeset =
+          blog
+          |> Repo.preload(:scores)
+          |> Blog.score_changeset(%{"scores" => scores})
+
+        case Repo.update(changeset) do
+          {:error, reason} ->
+            Logger.error("Build daily score: #{inspect reason}")
+            Repo.rollback(reason)
+
+          {_, blog} ->
             blog
-            |> Repo.preload(:scores)
-            |> Blog.score_changeset(%{"scores" => scores})
-
-          case Repo.update(changeset) do
-            {:error, reason} ->
-              Logger.error("Build daily score: #{inspect reason}")
-              Repo.rollback(reason)
-
-            {_, blog} ->
-              blog
-          end
         end
       end
     end)

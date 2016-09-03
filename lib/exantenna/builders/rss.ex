@@ -21,29 +21,21 @@ defmodule Exantenna.Builders.Rss do
   - For dont have penalty
   """
 
-  def feed_into,     do: feed_into :everything
-  def feed_into([]), do: feed_into :everything
+  def feed_into, do: feed_into :everything
   def feed_into(:everything) do
-    blogs = # Repo.get Blog, 1
-      Blog.query
-      |> Blog.available
-      |> Repo.all
-      |> Enum.shuffle  # TODO: shuffle logic
-      |> feed_into
+    Blog.query
+    |> availabled_shuffle
   end
 
   def feed_into(:begginer) do
     queryable =
       from f in Blog.query,
-        join: j in Penalty,
-        where: j.penalty == ^Penalty.const_beginning
+        join: j in {"blogs_penalties", Penalty},
+        where: f.id == j.assoc_id
+           and j.penalty == ^Penalty.const_beginning
 
-    blogs =
-      queryable
-      |> Blog.available
-      |> Repo.all
-      |> Enum.shuffle  # TODO: shuffle logic
-      |> feed_into
+    queryable
+    |> availabled_shuffle
   end
 
   def feed_into(:no_penalty) do
@@ -55,15 +47,12 @@ defmodule Exantenna.Builders.Rss do
 
     queryable =
       from f in Blog.query,
-        join: j in Penalty,
-        where: j.penalty in ^allows
+        join: j in {"blogs_penalties", Penalty},
+        where: f.id == j.assoc_id
+           and j.penalty in ^allows
 
-    blogs =
-      queryable
-      |> Blog.available
-      |> Repo.all
-      |> Enum.shuffle  # TODO: shuffle logic
-      |> feed_into
+    queryable
+    |> availabled_shuffle
   end
 
   def feed_into(:todays_access) do
@@ -85,16 +74,23 @@ defmodule Exantenna.Builders.Rss do
       from f in Blog.query,
         where: f.id in ^allows
 
-    blogs =
-      queryable
-      |> Blog.available
-      |> Repo.all
-      |> Enum.shuffle  # TODO: shuffle logic
-      |> feed_into
+    queryable
+    |> availabled_shuffle
   end
 
   def feed_into(:months_access) do
     # not implemented
+  end
+
+  defp availabled_shuffle(queryable) do
+    queryable =
+      queryable
+      |> Blog.available
+
+    queryable
+    |> Repo.all
+    |> Enum.shuffle  # TODO: shuffle logic
+    |> feed_into
   end
 
   def feed_into(blogs) when is_list(blogs) do
