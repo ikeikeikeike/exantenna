@@ -85,6 +85,7 @@ defmodule Exantenna.Helpers do
     ]
     |> Enum.uniq
     |> Enum.join(" ")
+    |> String.trim
   end
 
   def to_keylist(params) do
