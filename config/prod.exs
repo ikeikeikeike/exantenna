@@ -75,11 +75,11 @@ config :logger, level: :warn
 config :quantum,
   # global?: true,
   cron: [
-    # sitemaps_gen_sitemap: [
-      # schedule: "43 */4 * * *",
-      # task: "Sitemaps.gen_sitemap",
-      # args: []
-    # ],
+    sitemaps_gen_sitemap: [
+      schedule: "43 */4 * * *",
+      task: "Exantenna.Sitemap.gen_sitemap",
+      args: []
+    ],
     appear_aggs_tag: [
       schedule: "15 5 * * *", # every AM05:10 UTC
       task: "Exantenna.Builders.Appear.aggs",
