@@ -76,27 +76,27 @@ config :quantum,
   # global?: true,
   cron: [
     sitemaps_gen_sitemap: [
-      schedule: "43 */4 * * *",
+      schedule: "5 1,4,7,22 * * *", # UTC
       task: "Exantenna.Sitemap.gen_sitemap",
       args: []
     ],
     appear_aggs_tag: [
-      schedule: "15 5 * * *", # every AM05:10 UTC
+      schedule: "15 5 * * *", # every around AM05 UTC
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Tag]
     ],
     appear_aggs_diva: [
-      schedule: "25 5 * * *", # every AM05:10 UTC
+      schedule: "25 5 * * *", # every around AM05 UTC
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Diva]
     ],
     appear_aggs_char: [
-      schedule: "35 5 * * *", # every AM05:10 UTC
+      schedule: "35 5 * * *", # every around AM05 UTC
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Char]
     ],
     appear_aggs_toon: [
-      schedule: "45 5 * * *", # every AM05:10 UTC
+      schedule: "45 5 * * *", # every around AM05 UTC
       task: "Exantenna.Builders.Appear.aggs",
       args: [Exantenna.Toon]
     ],
