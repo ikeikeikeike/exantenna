@@ -6,10 +6,66 @@ defmodule Exantenna.SchemaOrg do
   alias Exantenna.Toon
   alias Exantenna.Antenna
 
+  alias Exantenna.Ecto.Extractor
+
   import Exantenna.Gettext
 
-  # def person(title, %Antenna{} = model)
-  # def image_object(title, %Antenna{} = model)
+  def person(title, %Antenna{} = model) do
+    people =
+      Enum.flat_map model.divas, fn diva ->
+        person title, diva
+      end
+
+    people ++ Enum.flat_map model.toons, fn toon ->
+      person(title, toon) ++ Enum.map toon.chars, fn char ->
+        person title, char
+      end
+    end
+  end
+
+  def image_object(title, %Antenna{} = model) do
+    thumbs =
+      Extractor.defget(model.picture.thumbs, [])
+      ++ Extractor.defget(model.entry.thumbs, [])
+
+    total = length thumbs
+
+    objects =
+      thumbs
+      |> Enum.with_index(1)
+      |> Enum.map(fn {thumb, index} ->
+        %{
+          "@type" => "ImageObject",
+          "name" => "#{index}/#{total} #{title}",
+          "caption" => "#{index}/#{total} #{model.metadata.seo_title}",
+          # "keywords" => "",
+          "uploadDate	" => thumb.inserted_at,
+          "thumbnail" => thumb.src,
+          "contentUrl" => thumb.src,
+          "width" => thumb.width,
+          "height" => thumb.height,
+          "encodingFormat" => thumb.ext,
+          "fileFormat" => thumb.mime,
+        }
+      end)
+
+    objects =
+      objects ++ Enum.flat_map model.divas, fn diva ->
+        image_object title, diva
+      end
+
+    objects ++ Enum.flat_map model.toons, fn toon ->
+      image_object(title, toon)
+         ++ Enum.flat_map toon.chars, fn char ->
+              image_object title, char
+            end
+      end
+  end
+
+  def person(title, %Toon{thumbs: _thumbs} = model) do
+    model.chars
+    |> Enum.map(&person(title, &1))
+  end
 
   def person(title, %Diva{thumbs: _thumbs} = model) do
     %{
@@ -34,11 +90,6 @@ defmodule Exantenna.SchemaOrg do
     }
   end
 
-  def person(title, %Toon{thumbs: _thumbs} = model) do
-    model.chars
-    |> Enum.map(&person(title, &1))
-  end
-
   def person(title, %Char{thumbs: _thumbs} = model) do
     %{
       "@type" => "Person",
@@ -59,7 +110,7 @@ defmodule Exantenna.SchemaOrg do
       "hip" =>  model.hip,
       "bloodType" => model.blood,
       "image" => image_object(title, model),
-      "affiliation" => affiliation(title, model)
+      "affiliation" => Enum.map(Extractor.defget(model.toons, []), &affiliation(title, &1))
     }
   end
 
@@ -78,11 +129,35 @@ defmodule Exantenna.SchemaOrg do
     |> Enum.map(&affiliation(title, &1))
   end
 
-  def image_object(title, %Diva{thumbs: thumbs} = model) do
+  def image_object(name, %{thumbs: thumbs, author: _, works: _} = model) do
     total = length thumbs
 
     thumbs
-    |> Enum.with_index
+    |> Enum.with_index(1)
+    |> Enum.map(fn {thumb, index} ->
+      %{
+        "@type" => "ImageObject",
+        "name" => "#{index}/#{total} #{name}",
+        "caption" => "#{index}/#{total} #{model.outline}",
+        # "keywords" => "",
+        "author" => model.author,
+        "publisher" => model.works,
+        "uploadDate	" => thumb.inserted_at,
+        "thumbnail" => thumb.src,
+        "contentUrl" => thumb.src,
+        "width" => thumb.width,
+        "height" => thumb.height,
+        "encodingFormat" => thumb.ext,
+        "fileFormat" => thumb.mime,
+      }
+    end)
+  end
+
+  def image_object(title, %{thumbs: thumbs, outline: _} = model) do
+    total = length thumbs
+
+    thumbs
+    |> Enum.with_index(1)
     |> Enum.map(fn {thumb, index} ->
       %{
         "@type" => "ImageObject",
@@ -98,32 +173,6 @@ defmodule Exantenna.SchemaOrg do
         "fileFormat" => thumb.mime,
       }
     end)
-  end
-
-  def image_object(name, %Toon{thumbs: thumbs} = model) do
-    total = length thumbs
-
-    thumbs
-    |> Enum.with_index
-    |> Enum.map(fn {thumb, index} ->
-      %{
-        "@type" => "ImageObject",
-        "name" => "#{index}/#{total} #{name}",
-        "caption" => "#{index}/#{total} #{model.outline}",
-        # "keywords" => "",
-        "author" => model.author,
-        "publisher" => model.works,
-        "genre" => "Toon",
-        "uploadDate	" => thumb.inserted_at,
-        "thumbnail" => thumb.src,
-        "contentUrl" => thumb.src,
-        "width" => thumb.width,
-        "height" => thumb.height,
-        "encodingFormat" => thumb.ext,
-        "fileFormat" => thumb.mime,
-      }
-    end)
-
   end
 
 end

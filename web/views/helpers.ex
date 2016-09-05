@@ -358,4 +358,21 @@ defmodule Exantenna.Helpers do
     end
   end
 
+  def get_title(%Antenna{} = antenna) do
+    antenna.metadata.seo_title
+  end
+
+  def get_keywords(%Antenna{} = antenna) do
+    antenna.tags ++ antenna.toons ++ antenna.divas
+    |> Enum.map(fn(m) -> m.name end)
+    |> Enum.join(",")
+  end
+
+  def get_description(%Antenna{} = antenna) do
+    case blank?(antenna.metadata.seo_content) do
+      false -> antenna.metadata.seo_content
+      true  -> antenna.metadata.seo_title
+    end
+  end
+
 end

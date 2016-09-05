@@ -1,6 +1,7 @@
 defmodule Exantenna.Sitemap do
   use Sitemap
 
+  alias Exantenna.Endpoint, as: EP
   alias Exantenna.Repo
 
   alias Exantenna.Tag
@@ -11,6 +12,8 @@ defmodule Exantenna.Sitemap do
   alias Exantenna.Antenna
 
   alias Exantenna.Router.Helpers
+
+  import Ecto.Query, only: [from: 1, from: 2]
 
   def gen_sitemap([]), do: gen_sitemap
   def gen_sitemap do
@@ -50,135 +53,159 @@ defmodule Exantenna.Sitemap do
 
       Enum.each [false, true], fn bool ->
 
-        add Helpers.antenna_path(Exantenna.Endpoint, :index),
+        add Helpers.antenna_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.entry_path(Exantenna.Endpoint, :index),
+        add Helpers.entry_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.summary_path(Exantenna.Endpoint, :index),
+        add Helpers.summary_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.tag_path(Exantenna.Endpoint, :index),
+        add Helpers.tag_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.blog_path(Exantenna.Endpoint, :index),
+        add Helpers.blog_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.diva_path(Exantenna.Endpoint, :index),
+        add Helpers.diva_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.toon_path(Exantenna.Endpoint, :index),
+        add Helpers.toon_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.char_path(Exantenna.Endpoint, :index),
-          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-
-        add Helpers.t_atoz_path(Exantenna.Endpoint, :index),
-          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.t_release_path(Exantenna.Endpoint, :index),
-          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.t_works_path(Exantenna.Endpoint, :index),
-          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.t_author_path(Exantenna.Endpoint, :index),
+        add Helpers.char_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
 
-        add Helpers.d_atoz_path(Exantenna.Endpoint, :index),
+        add Helpers.t_atoz_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.d_birthday_path(Exantenna.Endpoint, :index),
+        add Helpers.t_release_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.d_waist_path(Exantenna.Endpoint, :index),
+        add Helpers.t_works_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.d_bracup_path(Exantenna.Endpoint, :index),
-          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.d_bust_path(Exantenna.Endpoint, :index),
-          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.d_hip_path(Exantenna.Endpoint, :index),
-          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.d_height_path(Exantenna.Endpoint, :index),
-          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.d_blood_path(Exantenna.Endpoint, :index),
+        add Helpers.t_author_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
 
-        add Helpers.c_atoz_path(Exantenna.Endpoint, :index),
+        add Helpers.d_atoz_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.c_birthday_path(Exantenna.Endpoint, :index),
+        add Helpers.d_birthday_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.c_waist_path(Exantenna.Endpoint, :index),
+        add Helpers.d_waist_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.c_bracup_path(Exantenna.Endpoint, :index),
+        add Helpers.d_bracup_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.c_bust_path(Exantenna.Endpoint, :index),
+        add Helpers.d_bust_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.c_hip_path(Exantenna.Endpoint, :index),
+        add Helpers.d_hip_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.c_height_path(Exantenna.Endpoint, :index),
+        add Helpers.d_height_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
-        add Helpers.c_blood_path(Exantenna.Endpoint, :index),
+        add Helpers.d_blood_path(EP, :index),
           priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
 
+        add Helpers.c_atoz_path(EP, :index),
+          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
+        add Helpers.c_birthday_path(EP, :index),
+          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
+        add Helpers.c_waist_path(EP, :index),
+          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
+        add Helpers.c_bracup_path(EP, :index),
+          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
+        add Helpers.c_bust_path(EP, :index),
+          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
+        add Helpers.c_hip_path(EP, :index),
+          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
+        add Helpers.c_height_path(EP, :index),
+          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
+        add Helpers.c_blood_path(EP, :index),
+          priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
+
+        queryable =
+          from f in Diva,
+            select: f.birthday,
+            group_by: f.birthday,
+            order_by: f.birthday
+
+        birthdays = Repo.all queryable
+
+        beginning_year = List.first(birthdays).year
         current_year = Timex.DateTime.now.year
 
-        beginning_year = 1966  # TODO: Getting begging year from database.
         Enum.each beginning_year..(current_year - 18), fn year ->
-          add Helpers.d_birthday_path(Exantenna.Endpoint, :year, year),
+          add Helpers.d_birthday_path(EP, :year, year),
             priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
 
           Enum.each 1..12, fn month ->
-            add Helpers.d_birthday_path(Exantenna.Endpoint, :month, year, month),
+            add Helpers.d_birthday_path(EP, :month, year, month),
               priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
           end
         end
 
-        beginning_year = 1966  # TODO: Getting begging year from database.
+        queryable =
+          from f in Char,
+            select: f.birthday,
+            group_by: f.birthday,
+            order_by: f.birthday
+
+        birthdays = Repo.all queryable
+
+        beginning_year = List.first(birthdays).year
         Enum.each beginning_year..current_year, fn year ->
-          add Helpers.c_birthday_path(Exantenna.Endpoint, :year, year),
+          add Helpers.c_birthday_path(EP, :year, year),
             priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
 
           Enum.each 1..12, fn month ->
-            add Helpers.c_birthday_path(Exantenna.Endpoint, :month, year, month),
+            add Helpers.c_birthday_path(EP, :month, year, month),
               priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
           end
         end
 
-        beginning_year = 1966  # TODO: Getting begging year from database.
+        queryable =
+          from f in Toon,
+            select: f.release_date,
+            group_by: f.release_date,
+            order_by: f.release_date
+
+        releases = Repo.all queryable
+
+        beginning_year = List.first(releases).year
         Enum.each beginning_year..current_year, fn year ->
-          add Helpers.t_release_path(Exantenna.Endpoint, :year, year),
+          add Helpers.t_release_path(EP, :year, year),
             priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
 
           Enum.each 1..12, fn month ->
-            add Helpers.t_release_path(Exantenna.Endpoint, :month, year, month),
+            add Helpers.t_release_path(EP, :month, year, month),
               priority: 0.5, changefreq: "hourly", expires: nil, mobile: bool
           end
         end
 
         Enum.each antennas, fn m ->
-          add Helpers.entry_path(Exantenna.Endpoint, :show, m.id),
+          add Helpers.entry_path(EP, :show, m.id),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 
         if name == :book do
           Enum.each antennas, fn m ->
-            add Helpers.entry_path(Exantenna.Endpoint, :view, m.id),
+            add "#{Helpers.entry_path EP, :show, m.id}/viewer",
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
           end
         end
 
         Enum.each blogs, fn m ->
-          add Helpers.blog_path(Exantenna.Endpoint, :show, m.id),
+          add Helpers.blog_path(EP, :show, m.id),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 
         Enum.each tags, fn m ->
-          add Helpers.tag_path(Exantenna.Endpoint, :show, m.name),
+          add Helpers.tag_path(EP, :show, m.name),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 
         Enum.each divas, fn m ->
-          add Helpers.diva_path(Exantenna.Endpoint, :show, m.name),
+          add Helpers.diva_path(EP, :show, m.name),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 
         Enum.each toons, fn m ->
-          add Helpers.tag_path(Exantenna.Endpoint, :show, m.name),
+          add Helpers.tag_path(EP, :show, m.name),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 
         Enum.each chars, fn m ->
-          add Helpers.tag_path(Exantenna.Endpoint, :show, m.name),
+          add Helpers.tag_path(EP, :show, m.name),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 
