@@ -1,0 +1,105 @@
+#!/bin/bash -eu
+VERSION=`cat VERSION`
+
+BUILDING=`cat BUILDING`
+PRODUCTION=`cat PRODUCTION`
+
+deploy() {
+    build
+    download $VERSION
+    upload
+    upgrade $VERSION
+}
+
+version() {
+    echo $VERSION
+}
+
+fixversion() {
+    hg commit -m "fix version $VERSION" mix.exs VERSION
+    hg push
+}
+
+build() {
+    fixversion
+
+    ssh adult@${BUILDING} "rm -rf src/exantenna/priv/static/css/*"
+    ssh adult@${BUILDING} "rm -rf src/exantenna/priv/static/js/*"
+    ssh adult@${BUILDING} "cd src/exantenna && bash build"
+}
+
+download() {
+    rsync -avr --stats adult@${BUILDING}:~/src/exantenna/rel .
+
+    (cd rel/exantenna
+        rm -rf  static
+        ln -fs lib/exantenna-${VERSION}/priv/static
+    )
+}
+
+upload() {
+    # upload staging
+    rsync -avr --stats rel adult@${PRODUCTION}:~/
+}
+
+upgrade() {
+    # upgrade
+    ssh adult@${PRODUCTION} "sh rel/exantenna/bin/exantenna upgrade $1"
+    echo;deployed
+}
+
+downgrade() {
+    # upgrade
+    ssh adult@${PRODUCTION} "sh rel/exantenna/bin/exantenna downgrade $1"
+
+    echo;deployed
+}
+
+remove() {
+    rm -fr rel/exantenna/lib/exantenna-$1
+    rm -fr rel/exantenna/releases/$1
+
+    rsync -avr --delete --stats rel/exantenna/lib      adult@${PRODUCTION}:~/rel/exantenna/
+    rsync -avr --delete --stats rel/exantenna/releases adult@${PRODUCTION}:~/rel/exantenna/
+
+    rsync -avr --delete --stats rel/exantenna/lib      adult@${BUILDING}:~/src/exantenna/rel/exantenna/
+    rsync -avr --delete --stats rel/exantenna/releases adult@${BUILDING}:~/src/exantenna/rel/exantenna/
+}
+
+deployed() {
+    # upgrade
+    ssh adult@${PRODUCTION} "ls -t rel/exantenna/releases"
+}
+
+case "$1" in
+    deploy)             deploy            ;;
+    version)            version           ;;
+    fixversion)         fixversion        ;;
+    build)              build             ;;
+    upload)             upload            ;;
+    download)           download          ;;
+    upgrade)            upgrade $2        ;;
+    downgrade)          downgrade $2      ;;
+    deployed)           deployed          ;;
+    remove)             remove $2         ;;
+    restart)            stopsrv; startsrv ;;
+    *) echo "
+Usage:
+    $0 <command> [options]
+
+Commands:
+    deploy                    Deployment all
+    version                   Get package version.
+    fixversion <version>      Fix package version.
+    build      [options]      Build packages.
+    upload                    UploadDeplo packages.
+    download   <version>      Download rel.
+    upgrade    <version>      Upload rel.
+    downgrade  <version>      Hot deploy server.
+    deployed                  Deployed versions.
+    remove                    Removing before versions.
+
+" >&2
+       exit 1
+       ;;
+esac

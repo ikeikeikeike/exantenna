@@ -40,7 +40,8 @@ erl_crash.dump
 /log
 /tags
 /web/templates
-/prod-do
 /build
 /config/myhost
 /web/static/assets/images
+/BUILDING
+/PRODUCTION
