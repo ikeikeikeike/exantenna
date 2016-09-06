@@ -5,10 +5,12 @@ defmodule Exantenna.Helpers do
 
   use Phoenix.HTML
   import Ecto.Query, only: [from: 1, from: 2]
+  import Exantenna.Router.Helpers
 
   alias Exantenna.Repo
 
   alias Exantenna.Tag
+  alias Exantenna.Blog
   alias Exantenna.Toon
   alias Exantenna.Diva
   alias Exantenna.Char
@@ -374,5 +376,49 @@ defmodule Exantenna.Helpers do
       true  -> antenna.metadata.seo_title
     end
   end
+
+  def extract_url(conn, key, assigns) do
+    model = object(key, assigns)
+    path =
+      case model do
+        %Antenna{} -> "entry_url"
+        _ -> "#{model_to_string model}_url"
+      end
+
+    dynamical_path path, [conn, key, identifier(model)]
+  end
+
+  def extract_image(conn, assigns) do
+    case choose_thumb(object(:show, assigns)) do
+      %Thumb{} = model -> model.src
+      _ -> nil
+    end
+  end
+
+  def showpage?(conn), do: !! object(:show, conn.assigns)
+
+  def identifier(%Antenna{} = model), do: model.id
+  def identifier(%Blog{} = model), do: model.id
+  def identifier(%Diva{} = model), do: model.name
+  def identifier(%Char{} = model), do: model.name
+  def identifier(%Toon{} = model), do: model.name
+  def identifier(%Tag{} = model), do: model.name
+  def identifier(_), do: nil
+
+  # def model(:index, %{antenna: model}), do: model
+  # def model(:index, %{toon: model}), do: model
+  # def model(:index, %{diva: model}), do: model
+  # def model(:index, %{char: model}), do: model
+  # def model(:index, %{blog: model}), do: model
+  # def model(:index, %{tag: model}), do: model
+  # def model(:index, _), do: :error
+
+  def object(:show, %{antenna: model}), do: model
+  def object(:show, %{toon: model}), do: model
+  def object(:show, %{diva: model}), do: model
+  def object(:show, %{char: model}), do: model
+  def object(:show, %{blog: model}), do: model
+  def object(:show, %{tag: model}), do: model
+  def object(:show, _), do: nil
 
 end

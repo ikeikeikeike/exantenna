@@ -61,15 +61,13 @@ defmodule Exantenna.Blog do
     antenna: Antenna.index_relational_fields
   ]
 
-
   def query do
     from e in __MODULE__,
     preload: ^@relational_fields
   end
 
   def query_all do
-    from e in __MODULE__,
-    preload: ^@full_relational_fields
+    query_all(1)
   end
 
   def query_all(limit) do
@@ -125,6 +123,12 @@ defmodule Exantenna.Blog do
     model
     |> cast(params, [], [])
     |> cast_assoc(:scores, required: true)
+  end
+
+  def penalty_changeset(model, params \\ :invalid) do
+    model
+    |> cast(params, [], [])
+    |> cast_assoc(:penalty, required: true)
   end
 
 end

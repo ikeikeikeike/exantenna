@@ -1,13 +1,21 @@
 defmodule Exantenna.Sitemeta do
   use Phoenix.HTML.SimplifiedHelpers
-  import Exantenna.Gettext
   import Exantenna.Blank
+  import Exantenna.Gettext
+
+  alias Exantenna.Antenna
+  alias Exantenna.Char
+  alias Exantenna.Blog
+  alias Exantenna.Diva
+  alias Exantenna.Toon
+  alias Exantenna.Tag
+  alias Exantenna.Ecto.Extractor
 
   alias Exantenna.Helpers, as: H
 
   def page_title(:index, assigns) do
     params = assigns.conn.params
-    num = number_with_delimiter(get_total(assigns))
+    num = number_with_delimiter(totals(assigns))
 
     title =
       cond do
@@ -22,22 +30,22 @@ defmodule Exantenna.Sitemeta do
     (if title, do: title <> " - ", else: "") <> gettext("%{sitetitle}", sitetitle: H.sitemeta(assigns.conn.private[:subdomain], :title))
   end
   def page_title(:show, assigns) do
-    word = truncate(get_title(assigns), length: 100)
-    num  = number_with_delimiter(get_total(assigns))
+    word = truncate(extract_title(H.object :show, assigns), length: 100)
+    num  = number_with_delimiter(totals(assigns))
 
     title = gettext "%{word} with %{num} relevents", word: word,  num: num
     title <> " - " <> gettext("Default Page Title")
   end
   def page_title(_, _),           do: gettext "Default Page Title"
 
-  defp get_title(%{antenna: model}), do: model.metadata.seo_title
-  defp get_title(%{toon: model}), do: model.name
-  defp get_title(%{diva: model}), do: model.name
-  defp get_title(%{char: model}), do: model.name
-  defp get_title(%{blog: model}), do: model.name
-  defp get_title(%{tag: model}), do: model.name
+  defp extract_title(%Antenna{} = model), do: model.metadata.seo_title
+  defp extract_title(%Blog{} = model), do: model.name
+  defp extract_title(%Diva{} = model), do: model.name
+  defp extract_title(%Char{} = model), do: model.name
+  defp extract_title(%Toon{} = model), do: model.name
+  defp extract_title(%Tag{} = model), do: model.name
 
-  defp get_total(%{pager: pager}), do: pager.total_entries
-  defp get_total(%{antennas: pager}), do: pager.total_entries
+  defp totals(%{pager: pager}), do: pager.total_entries
+  defp totals(%{antennas: pager}), do: pager.total_entries
 
 end

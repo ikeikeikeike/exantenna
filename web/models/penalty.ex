@@ -30,4 +30,7 @@ defmodule Exantenna.Penalty do
     end
   end
 
+  def name_table(name) when is_bitstring(name), do: "#{name}s_penalties"
+  def name_table(model), do: name_table(Exantenna.Ecto.Extractor.toname model)
+
 end
