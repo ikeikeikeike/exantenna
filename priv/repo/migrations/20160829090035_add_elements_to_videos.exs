@@ -6,7 +6,7 @@ defmodule Exantenna.Repo.Migrations.AddElementsToVideos do
       add :elements, :integer, default: 0
     end
 
-    create index(:videos, [:elements])
+    create_if_not_exists index(:videos, [:elements])
   end
 
 end
