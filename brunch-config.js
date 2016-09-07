@@ -43,6 +43,7 @@ exports.config = {
         "css/app-video.css": /^(web\/static\/css\/(video|modules)|bower_components)/,
         "css/app-none.css": /^(web\/static\/css\/(none|modules)|bower_components)/,
         "css/app-view.css": /^(web\/static\/css\/(view|modules)|bower_components)/,
+        "css/app-admin.css": /^(web\/static\/css\/(admin|modules)|bower_components)/,
       },
       order: {
         before: [

@@ -139,6 +139,22 @@ defmodule Exantenna.Helpers do
     thumbs ++ Extractor.thumb(model)
     |> Enum.uniq
   end
+  def thumbs_all(%Blog{} = model) do
+    thumbs =
+       Extractor.defget(model.antenna, nil)
+       |> thumbs_all
+
+    thumbs ++ Extractor.thumb(model)
+    |> Enum.uniq
+  end
+  def thumbs_all(%Tag{} = model) do
+    thumbs =
+      Extractor.defget(model.antennas, [])
+      |> Enum.flat_map(&thumbs_all &1)
+
+    model.thumbs ++ thumbs
+    |> Enum.uniq
+  end
   def thumbs_all(%Char{} = model) do
     thumbs =
       Extractor.defget(model.toons, [])
@@ -199,6 +215,12 @@ defmodule Exantenna.Helpers do
       |> models_thumb(antenna.divas)
       |> models_thumb(antenna.video.metadatas)
       |> models_thumb(antenna.tags)
+  end
+  def choose_thumb(%Blog{} = blog) do
+    thumb = pick(blog.thumbs)
+    unless thumb, do: thumb = choose_thumb(blog.antenna)
+
+    thumb
   end
   def choose_thumb(%Diva{} = diva) do
     thumb = pick(diva.thumbs)
@@ -420,5 +442,49 @@ defmodule Exantenna.Helpers do
   def object(:show, %{blog: model}), do: model
   def object(:show, %{tag: model}), do: model
   def object(:show, _), do: nil
+
+  def totals(%{pager: pager}), do: pager.total_entries
+  def totals(%{antennas: pager}), do: pager.total_entries
+
+  def entries(%{pager: pager}), do: pager.entries
+  def entries(%{antennas: pager}), do: pager.entries
+
+  def titles(%Antenna{} = model), do: model.metadata.seo_title
+  def titles(%Blog{} = model), do: model.name
+  def titles(%Diva{} = model), do: model.name
+  def titles(%Char{} = model), do: model.name
+  def titles(%Toon{} = model), do: model.name
+  def titles(%Tag{} = model), do: model.name
+
+  def title_with_link(conn, %Antenna{} = model) do
+    # TODO: support with toon and char
+    #
+    case length model.divas do
+      x when x > 0 ->
+        title =
+          model.divas
+          |> Enum.flat_map(fn diva ->
+            Filter.separate_name(titles(diva))
+          end)
+          |> Enum.reduce(titles(model), fn(name, title) ->
+            tag =
+              # link(name, to: entrydiva_path(conn, :index, name))
+              content_tag(:span, name,
+                class: "linker",
+                data_link: diva_path(conn, :index, name)
+              )
+              |> elem(1)
+              |> List.to_string
+
+            String.replace(title, name, tag)
+          end)
+
+        raw title
+
+      _ ->
+        titles(model)
+    end
+  end
+
 
 end

@@ -6,6 +6,7 @@ defmodule Exantenna.Admin.AuthController do
   alias Exantenna.Tmpuser
   alias Exantenna.Auth.Changeset, as: AuthCh
   alias Exantenna.SignupMailer
+  alias Exantenna.ResetpasswdMailer
   alias Exantenna.Services
 
   plug Ueberauth
@@ -75,7 +76,7 @@ defmodule Exantenna.Admin.AuthController do
       {:ok, model} ->
 
         SignupMailer.send_activation model.email,
-          admin_auth_url(conn, :register_confirm, model.token)
+          admin_auth_url(conn, :confirm_register, model.token)
 
         msg = gettext("""
         Please make sure that created account successfly.
@@ -93,8 +94,8 @@ defmodule Exantenna.Admin.AuthController do
     end
   end
 
-  def register_confirm(conn, %{"token" => token} = _params) do
-    case Repo.one(Tmpuser.register_confirmation(Tmpuser, token)) do
+  def confirm_register(conn, %{"token" => token} = _params) do
+    case Repo.one(Tmpuser.confirmation(:register, Tmpuser, token)) do
       nil -> text conn, gettext("Expires: Token was missing or it is older")
 
       tmpuser ->
@@ -112,6 +113,72 @@ defmodule Exantenna.Admin.AuthController do
             |> put_flash(:info, gettext("Your media account created successfuly"))
             |> redirect(to: admin_auth_path(conn, :signin))
         end
+    end
+  end
+
+  # This is working both login and nologin statement.
+  def resetpasswd(%{method: "POST"} = conn, %{"tmpuser" => params}) do
+    changeset =
+        %Tmpuser{}
+        |> Tmpuser.changemail_changeset(params)
+
+    case Repo.update(changeset) do
+      {:ok, model} ->
+
+        ResetpasswdMailer.send_activation model.email,
+          admin_auth_url(conn, :confirm_resetpasswd, model.token)
+
+        msg = gettext("""
+        Successfly!! Please make sure that we sent activation
+        for password registration into your new email address.
+        """)
+        conn
+        |> put_flash(:info, msg)
+        |> redirect(to: admin_user_path(conn, :dashboard))
+
+      {:error, changeset} ->
+        conn
+        |> put_flash(:warn, "Unable to email address")
+        |> render("resetpasswd.html", changeset: changeset)
+    end
+  end
+
+  # This is working both login and nologin statement.
+  def resetpasswd(conn, _params) do
+    render conn, "resetpasswd.html"
+  end
+
+  # This is working both login and nologin statement.
+  def confirm_resetpasswd(conn, %{"post" => %{"token" => token} = params}) do
+    case Repo.one(Tmpuser.confirmation(:resetpasswd, Tmpuser, token)) do
+      nil ->
+        text conn, gettext("Expires: Token was missing or it was old")
+
+      tmpuser ->
+        case Services.User.register(tmpuser) do  # TODO:
+          {:error, changeset} ->
+            msg =
+              "Message: %{r}\n Please start registration again at one's beginnings"
+              |> gettext(r: "#{inspect changeset.errors}")
+            text conn, msg
+
+          {:ok, _user} ->
+            Repo.delete(tmpuser)
+
+            conn
+            |> put_flash(:info, gettext("Your media account created successfuly"))
+            |> redirect(to: admin_auth_path(conn, :signin))
+        end
+    end
+  end
+
+  # This is working both login and nologin statement.
+  def confirm_resetpasswd(conn, %{"token" => token}) do
+    case Repo.one(Tmpuser.confirmation(:resetpasswd, Tmpuser, token)) do
+      nil ->
+        text conn, gettext("Expires: Token was missing or it was old")
+      tmpuser ->
+        render conn, "confirm_resetpasswd.html", tmpuser: tmpuser
     end
   end
 

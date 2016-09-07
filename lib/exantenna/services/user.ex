@@ -11,7 +11,8 @@ defmodule Exantenna.Services.User do
       params = Map.from_struct(tmpuser)
 
       case Repo.insert(User.register_changeset(%User{}, params)) do
-        {:error, changeset} -> Repo.rollback(changeset)
+        {:error, changeset} ->
+          Repo.rollback(changeset)
 
         {:ok, user} ->
           params = Map.merge params, %{user_id: user.id}

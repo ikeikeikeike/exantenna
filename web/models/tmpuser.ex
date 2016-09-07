@@ -23,9 +23,14 @@ defmodule Exantenna.Tmpuser do
   @required_fields ~w()
   @optional_fields ~w(rss email password password_confirmation mediatype contenttype token tokentype expires)
 
-  @tokentypes ~w(changemail reset signup)
+  @tokentypes ~w(changemail resetpasswd signup)
   @mediatypes ~w(image movie)
   @contenttypes ~w(second_dimension third_dimention)
+
+  def changeset(model, params \\ :invalid) do
+    model
+    |> cast(params, @required_fields, @optional_fields)
+  end
 
   def register_changeset(model, params \\ :invalid) do
     model
@@ -43,11 +48,46 @@ defmodule Exantenna.Tmpuser do
     |> put_change(:expires, Timex.shift(Timex.DateTime.now, days: 1))
   end
 
-  def register_confirmation(model, token) do
+  def changemail_changeset(model, params \\ :invalid) do
+    model
+    |> cast(params, ~w(email), [])
+    |> validate_required(~w(email)a)
+    |> validate_format(:email, ~r/@/)
+    |> put_change(:token, Ecto.UUID.generate)
+    |> put_change(:tokentype, "changemail")
+    |> put_change(:expires, Timex.shift(Timex.DateTime.now, days: 1))
+  end
+
+  def resetpasswd_changeset(model, params \\ :invalid) do
+    model
+    |> cast(params, [], [])
+    |> validate_required(~w(email)a)
+    |> validate_format(:email, ~r/@/)
+    |> put_change(:token, Ecto.UUID.generate)
+    |> put_change(:tokentype, "resetpasswd")
+    |> put_change(:expires, Timex.shift(Timex.DateTime.now, days: 1))
+  end
+
+  def confirmation(:signup, model, token), do: confirmation :register, model, token
+  def confirmation(:register, model, token) do
     from q in model,
-    where: q.token == ^token
-       and q.expires > ^Ecto.DateTime.utc
-       and q.tokentype == "signup"
+      where: q.token == ^token
+         and q.expires > ^Ecto.DateTime.utc
+         and q.tokentype == "signup"
+  end
+
+  def confirmation(:resetpasswd, model, token) do
+    from q in model,
+      where: q.token == ^token
+         and q.expires > ^Ecto.DateTime.utc
+         and q.tokentype == "resetpasswd"
+  end
+
+  def confirmation(:changemail, model, token) do
+    from q in model,
+      where: q.token == ^token
+         and q.expires > ^Ecto.DateTime.utc
+         and q.tokentype == "changemail"
   end
 
 end

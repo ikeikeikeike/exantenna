@@ -50,6 +50,7 @@ defmodule Exantenna.Ecto.Extractor do
     defget(model.thumbs, []) ++ thumbs
     |> Enum.uniq
   end
+  def thumb(nil), do: []
 
   def defget(model, default) do
     case model do

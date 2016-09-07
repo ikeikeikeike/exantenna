@@ -12,7 +12,7 @@ defmodule Exantenna.SchemaOrg do
 
   def person(title, %Antenna{} = model) do
     people =
-      Enum.flat_map model.divas, fn diva ->
+      Enum.map model.divas, fn diva ->
         person title, diva
       end
 

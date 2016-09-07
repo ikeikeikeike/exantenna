@@ -22,6 +22,15 @@ defmodule Exantenna.Auth.User do
       {:error, :not_found}
   end
 
+  def enabled_password?(password, encrypted_password) do
+    Pbkdf2.checkpw(password, encrypted_password)
+  rescue
+    _e in MatchError ->
+      false
+    _e in ArgumentError ->
+      false
+  end
+
   def auths(nil), do: []
   def auths(%Exantenna.User{} = user) do
     Ecto.Model.assoc(user, :authorizations)

@@ -10,6 +10,7 @@ defmodule Exantenna.Builders.Score do
 
   require Logger
 
+  # TODO: To be:  Repo.stream(chunk_size: 10)
   # Launch this per a hour or it also launchs before summary batch.
   def inscore_into do
     blogs = Repo.all Blog
