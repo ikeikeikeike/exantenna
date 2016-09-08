@@ -23,7 +23,7 @@ defmodule Exantenna.ResetpasswdMailer do
       from: @from,
       subject: gettext("Activation %{name}'s new password that's starting our sites management", name: @site_name),
       text: gettext("""
-      Created %{name}'s a new password registration opportunity. Please activate your e-mail address with clicking the link below.
+      Created opportunity that's a new password registration. Please activate your e-mail address with clicking the link below.
 
       %{confirm}
 

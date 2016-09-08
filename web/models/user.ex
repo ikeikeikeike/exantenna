@@ -47,12 +47,12 @@ defmodule Exantenna.User do
   def resetpasswd_changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
-    |> validate_required(~w(email encrypted_password)a)
+    |> validate_required(~w(email password password_confirmation)a)
     |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email)
     |> validate_length(:password, min: 5)
     |> validate_confirmation(:password)
-    |> AuthCh.generate_password(:encrypted_password)
+    |> Exantenna.Auth.Changeset.generate_password(:encrypted_password)
   end
 
   def with_blogs(model) do

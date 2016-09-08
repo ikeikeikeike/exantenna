@@ -192,10 +192,10 @@ defmodule Exantenna.Router do
     get "/auth/confirm_register/:token", AuthController, :confirm_register
     put "/auth/confirm_register/:token", AuthController, :confirm_register
 
-    put  "/auth/resetpasswd/:token", AuthController, :resetpasswd
     get  "/auth/resetpasswd/:token", AuthController, :resetpasswd
-    post "/auth/resetpasswd", AuthController, :resetpasswd
+    put  "/auth/resetpasswd/:token", AuthController, :resetpasswd
     get  "/auth/resetpasswd", AuthController, :resetpasswd
+    post "/auth/resetpasswd", AuthController, :resetpasswd
 
     get  "/auth/:provider", AuthController, :login
     get  "/auth/:provider/callback", AuthController, :callback
@@ -203,10 +203,10 @@ defmodule Exantenna.Router do
 
     get  "/", UserController, :dashboard
 
-    put  "/changemail/:token", UserController, :changemail
     get  "/changemail/:token", UserController, :changemail
-    post "/changemail", UserController, :changemail
+    put  "/changemail/:token", UserController, :changemail
     get  "/changemail", UserController, :changemail
+    post "/changemail", UserController, :changemail
 
     resources  "/blogs", BlogController
 

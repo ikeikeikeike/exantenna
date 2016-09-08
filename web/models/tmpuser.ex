@@ -60,7 +60,7 @@ defmodule Exantenna.Tmpuser do
 
   def resetpasswd_changeset(model, params \\ :invalid) do
     model
-    |> cast(params, [], [])
+    |> cast(params, ~w(email), [])
     |> validate_required(~w(email)a)
     |> validate_format(:email, ~r/@/)
     |> put_change(:token, Ecto.UUID.generate)

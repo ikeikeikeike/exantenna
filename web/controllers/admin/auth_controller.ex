@@ -92,7 +92,7 @@ defmodule Exantenna.Admin.AuthController do
 
       {:error, changeset} ->
         conn
-        |> put_flash(:warn, "Unable to create account")
+        |> put_flash(:error, "Unable to create account")
         |> render("signup.html", changeset: changeset)
 
     end
@@ -122,23 +122,23 @@ defmodule Exantenna.Admin.AuthController do
 
   # This is working both login and nologin statement.
   def resetpasswd(%{method: "POST"} = conn, %{"tmpuser" => params}) do
-    case Repo.get(User, email: params["email"]) do
+    case Repo.get_by(User, email: params["email"]) do
       nil ->
         conn
-        |> put_flash(:warn, "Unable to email address")
-        |> redirect(to: admin_auth_path(@conn, :resetpasswd))
+        |> put_flash(:error, "Unable to email address")
+        |> redirect(to: admin_auth_path(conn, :resetpasswd, ""))
 
       _model ->
         tmpuser =
           %Tmpuser{}
-          |> Tmpuser.changemail_changeset(params)
+          |> Tmpuser.resetpasswd_changeset(params)
           |> Repo.insert!
 
         ResetpasswdMailer.send_activation tmpuser.email,
           admin_auth_url(conn, :resetpasswd, tmpuser.token)
 
         msg = gettext("""
-        Your Opps Successfly!! Please make sure that we sent confirmation
+        You were Successfly!! Please make sure that we sent confirmation
         into your email address for password registration.
         """)
         conn
@@ -154,7 +154,7 @@ defmodule Exantenna.Admin.AuthController do
         text conn, gettext("Expires: Token was missing or it was old")
 
       tmpuser ->
-        user = Repo.get!(User, email: tmpuser.email)
+        user = Repo.get_by(User, email: tmpuser.email)
 
         case Repo.update(User.resetpasswd_changeset(user, params)) do
           {:error, changeset} ->

@@ -30,11 +30,11 @@ defmodule Exantenna.Admin.UserController do
         """)
         conn
         |> put_flash(:info, msg)
-        |> redirect(to: admin_user_path(conn, :changemail))
+        |> redirect(to: admin_user_path(conn, :changemail, ""))
 
       {:error, changeset} ->
         conn
-        |> put_flash(:warn, "Unable to create account")
+        |> put_flash(:error, "Unable to create account")
         |> render("changemail.html", changeset: changeset)
     end
   end
