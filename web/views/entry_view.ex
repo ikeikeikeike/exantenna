@@ -11,12 +11,12 @@ defmodule Exantenna.EntryView do
     num = number_with_delimiter(totals(assigns))
 
     cond do
-      ! blank?(params["tag"])    -> gettext "You would search %{word}. showing %{num} results", word: params["tag"],    num: num
-      ! blank?(params["diva"])   -> gettext "You would search %{word}. showing %{num} results", word: params["diva"],   num: num
-      ! blank?(params["toon"])   -> gettext "You would search %{word}. showing %{num} results", word: params["toon"],   num: num
-      ! blank?(params["search"]) -> gettext "You would search %{word}. Found %{num} results",   word: params["search"], num: num
-      ! blank?(params["q"])      -> gettext "You would search %{word}. Found %{num} results",   word: params["q"],      num: num
-      true                       -> gettext "%{num} results. Entry Default Page Description", num: num
+      ! blank?(params["tag"])    -> gettext "You would search %{word}. showing %{name} results", word: params["tag"],    name: num
+      ! blank?(params["diva"])   -> gettext "You would search %{word}. showing %{name} results", word: params["diva"],   name: num
+      ! blank?(params["toon"])   -> gettext "You would search %{word}. showing %{name} results", word: params["toon"],   name: num
+      ! blank?(params["search"]) -> gettext "You would search %{word}. Found %{name} results",   word: params["search"], name: num
+      ! blank?(params["q"])      -> gettext "You would search %{word}. Found %{name} results",   word: params["q"],      name: num
+      true                       -> gettext "%{name} results. Entry Default Page Description", name: num
     end
   end
   def page_description(:show, assigns) do

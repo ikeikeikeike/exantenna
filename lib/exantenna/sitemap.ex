@@ -200,12 +200,12 @@ defmodule Exantenna.Sitemap do
         end
 
         Enum.each toons, fn m ->
-          add Helpers.tag_path(EP, :show, m.name),
+          add Helpers.toon_path(EP, :show, m.name),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 
         Enum.each chars, fn m ->
-          add Helpers.tag_path(EP, :show, m.name),
+          add Helpers.char_path(EP, :show, m.name),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 

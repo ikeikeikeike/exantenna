@@ -2,9 +2,13 @@ defmodule Exantenna.Admin.AuthController do
   use Exantenna.Web, :controller
 
   alias Exantenna.Guardian.UserFromAuth
-  alias Exantenna.Auth.User, as: AuthUser
+
+  alias Exantenna.User
   alias Exantenna.Tmpuser
+
+  alias Exantenna.Auth.User, as: AuthUser
   alias Exantenna.Auth.Changeset, as: AuthCh
+
   alias Exantenna.SignupMailer
   alias Exantenna.ResetpasswdMailer
   alias Exantenna.Services
@@ -118,68 +122,67 @@ defmodule Exantenna.Admin.AuthController do
 
   # This is working both login and nologin statement.
   def resetpasswd(%{method: "POST"} = conn, %{"tmpuser" => params}) do
-    changeset =
-        %Tmpuser{}
-        |> Tmpuser.changemail_changeset(params)
+    case Repo.get(User, email: params["email"]) do
+      nil ->
+        conn
+        |> put_flash(:warn, "Unable to email address")
+        |> redirect(to: admin_auth_path(@conn, :resetpasswd))
 
-    case Repo.update(changeset) do
-      {:ok, model} ->
+      _model ->
+        tmpuser =
+          %Tmpuser{}
+          |> Tmpuser.changemail_changeset(params)
+          |> Repo.insert!
 
-        ResetpasswdMailer.send_activation model.email,
-          admin_auth_url(conn, :confirm_resetpasswd, model.token)
+        ResetpasswdMailer.send_activation tmpuser.email,
+          admin_auth_url(conn, :resetpasswd, tmpuser.token)
 
         msg = gettext("""
-        Successfly!! Please make sure that we sent activation
-        for password registration into your new email address.
+        Your Opps Successfly!! Please make sure that we sent confirmation
+        into your email address for password registration.
         """)
         conn
         |> put_flash(:info, msg)
         |> redirect(to: admin_user_path(conn, :dashboard))
-
-      {:error, changeset} ->
-        conn
-        |> put_flash(:warn, "Unable to email address")
-        |> render("resetpasswd.html", changeset: changeset)
     end
   end
 
   # This is working both login and nologin statement.
-  def resetpasswd(conn, _params) do
-    render conn, "resetpasswd.html"
-  end
-
-  # This is working both login and nologin statement.
-  def confirm_resetpasswd(conn, %{"post" => %{"token" => token} = params}) do
+  def resetpasswd(%{method: "PUT"} = conn, %{"token" => token, "tmpuser" => params}) do
     case Repo.one(Tmpuser.confirmation(:resetpasswd, Tmpuser, token)) do
       nil ->
         text conn, gettext("Expires: Token was missing or it was old")
 
       tmpuser ->
-        case Services.User.register(tmpuser) do  # TODO:
+        user = Repo.get!(User, email: tmpuser.email)
+
+        case Repo.update(User.resetpasswd_changeset(user, params)) do
           {:error, changeset} ->
-            msg =
-              "Message: %{r}\n Please start registration again at one's beginnings"
-              |> gettext(r: "#{inspect changeset.errors}")
-            text conn, msg
+            render conn, "confirm_resetpasswd.html", changeset: changeset, tmpuser: tmpuser, token: token
 
           {:ok, _user} ->
             Repo.delete(tmpuser)
 
             conn
-            |> put_flash(:info, gettext("Your media account created successfuly"))
+            |> put_flash(:info, gettext("Your new password created successfuly"))
             |> redirect(to: admin_auth_path(conn, :signin))
         end
     end
   end
 
   # This is working both login and nologin statement.
-  def confirm_resetpasswd(conn, %{"token" => token}) do
+  def resetpasswd(conn, %{"token" => token}) do
     case Repo.one(Tmpuser.confirmation(:resetpasswd, Tmpuser, token)) do
       nil ->
         text conn, gettext("Expires: Token was missing or it was old")
       tmpuser ->
-        render conn, "confirm_resetpasswd.html", tmpuser: tmpuser
+        render conn, "confirm_resetpasswd.html", changeset: Tmpuser.changeset(tmpuser, %{}), tmpuser: tmpuser, token: token
     end
+  end
+
+  # This is working both login and nologin statement.
+  def resetpasswd(conn, _params) do
+    render conn, "resetpasswd.html", changeset: Tmpuser.register_changeset(%Tmpuser{})
   end
 
   def logout(conn, _params) do

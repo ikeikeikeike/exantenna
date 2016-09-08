@@ -8,8 +8,7 @@ defmodule Exantenna.TagController do
   alias Exantenna.Antenna
   import Ecto.Query
 
-  # TODO: below
-
+  # TODO: index happen error right now in anstget function
   def index(conn, params) do
     pager =
       Tag.query_all(1)

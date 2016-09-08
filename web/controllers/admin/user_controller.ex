@@ -15,14 +15,14 @@ defmodule Exantenna.Admin.UserController do
 
   def changemail(%{method: "POST"} = conn, %{"tmpuser" => params}) do
     changeset =
-        %Tmpuser{}
-        |> Tmpuser.changemail_changeset(params)
+      %Tmpuser{}
+      |> Tmpuser.changemail_changeset(params)
 
     case Repo.insert(changeset) do
       {:ok, model} ->
 
         ChangemailMailer.send_activation model.email,
-          admin_user_url(conn, :confirm_changemail, model.token)
+          admin_user_url(conn, :changemail, model.token)
 
         msg = gettext("""
         Successfly!! Please make sure that we sent activation
@@ -39,11 +39,7 @@ defmodule Exantenna.Admin.UserController do
     end
   end
 
-  def changemail(conn, _params) do
-    render conn, "changemail.html", changeset: Tmpuser.register_changeset(%Tmpuser{})
-  end
-
-  def confirm_changemail(%{method: "PUT"} = conn, %{"token" => token, "tmpuser" => params}) do
+  def changemail(%{method: "PUT"} = conn, %{"token" => token, "tmpuser" => params}) do
     case Repo.one(Tmpuser.confirmation(:changemail, Tmpuser, token)) do
       nil ->
         text conn, gettext("Expires: Token was missing or it was old")
@@ -65,13 +61,17 @@ defmodule Exantenna.Admin.UserController do
     end
   end
 
-  def confirm_changemail(conn, %{"token" => token} = _params) do
+  def changemail(conn, %{"token" => token} = _params) do
     case Repo.one(Tmpuser.confirmation(:changemail, Tmpuser, token)) do
       nil ->
         text conn, gettext("Expires: Token was missing or it was old")
       tmpuser ->
         render conn, "confirm_changemail.html", changeset: Tmpuser.changeset(tmpuser, %{}), tmpuser: tmpuser, token: token
     end
+  end
+
+  def changemail(conn, _params) do
+    render conn, "changemail.html", changeset: Tmpuser.register_changeset(%Tmpuser{})
   end
 
 end
