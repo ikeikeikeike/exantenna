@@ -13,6 +13,7 @@
   "dependencies": {
     "typeahead.js": "^0.10.5",
     "bootstrap": "^3.3.6",
-    "icomoon-bower": "icomoon#^0.1.0"
+    "icomoon-bower": "icomoon#^0.1.0",
+    "underscore": "^1.8.3"
   }
 }

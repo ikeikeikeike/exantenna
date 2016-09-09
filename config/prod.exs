@@ -120,11 +120,6 @@ config :quantum,
       task: "Exantenna.Builders.Rss.feed_into",
       args: [:no_penalty]
     ],
-    rss_feed_into_todays_access: [
-      schedule: "10 */2 * * *",
-      task: "Exantenna.Builders.Rss.feed_into",
-      args: [:todays_access]
-    ],
     # Unkicking numbers(like primes): 1,7,11,13,17,19,23
     rss_feed_into_todays_access_primes: [
       schedule: "20 1,7,11,13,17,19,23 * * *",
@@ -132,6 +127,16 @@ config :quantum,
       args: [:begginer]
       # args: [:todays_access]  # TODO: Gonna be changing to :todays_access when this system are accessed by many blogs.
     ],
+    rss_feed_into_todays_access: [
+      schedule: "10 */2 * * *",
+      task: "Exantenna.Builders.Rss.feed_into",
+      args: [:todays_access]
+    ],
+    reindex_evolve: [
+      schedule: "18 1 * * *", # Every AM01:18 UTC
+      task: "Exantenna.Builders.Reindex.evolve",
+      args: []
+    ]
   ]
 
 config :sitemap, [
