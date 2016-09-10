@@ -5,16 +5,20 @@ defmodule Exantenna.Char.WaistController do
   alias Exantenna.Ecto.Q.Profile
 
   def index(conn, _params) do
-    waists = Profile.get :waist, Char.query
+    sub = conn.private[:subdomain]
+    waists = Profile.get :waist, Profile.args(sub, Char, Char.query_all(2))
+
     render(conn, "index.html", waists: waists, nav: waists)
   end
 
   def sub(conn, %{"name" => name} = _params) do
+    sub = conn.private[:subdomain]
     numeric = List.first String.split(name, "-")
 
-    waists = Profile.get :waist, Char.query, numeric
-    render(conn, "index.html", waists: waists, nav: Profile.get(:waist, Char.query))
-  end
+    nav = Profile.get :waist, Profile.args(sub, Char, Char.query)
+    waists = Profile.get :waist, Profile.args(sub, Char, Char.query_all(2), numeric)
 
+    render(conn, "index.html", waists: waists, nav: nav)
+  end
 
 end

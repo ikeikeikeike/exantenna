@@ -32,6 +32,12 @@ defmodule Exantenna.Word.Around do
           x when x in 150..159 -> "Around 150-159"
           x when x in 160..169 -> "Around 160-169"
           x when x in 170..179 -> "Around 170-179"
+          x when x in 180..189 -> "Around 180-189"
+          x when x in 190..199 -> "Around 190-199"
+          x when x in 200..209 -> "Around 200-209"
+          x when x in 210..219 -> "Around 210-219"
+          x when x in 220..229 -> "Around 220-229"
+
         end
       "ja" ->
         case number do
@@ -52,6 +58,12 @@ defmodule Exantenna.Word.Around do
           x when x in 150..159 -> "150-159"
           x when x in 160..169 -> "160-169"
           x when x in 170..179 -> "170-179"
+          x when x in 180..189 -> "180-189"
+          x when x in 190..199 -> "190-199"
+          x when x in 200..209 -> "200-209"
+          x when x in 210..219 -> "210-219"
+          x when x in 220..229 -> "220-229"
+
         end
     end
   end
@@ -107,6 +119,15 @@ defmodule Exantenna.Word.Around do
           x when x in 170..174 -> "Around 170-174"
           x when x in 175..179 -> "Around 175-179"
           x when x in 180..184 -> "Around 180-184"
+          x when x in 185..189 -> "Around 185-189"
+          x when x in 190..194 -> "Around 190-194"
+          x when x in 195..199 -> "Around 195-199"
+          x when x in 200..204 -> "Around 200-204"
+          x when x in 205..209 -> "Around 205-209"
+          x when x in 210..214 -> "Around 210-214"
+          x when x in 215..219 -> "Around 215-219"
+          x when x in 220..224 -> "Around 220-224"
+          x when x in 225..229 -> "Around 225-229"
         end
       "ja" ->
         case number do
@@ -147,6 +168,15 @@ defmodule Exantenna.Word.Around do
           x when x in 170..174 -> "170-174"
           x when x in 175..179 -> "175-179"
           x when x in 180..184 -> "180-184"
+          x when x in 185..189 -> "185-189"
+          x when x in 190..194 -> "190-194"
+          x when x in 195..199 -> "195-199"
+          x when x in 200..204 -> "200-204"
+          x when x in 205..209 -> "205-209"
+          x when x in 210..214 -> "210-214"
+          x when x in 215..219 -> "215-219"
+          x when x in 220..224 -> "220-224"
+          x when x in 225..229 -> "225-229"
         end
     end
   end
