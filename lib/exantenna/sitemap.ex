@@ -13,6 +13,7 @@ defmodule Exantenna.Sitemap do
 
   alias Exantenna.Router.Helpers
 
+  import Exantenna.HTML.Safe
   import Ecto.Query, only: [from: 1, from: 2]
 
   def gen_sitemap([]), do: gen_sitemap
@@ -190,22 +191,22 @@ defmodule Exantenna.Sitemap do
         end
 
         Enum.each tags, fn m ->
-          add Helpers.tag_path(EP, :show, m.name),
+          add Helpers.tag_path(EP, :show, m.id, safe_router(m.name)),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 
         Enum.each divas, fn m ->
-          add Helpers.diva_path(EP, :show, m.name),
+          add Helpers.diva_path(EP, :show, m.id, safe_router(m.name)),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 
         Enum.each toons, fn m ->
-          add Helpers.toon_path(EP, :show, m.name),
+          add Helpers.toon_path(EP, :show, m.id, safe_router(m.name)),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 
         Enum.each chars, fn m ->
-          add Helpers.char_path(EP, :show, m.name),
+          add Helpers.char_path(EP, :show, m.id, safe_router(m.name)),
             priority: 0.5, changefreq: nil, expires: nil, mobile: bool
         end
 
