@@ -38,6 +38,8 @@ defmodule Exantenna.Router.Video do
 
     get "/tags", TagController, :index
     get "/tags.html", TagController, :index
+
+    get "/tag/:id/:name", TagController, :show
     get "/tag/:name", TagController, :show
 
     # TODO: need to redirect under line from /blog/v:id/:title and /blog/v:id by nginx
@@ -81,15 +83,21 @@ defmodule Exantenna.Router.Video do
 
     get "/divas", DivaController, :index
     get "/divas.html", DivaController, :index  # TODO: to be redirect
+
+    get "/diva/:id/:name", DivaController, :show
     get "/diva/:name", DivaController, :show
 
     get "/toons", ToonController, :index
     get "/animes.html", ToonController, :index  # TODO: to be redirect
+
+    get "/toon/:id/:name", ToonController, :show
     get "/toon/:name", ToonController, :show
     get "/anime/:name", ToonController, :show  # TODO: to be redirect
 
     get "/characters", CharController, :index
     get "/characters.html", CharController, :index  # TODO: to be redirect
+
+    get "/character/:id/:name", CharController, :show
     get "/character/:name", CharController, :show
 
     scope "/t", Toon, as: "t" do

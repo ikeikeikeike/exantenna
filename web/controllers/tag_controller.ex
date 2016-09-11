@@ -20,6 +20,16 @@ defmodule Exantenna.TagController do
     render(conn, "index.html", pager: pager)
   end
 
+  def show(conn, %{"id" => id, "name" => _name} = params) do
+    tag = Repo.get_by!(Tag.query_all(1), id: id)
+
+    antennas =
+      Antenna.essearch(tag.name, params)
+      |> Es.Paginator.paginate(Antenna.query_all, params)
+
+    render(conn, "show.html", tag: tag, antennas: antennas)
+  end
+
   def show(conn, %{"name" => name} = params) do
     tag = Repo.get_by!(Tag.query_all(1), name: name)
 

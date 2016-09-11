@@ -16,6 +16,16 @@ defmodule Exantenna.CharController do
     render(conn, "index.html", pager: pager)
   end
 
+  def show(conn, %{"id" => id, "name" => _name} = params) do
+    char = Repo.get_by!(Char.query_all(1), id: id)
+
+    antennas =
+      Antenna.essearch(char.name, params)
+      |> Es.Paginator.paginate(Antenna.query_all, params)
+
+    render(conn, "show.html", char: char, antennas: antennas)
+  end
+
   def show(conn, %{"name" => name} = params) do
     char = Repo.get_by!(Char.query_all(1), name: name)
 

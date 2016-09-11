@@ -407,7 +407,7 @@ defmodule Exantenna.Helpers do
         _ -> "#{model_to_string model}_url"
       end
 
-    dynamical_path path, [conn, key, identifier(model)]
+    dynamical_path path, pathargs(conn, key, model)
   end
 
   def extract_image(conn, assigns) do
@@ -418,6 +418,14 @@ defmodule Exantenna.Helpers do
   end
 
   def showpage?(conn), do: !! object(:show, conn.assigns)
+
+  def pathargs(conn, key, %Antenna{} = model), do: [conn, key, model.id]
+  def pathargs(conn, key, %Blog{} = model), do: [conn, key, model.id]
+  def pathargs(conn, key, %Diva{} = model), do: [conn, key, model.id, model.name]
+  def pathargs(conn, key, %Char{} = model), do: [conn, key, model.id, model.name]
+  def pathargs(conn, key, %Toon{} = model), do: [conn, key, model.id, model.name]
+  def pathargs(conn, key, %Tag{} = model), do: [conn, key, model.id, model.name]
+  def pathargs(_, _, _), do: nil
 
   def identifier(%Antenna{} = model), do: model.id
   def identifier(%Blog{} = model), do: model.id

@@ -16,6 +16,16 @@ defmodule Exantenna.DivaController do
     render(conn, "index.html", pager: pager)
   end
 
+  def show(conn, %{"id" => id, "name" => _name} = params) do
+    diva = Repo.get_by!(Diva.query_all(1), id: id)
+
+    antennas =
+      Antenna.essearch(diva.name, params)
+      |> Es.Paginator.paginate(Antenna.query_all(:index), params)
+
+    render(conn, "show.html", diva: diva, antennas: antennas)
+  end
+
   def show(conn, %{"name" => name} = params) do
     diva = Repo.get_by!(Diva.query_all(1), name: name)
 

@@ -16,6 +16,16 @@ defmodule Exantenna.ToonController do
     render(conn, "index.html", pager: pager)
   end
 
+  def show(conn, %{"id" => id, "name" => _name} = params) do
+    toon = Repo.get_by!(Toon.query_all(1), id: id)
+
+    antennas =
+      Antenna.essearch(toon.name, params)
+      |> Es.Paginator.paginate(Antenna.query_all, params)
+
+    render(conn, "show.html", toon: toon, antennas: antennas)
+  end
+
   def show(conn, %{"name" => name} = params) do
     toon = Repo.get_by!(Toon.query_all(1), name: name)
 
