@@ -427,22 +427,6 @@ defmodule Exantenna.Helpers do
   def pathargs(conn, key, %Tag{} = model), do: [conn, key, model.id, model.name]
   def pathargs(_, _, _), do: nil
 
-  def identifier(%Antenna{} = model), do: model.id
-  def identifier(%Blog{} = model), do: model.id
-  def identifier(%Diva{} = model), do: model.name
-  def identifier(%Char{} = model), do: model.name
-  def identifier(%Toon{} = model), do: model.name
-  def identifier(%Tag{} = model), do: model.name
-  def identifier(_), do: nil
-
-  # def model(:index, %{antenna: model}), do: model
-  # def model(:index, %{toon: model}), do: model
-  # def model(:index, %{diva: model}), do: model
-  # def model(:index, %{char: model}), do: model
-  # def model(:index, %{blog: model}), do: model
-  # def model(:index, %{tag: model}), do: model
-  # def model(:index, _), do: :error
-
   def object(:show, %{antenna: model}), do: model
   def object(:show, %{toon: model}), do: model
   def object(:show, %{diva: model}), do: model

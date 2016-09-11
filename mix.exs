@@ -14,7 +14,7 @@ defmodule Exantenna.Mixfile do
   end
 
   defp version do
-    v = "0.1.5"
+    v = "0.1.9"
     File.write! "VERSION", v
     v
   end

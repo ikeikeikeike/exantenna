@@ -72,11 +72,13 @@ defmodule Exantenna.Video do
         result ++ r
       end)
       |> Enum.filter(fn meta ->
-        !blank?(meta[:embed_code]) || !blank?(meta[:url])
+        ! blank?(meta[:embed_code]) || ! blank?(meta[:url])
       end)
 
+    codes = Enum.filter metadatas, & !blank?(&1[:embed_code])
+
     video
-    |> changeset(%{metadatas: metadatas, elements: length(metadatas)})
+    |> changeset(%{metadatas: metadatas, elements: length(codes)})
     |> cast_assoc(:metadatas, required: false)
   end
 

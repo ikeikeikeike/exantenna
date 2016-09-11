@@ -9,17 +9,23 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+alias Exantenna.Blank
 
 Exantenna.Antenna.query_all
 |> Exantenna.Repo.stream(chunk_size: 10000)
 |> Stream.each(fn o ->
   if o.video do
-    case length(o.video.metadatas) do
+    codes = Enum.filter o.video.metadatas, & !Blank.blank?(&1.embed_code)
+
+    case length(codes) do
       x when x > 0 ->
         o.video
         |> Exantenna.Video.changeset(%{elements: x})
         |> Exantenna.Repo.update!
-      _ -> nil
+      _ ->
+        o.video
+        |> Exantenna.Video.changeset(%{elements: 0})
+        |> Exantenna.Repo.update!
     end
   end
 
