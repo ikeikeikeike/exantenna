@@ -29,7 +29,7 @@ defmodule Exantenna.SignupMailer do
 
       We may need to communicate important service level issues with you from time to time, so it's important we have an up-to-date email address for you on file.
 
-      Despite you received this activation email if you haven't created %{name} acocunt.
+      Despite you received this activation email if you haven't created this acocunt.
       Would you be so kind as to contact to us ?
       %{email}
 

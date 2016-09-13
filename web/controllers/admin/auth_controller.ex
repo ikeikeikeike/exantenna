@@ -106,8 +106,13 @@ defmodule Exantenna.Admin.AuthController do
         case Services.User.register(tmpuser) do
           {:error, changeset} ->
             msg =
-              "Message: %{r}\n Please start registration again at one's beginnings"
-              |> gettext(r: "#{inspect changeset.errors}")
+              """
+              Message: %{r}
+
+              Please make sure your email address either it starts registration at one's
+              beginnings again or you're able to check your email address from here %{url}.
+              """
+              |> gettext(r: "#{inspect changeset.errors}", url: admin_auth_url(conn, :resetpasswd, ""))
             text conn, msg
 
           {:ok, _user} ->

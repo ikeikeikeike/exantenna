@@ -387,7 +387,13 @@ defmodule Exantenna.Helpers do
   end
 
   def get_keywords(%Antenna{} = antenna) do
-    antenna.tags ++ antenna.toons ++ antenna.divas
+    chars =
+      Enum.reduce Extractor.defget(antenna.toons, []), [], fn toon, acc ->
+        acc ++ Extractor.defget(toon.chars, [])
+      end
+
+    antenna.divas ++ antenna.toons ++ chars ++ antenna.tags
+    |> Enum.filter(& !blank?(&1.name))
     |> Enum.map(fn(m) -> m.name end)
     |> Enum.join(",")
   end
@@ -414,6 +420,23 @@ defmodule Exantenna.Helpers do
     case choose_thumb(object(:show, assigns)) do
       %Thumb{} = model -> model.src
       _ -> nil
+    end
+  end
+
+  def pic_keyword(%Antenna{} = antenna) do
+    chars =
+      Enum.reduce Extractor.defget(antenna.toons, []), [], fn toon, acc ->
+        acc ++ Extractor.defget(toon.chars, [])
+      end
+
+    word =
+      antenna.divas ++ antenna.toons ++ chars ++ antenna.tags
+      |> Enum.filter(& !blank?(&1.name))
+      |> List.first
+
+    case word do
+      nil -> ""
+      mod -> mod.name
     end
   end
 

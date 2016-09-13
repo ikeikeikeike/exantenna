@@ -18,9 +18,11 @@ defmodule Exantenna.Services.User do
           params = Map.merge params, %{user_id: user.id}
 
           case Repo.insert(Blog.register_changeset(%Blog{}, params)) do
-            {:error, changeset} -> Repo.rollback(changeset)
+            {:error, changeset} ->
+              Repo.rollback(changeset)
 
-            {:ok, _blog} -> user
+            {:ok, _blog} ->
+              user
           end
       end
     end
