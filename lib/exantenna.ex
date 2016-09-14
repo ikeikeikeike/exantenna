@@ -13,14 +13,14 @@ defmodule Exantenna do
       supervisor(Exantenna.Repo, []),
       # Here you could define other workers and supervisors as children
       # worker(Exantenna.Worker, [arg1, arg2, arg3]),
-      worker(ConCache, [[ttl_check: :timer.seconds(666), ttl: :timer.seconds(60 * 60 * 24 * 30)], [name: :translate]], id: :exantenna_translate_cache),
-      worker(ConCache, [[ttl_check: :timer.seconds(555), ttl: :timer.seconds(60 * 60 * 24 * 15)], [name: :es]], id: :exantenna_es_cache),
-      worker(ConCache, [[ttl_check: :timer.seconds(499), ttl: :timer.seconds(60 * 60 * 24 * 3)], [name: :chars]], id: :exantenna_chars_cache),
-      worker(ConCache, [[ttl_check: :timer.seconds(488), ttl: :timer.seconds(60 * 60 * 24 * 3)], [name: :toons]], id: :exantenna_toons_cache),
-      worker(ConCache, [[ttl_check: :timer.seconds(477), ttl: :timer.seconds(60 * 60 * 24 * 3)], [name: :divas]], id: :exantenna_divas_cache),
-      worker(ConCache, [[ttl_check: :timer.seconds(466), ttl: :timer.seconds(60 * 60 * 24 * 3)], [name: :tags]], id: :exantenna_tags_cache),
-      worker(ConCache, [[ttl_check: :timer.seconds(454), ttl: :timer.seconds(60 * 60 * 24 * 2)], [name: :common]], id: :exantenna_common_cache),
-      worker(ConCache, [[ttl_check: :timer.seconds(444), ttl: :timer.seconds(60 * 60 * 24 * 5)], [name: :encjson]], id: :exantenna_encjson_cache),
+      worker(ConCache, [[ttl_check: :timer.seconds(66), ttl: :timer.seconds(60 * 60 * 24 * 3)], [name: :translate]], id: :exantenna_translate_cache),
+      worker(ConCache, [[ttl_check: :timer.seconds(55), ttl: :timer.seconds(60 * 60 * 24 * 1)], [name: :es]], id: :exantenna_es_cache),
+      worker(ConCache, [[ttl_check: :timer.seconds(49), ttl: :timer.seconds(60 * 60 * 24 * 1)], [name: :chars]], id: :exantenna_chars_cache),
+      worker(ConCache, [[ttl_check: :timer.seconds(48), ttl: :timer.seconds(60 * 60 * 24 * 1)], [name: :toons]], id: :exantenna_toons_cache),
+      worker(ConCache, [[ttl_check: :timer.seconds(47), ttl: :timer.seconds(60 * 60 * 24 * 1)], [name: :divas]], id: :exantenna_divas_cache),
+      worker(ConCache, [[ttl_check: :timer.seconds(46), ttl: :timer.seconds(60 * 60 * 24 * 1)], [name: :tags]], id: :exantenna_tags_cache),
+      worker(ConCache, [[ttl_check: :timer.seconds(45), ttl: :timer.seconds(60 * 60 * 17 * 1)], [name: :common]], id: :exantenna_common_cache),
+      worker(ConCache, [[ttl_check: :timer.seconds(44), ttl: :timer.seconds(60 * 60 * 24 * 1)], [name: :encjson]], id: :exantenna_encjson_cache),
       worker(ConCache, [[ttl_check: :timer.seconds(10), ttl: :timer.seconds(60 * 2)], [name: :apiv1]], id: :exantenna_apiv1_cache),
     ]
 

@@ -21,13 +21,51 @@ defmodule Exantenna.Ecto.Changeset do
     |> validate_format(:romaji, ~r/^[a-z]\w+$/)
   end
 
-  def thumbs_changeset(changeset, srcs) do
-    thumbs = Enum.map(srcs, fn src ->
-      case Imginfo.get(src) do
-        nil -> %{"src" => src}
-        inf -> inf
+  defp imginfo(src) do
+    info =
+      case HTTPoison.get(src) do
+        {:ok, r} ->
+          name = Base.encode16(:erlang.md5(r.body), case: :lower)
+          File.write!("/tmp/#{name}", r.body)
+
+          try do
+            img =
+              Mogrify.open("/tmp/#{name}")
+              |> Mogrify.verbose
+
+            %{
+              "src" => src,
+              "width" => img.width,
+              "height" => img.height,
+              "format" => img.format,
+            }
+          rescue
+            _e in File.Error -> nil
+            _e in MatchError -> nil
+          end
+
+        _ ->
+          nil
       end
-    end)
+
+    case info do
+      nil ->
+        %{"src" => src}
+
+      info ->
+        info
+    end
+  end
+
+  def thumbs_changeset(changeset, srcs) do
+    thumbs = Enum.map srcs, fn src ->
+      case Imginfo.get(src) do
+        nil ->
+          imginfo src
+        inf ->
+          inf
+      end
+    end
 
     mergeset =
       changeset.data
