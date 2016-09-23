@@ -118,14 +118,15 @@ config :quantum,
     rss_feed_into_no_penalty: [
       schedule: "30 */3 * * *",
       task: "Exantenna.Builders.Rss.feed_into",
-      args: [:no_penalty]
+      args: [:no_penalty]  # :none
     ],
     # Unkicking numbers(like primes): 1,7,11,13,17,19,23
     rss_feed_into_todays_access_primes: [
       schedule: "20 1,7,11,13,17,19,23 * * *",
       task: "Exantenna.Builders.Rss.feed_into",
-      args: [:begginer]
-      # args: [:todays_access]  # TODO: Gonna be changing to :todays_access when this system are accessed by many blogs.
+      args: [:no_penalty]
+      # args: [:begginer]
+      # args: [:todays_access]  # TODO: Gonna be changing to :todays_access when this system are accessed from many blogs.
     ],
     rss_feed_into_todays_access: [
       schedule: "10 */2 * * *",
@@ -136,6 +137,36 @@ config :quantum,
       schedule: "18 1 * * *", # Every AM01:18 UTC
       task: "Exantenna.Builders.Reindex.evolve",
       args: []
+    ],
+    penalty_up: [
+      schedule: "8 1 * * *", # Every AM01:08 UTC
+      task: "Exantenna.Builders.Penalty.penalty",
+      args: [:up]
+    ],
+    penalty_down: [
+      schedule: "18 1 * * *", # Every AM01:18 UTC
+      task: "Exantenna.Builders.Penalty.penalty",
+      args: [:down]
+    ],
+    penalty_ban: [
+      schedule: "28 1 * * 1", # Every week AM01:28 UTC
+      task: "Exantenna.Builders.Penalty.penalty",
+      args: [:ban]
+    ],
+    penalty_left: [
+      schedule: "38 1 * * 1", # Every week AM01:38 UTC
+      task: "Exantenna.Builders.Penalty.penalty",
+      args: [:left]
+    ],
+    penalty_nothing: [
+      schedule: "48 1 * * *", # Every AM01:48 UTC
+      task: "Exantenna.Builders.Penalty.penalty",
+      args: [:nothing]
+    ],
+    penalty_begin: [
+      schedule: "58 * * * *", # Every 58 min.
+      task: "Exantenna.Builders.Penalty.penalty",
+      args: [:begin]
     ]
   ]
 

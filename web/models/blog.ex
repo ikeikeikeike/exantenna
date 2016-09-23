@@ -86,6 +86,45 @@ defmodule Exantenna.Blog do
         and not is_nil(e.rss)
   end
 
+  def everything(query) do
+    penalties = [
+      Penalty.const_beginning,
+      Penalty.const_none,
+      Penalty.const_soft,
+      Penalty.const_hard,
+    ]
+
+    from f in query,
+      join: j in assoc(f, :penalty),
+      where: f.id == j.assoc_id
+         and j.penalty in ^penalties
+  end
+
+  def penalties(query) do
+    disallow = [
+      Penalty.const_hard,
+      Penalty.const_ban
+    ]
+
+    from f in query,
+      join: j in assoc(f, :penalty),
+      where: f.id == j.assoc_id
+         and j.penalty in ^disallow
+  end
+
+  def no_penalties(query) do
+    allows = [
+      Penalty.const_beginning,
+      Penalty.const_none,
+      Penalty.const_soft,
+    ]
+
+    from f in query,
+      join: j in assoc(f, :penalty),
+      where: f.id == j.assoc_id
+         and j.penalty in ^allows
+  end
+
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)

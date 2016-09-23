@@ -32,7 +32,7 @@ exports.config = {
       order: {
         before: [
           "bower_components/jquery/dist/jquery.min.js",
-          "bower_components/underscore/underscore-min.js  ",
+          "bower_components/underscore/underscore-min.js",
           "bower_components/bootstrap/dist/js/bootstrap.min.js",
         ]
       }

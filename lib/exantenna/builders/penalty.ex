@@ -8,18 +8,114 @@ defmodule Exantenna.Builders.Penalty do
   import Ecto.Query, only: [from: 1, from: 2]
   require Logger
 
-  # TODO: must make below particularly :begin status.
-
+  # Going up to one level penalty if the access doesn't make from blog in a whole day.
   def penalty(:up) do
 
+    queryable = from f in Blog.query,
+        join: j in assoc(f, :scores),
+        where: j.assoc_id == f.id
+           and j.count <= 0
+           and j.name == ^Score.const_in_daily
+
+    queryable
+    |> Repo.all
+    |> Enum.each(fn blog ->
+
+      param =
+        case blog.penalty do
+          %Penalty{penalty: Penalty.const_none} ->
+            %{assoc_id: blog.id, penalty: Penalty.const_soft}
+
+          %Penalty{penalty: Penalty.const_soft} ->
+            %{assoc_id: blog.id, penalty: Penalty.const_hard}
+
+          %Penalty{penalty: penalty} ->
+            %{assoc_id: blog.id, penalty: penalty}
+        end
+
+      evolve blog, param
+    end)
   end
 
+  # Going down to one level penalty if the access makes from blog in a whole day.
   def penalty(:down) do
 
+    queryable = from f in Blog.query,
+        join: j in assoc(f, :scores),
+        where: j.assoc_id == f.id
+           and j.count > 0
+           and j.name == ^Score.const_in_daily
+
+    queryable
+    |> Repo.all
+    |> Enum.each(fn blog ->
+
+      param =
+        case blog.penalty do
+          %Penalty{penalty: Penalty.const_soft} ->
+            %{assoc_id: blog.id, penalty: Penalty.const_none}
+
+          %Penalty{penalty: Penalty.const_hard} ->
+            %{assoc_id: blog.id, penalty: Penalty.const_soft}
+
+          %Penalty{penalty: penalty} ->
+            %{assoc_id: blog.id, penalty: penalty}
+        end
+
+      evolve blog, param
+    end)
   end
 
+  # Going up to ban level penalty if the access doesnt make from blog in a week.
+  def penalty(:ban) do
+
+    queryable = from f in Blog.query,
+        join: j in assoc(f, :scores),
+        where: j.assoc_id == f.id
+           and j.count <= 0
+           and j.name == ^Score.const_in_weekly
+
+    queryable
+    |> Repo.all
+    |> Enum.each(fn blog ->
+
+      param =
+        case blog.penalty do
+          %Penalty{penalty: Penalty.const_hard} ->
+            %{assoc_id: blog.id, penalty: Penalty.const_ban}
+
+          %Penalty{penalty: penalty} ->
+            %{assoc_id: blog.id, penalty: penalty}
+        end
+
+      evolve blog, param
+    end)
+  end
+
+  # Going down to hard level penalty if the access makes from blog in a week.
   def penalty(:left) do
 
+    queryable = from f in Blog.query,
+        join: j in assoc(f, :scores),
+        where: j.assoc_id == f.id
+           and j.count > 0
+           and j.name == ^Score.const_in_weekly
+
+    queryable
+    |> Repo.all
+    |> Enum.each(fn blog ->
+
+      param =
+        case blog.penalty do
+          %Penalty{penalty: Penalty.const_ban} ->
+            %{assoc_id: blog.id, penalty: Penalty.const_hard}
+
+          %Penalty{penalty: penalty} ->
+            %{assoc_id: blog.id, penalty: penalty}
+        end
+
+      evolve blog, param
+    end)
   end
 
   def penalty(:begin) do
@@ -40,7 +136,7 @@ defmodule Exantenna.Builders.Penalty do
 
           model ->
             honeymoon =
-              Timex.shift model.inserted_at, days: 20
+              Timex.shift model.inserted_at, days: 14
 
             case Timex.compare(honeymoon, dt) do
               1  ->
@@ -67,9 +163,9 @@ defmodule Exantenna.Builders.Penalty do
     queryable
     |> Repo.all
     |> Enum.each(fn blog ->
-      model = %{assoc_id: blog.id}  # Default: penalty=beginning right now.
+      param = %{assoc_id: blog.id}  # Default: penalty=beginning right now.
 
-      evolve blog, model
+      evolve blog, param
     end)
   end
 
