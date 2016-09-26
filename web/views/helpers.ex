@@ -287,6 +287,8 @@ defmodule Exantenna.Helpers do
       end
     end
   end
+  def choose_thumb(_, _), do: nil
+  def choose_thumb(_, _, _), do: nil
 
   def models_thumb(%Thumb{} = thumb, _models), do: thumb
   def models_thumb(thumb, models) do
