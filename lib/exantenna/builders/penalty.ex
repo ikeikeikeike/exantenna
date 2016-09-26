@@ -26,19 +26,19 @@ defmodule Exantenna.Builders.Penalty do
     |> Repo.all
     |> Enum.each(fn blog ->
 
-      param =
+      model =
         case blog.penalty do
           %Penalty{penalty: @const_none} ->
-            %{assoc_id: blog.id, penalty: @const_soft}
+            %{blog.penalty | penalty: @const_soft}
 
           %Penalty{penalty: @const_soft} ->
-            %{assoc_id: blog.id, penalty: @const_hard}
+            %{blog.penalty | penalty: @const_hard}
 
           %Penalty{penalty: penalty} ->
-            %{assoc_id: blog.id, penalty: penalty}
+            %{blog.penalty | penalty: penalty}
         end
 
-      evolve blog, param
+      evolve blog, Map.from_struct(model)
     end)
   end
 
@@ -55,19 +55,19 @@ defmodule Exantenna.Builders.Penalty do
     |> Repo.all
     |> Enum.each(fn blog ->
 
-      param =
+      model =
         case blog.penalty do
           %Penalty{penalty: @const_soft} ->
-            %{assoc_id: blog.id, penalty: @const_none}
+            %{blog.penalty | penalty: @const_none}
 
           %Penalty{penalty: @const_hard} ->
-            %{assoc_id: blog.id, penalty: @const_soft}
+            %{blog.penalty | penalty: @const_soft}
 
           %Penalty{penalty: penalty} ->
-            %{assoc_id: blog.id, penalty: penalty}
+            %{blog.penalty | penalty: penalty}
         end
 
-      evolve blog, param
+      evolve blog, Map.from_struct(model)
     end)
   end
 
@@ -84,16 +84,16 @@ defmodule Exantenna.Builders.Penalty do
     |> Repo.all
     |> Enum.each(fn blog ->
 
-      param =
+      model =
         case blog.penalty do
           %Penalty{penalty: @const_hard} ->
-            %{assoc_id: blog.id, penalty: @const_ban}
+            %{blog.penalty | penalty: @const_ban}
 
           %Penalty{penalty: penalty} ->
-            %{assoc_id: blog.id, penalty: penalty}
+            %{blog.penalty | penalty: penalty}
         end
 
-      evolve blog, param
+      evolve blog, Map.from_struct(model)
     end)
   end
 
@@ -110,16 +110,16 @@ defmodule Exantenna.Builders.Penalty do
     |> Repo.all
     |> Enum.each(fn blog ->
 
-      param =
+      model =
         case blog.penalty do
           %Penalty{penalty: @const_ban} ->
-            %{assoc_id: blog.id, penalty: @const_hard}
+            %{blog.penalty | penalty: @const_hard}
 
           %Penalty{penalty: penalty} ->
-            %{assoc_id: blog.id, penalty: penalty}
+            %{blog.penalty | penalty: penalty}
         end
 
-      evolve blog, param
+      evolve blog, Map.from_struct(model)
     end)
   end
 
@@ -134,7 +134,7 @@ defmodule Exantenna.Builders.Penalty do
     queryable
     |> Repo.all
     |> Enum.each(fn blog ->
-      model =
+      param =
         case blog.penalty do
           nil     ->
             %{assoc_id: blog.id}  # Default: penalty=beginning right now.
@@ -153,7 +153,7 @@ defmodule Exantenna.Builders.Penalty do
             end
         end
 
-      evolve blog, model
+      evolve blog, param
     end)
   end
 
@@ -176,6 +176,7 @@ defmodule Exantenna.Builders.Penalty do
 
   defp evolve(blog, penalty) do
     Repo.transaction fn ->
+
       changeset =
         blog
         |> Repo.preload(:penalty)
