@@ -125,6 +125,13 @@ defmodule Exantenna.Blog do
          and j.penalty in ^allows
   end
 
+  def begginer(query) do
+    from f in query,
+      join: j in assoc(f, :penalty),
+      where: f.id == j.assoc_id
+         and j.penalty == ^Penalty.const_beginning
+  end
+
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)

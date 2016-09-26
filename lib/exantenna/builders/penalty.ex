@@ -8,6 +8,11 @@ defmodule Exantenna.Builders.Penalty do
   import Ecto.Query, only: [from: 1, from: 2]
   require Logger
 
+  @const_none Penalty.const_none
+  @const_soft Penalty.const_soft
+  @const_hard Penalty.const_hard
+  @const_ban Penalty.const_ban
+
   # Going up to one level penalty if the access doesn't make from blog in a whole day.
   def penalty(:up) do
 
@@ -23,11 +28,11 @@ defmodule Exantenna.Builders.Penalty do
 
       param =
         case blog.penalty do
-          %Penalty{penalty: Penalty.const_none} ->
-            %{assoc_id: blog.id, penalty: Penalty.const_soft}
+          %Penalty{penalty: @const_none} ->
+            %{assoc_id: blog.id, penalty: @const_soft}
 
-          %Penalty{penalty: Penalty.const_soft} ->
-            %{assoc_id: blog.id, penalty: Penalty.const_hard}
+          %Penalty{penalty: @const_soft} ->
+            %{assoc_id: blog.id, penalty: @const_hard}
 
           %Penalty{penalty: penalty} ->
             %{assoc_id: blog.id, penalty: penalty}
@@ -52,11 +57,11 @@ defmodule Exantenna.Builders.Penalty do
 
       param =
         case blog.penalty do
-          %Penalty{penalty: Penalty.const_soft} ->
-            %{assoc_id: blog.id, penalty: Penalty.const_none}
+          %Penalty{penalty: @const_soft} ->
+            %{assoc_id: blog.id, penalty: @const_none}
 
-          %Penalty{penalty: Penalty.const_hard} ->
-            %{assoc_id: blog.id, penalty: Penalty.const_soft}
+          %Penalty{penalty: @const_hard} ->
+            %{assoc_id: blog.id, penalty: @const_soft}
 
           %Penalty{penalty: penalty} ->
             %{assoc_id: blog.id, penalty: penalty}
@@ -81,8 +86,8 @@ defmodule Exantenna.Builders.Penalty do
 
       param =
         case blog.penalty do
-          %Penalty{penalty: Penalty.const_hard} ->
-            %{assoc_id: blog.id, penalty: Penalty.const_ban}
+          %Penalty{penalty: @const_hard} ->
+            %{assoc_id: blog.id, penalty: @const_ban}
 
           %Penalty{penalty: penalty} ->
             %{assoc_id: blog.id, penalty: penalty}
@@ -107,8 +112,8 @@ defmodule Exantenna.Builders.Penalty do
 
       param =
         case blog.penalty do
-          %Penalty{penalty: Penalty.const_ban} ->
-            %{assoc_id: blog.id, penalty: Penalty.const_hard}
+          %Penalty{penalty: @const_ban} ->
+            %{assoc_id: blog.id, penalty: @const_hard}
 
           %Penalty{penalty: penalty} ->
             %{assoc_id: blog.id, penalty: penalty}

@@ -24,39 +24,27 @@ defmodule Exantenna.Builders.Rss do
   def feed_into, do: feed_into :everything
   def feed_into(:everything) do
     Blog.query
+    |> Blog.everything
     |> availabled_shuffle
   end
 
   def feed_into(:begginer) do
-    queryable =
-      from f in Blog.query,
-        join: j in {"blogs_penalties", Penalty},
-        where: f.id == j.assoc_id
-           and j.penalty == ^Penalty.const_beginning
-
-    queryable
+    Blog.query
+    |> Blog.begginer
     |> availabled_shuffle
   end
 
   def feed_into(:no_penalty) do
-    allows = [
-      Penalty.const_beginning,
-      Penalty.const_none,
-      Penalty.const_soft,
-    ]
-
-    queryable =
-      from f in Blog.query,
-        join: j in {"blogs_penalties", Penalty},
-        where: f.id == j.assoc_id
-           and j.penalty in ^allows
-
-    queryable
+    Blog.query
+    |> Blog.no_penalties
     |> availabled_shuffle
   end
 
   def feed_into(:todays_access) do
-    blogs = Repo.all Blog.query
+    blogs =
+      Blog.query
+      |> Blog.everything
+      |> Repo.all
 
     allows =
       blogs
