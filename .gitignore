@@ -45,4 +45,5 @@ erl_crash.dump
 /web/static/assets/images
 /BUILDING
 /PRODUCTION
+/INNER1
 /web/static/assets/prepare/common.js
