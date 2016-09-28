@@ -15,9 +15,9 @@ defmodule Exantenna.Antenna do
     has_one :penalty, {"antennas_penalties", Exantenna.Penalty}, foreign_key: :assoc_id
     has_many :scores, {"antennas_scores", Exantenna.Score}, foreign_key: :assoc_id, on_replace: :delete
 
-    many_to_many :tags, Exantenna.Tag, join_through: "antennas_tags" # , on_delete: :delete_all, on_replace: :delete
-    many_to_many :divas, Exantenna.Diva, join_through: "antennas_divas" # , on_delete: :delete_all, on_replace: :delete
-    many_to_many :toons, Exantenna.Toon, join_through: "antennas_toons" # , on_delete: :delete_all, on_replace: :delete
+    many_to_many :tags, Exantenna.Tag, join_through: "antennas_tags", on_delete: :delete_all, on_replace: :delete
+    many_to_many :divas, Exantenna.Diva, join_through: "antennas_divas", on_delete: :delete_all, on_replace: :delete
+    many_to_many :toons, Exantenna.Toon, join_through: "antennas_toons", on_delete: :delete_all, on_replace: :delete
 
     timestamps
   end
@@ -249,6 +249,16 @@ defmodule Exantenna.Antenna do
   end
 
   use Exantenna.Es
+
+  def remove_all_of_them(id) when is_integer(id) do
+    model = Repo.get query_all(:esreindex), id
+    remove_all_of_them model
+  end
+
+  def remove_all_of_them(%__MODULE__{} = model) do
+    Repo.delete model
+    Es.Document.delete_document model
+  end
 
   def essearch, do: essearch(nil, [])
   def essearch(word), do: essearch(word, [])
