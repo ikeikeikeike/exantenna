@@ -14,7 +14,7 @@ defmodule Exantenna.Mixfile do
   end
 
   defp version do
-    v = "0.1.17"
+    v = "0.1.18"
     File.write! "VERSION", v
     v
   end
@@ -47,7 +47,8 @@ defmodule Exantenna.Mixfile do
         :wakaway,
         :sitemap,
         :httpoison,
-        :mogrify
+        :mogrify,
+        :exsentry,
       ],
       included_applications: [
        :scrivener,
@@ -103,6 +104,7 @@ defmodule Exantenna.Mixfile do
       {:sitemap, ">= 0.0.0"},
       {:mogrify, "~> 0.4"},
       {:httpoison, "~> 0.9"},
+      {:exsentry, "~> 0.7"},
     ]
   end
 

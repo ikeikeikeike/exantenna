@@ -28,6 +28,9 @@ defmodule Exantenna do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Exantenna.Supervisor]
     Supervisor.start_link(children, opts)
+
+    # for error
+    Logger.add_backend(ExSentry.LoggerBackend)
   end
 
   # Tell Phoenix to update the endpoint configuration
