@@ -1,5 +1,6 @@
 defmodule Exantenna.Router.Video do
   use Exantenna.Web, :router
+  use ExSentry.Plug
 
   pipeline :browser do
     plug :accepts, ["html"]
