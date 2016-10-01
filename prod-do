@@ -42,6 +42,7 @@ upload() {
     # upload staging
     rsync -avr --stats rel adult@${PRODUCTION}:~/
 
+    # TODO: rsync to be background process if additional more INNER server.
     bash mix run for_inners.exs
     rsync -avr --stats rel adult@${INNER1}:~/
 }
