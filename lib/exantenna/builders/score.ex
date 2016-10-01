@@ -13,55 +13,59 @@ defmodule Exantenna.Builders.Score do
   # TODO: To be:  Repo.stream(chunk_size: 10)
   # Launch this per a hour or it also launchs before summary batch.
   def inscore_into do
-    blogs = Repo.all Blog
+    ExSentry.capture_exceptions fn ->
 
-    table = {Score.name_table(Blog), Score}
+      blogs = Repo.all Blog
 
-    inlogs =
-      blogs
-      |> Enum.map(& &1.url)
-      |> Enum.filter(& ! Blank.blank?(&1))
-      |> Inlog.resource
-      |> Inlog.scoring
+      table = {Score.name_table(Blog), Score}
 
-    Enum.map(blogs, fn blog ->
-      count = inlogs[blog.url] || 0
+      inlogs =
+        blogs
+        |> Enum.map(& &1.url)
+        |> Enum.filter(& ! Blank.blank?(&1))
+        |> Inlog.resource
+        |> Inlog.scoring
 
-      query =
-        from s in table,
-          where: s.assoc_id == ^blog.id
+      Enum.map(blogs, fn blog ->
+        count = inlogs[blog.url] || 0
 
-      scores =
-        query
-        |> Repo.all
-        |> make_scores(count, blog)
+        query =
+          from s in table,
+            where: s.assoc_id == ^blog.id
 
-      Repo.transaction fn ->
-        changeset =
-          blog
-          |> Repo.preload(:scores)
-          |> Blog.score_changeset(%{"scores" => scores})
+        scores =
+          query
+          |> Repo.all
+          |> make_scores(count, blog)
 
-        case Repo.update(changeset) do
-          {:error, reason} ->
-            Logger.error("Build daily score: #{inspect reason}")
-            Repo.rollback(reason)
-
-          {_, blog} ->
+        Repo.transaction fn ->
+          changeset =
             blog
+            |> Repo.preload(:scores)
+            |> Blog.score_changeset(%{"scores" => scores})
+
+          case Repo.update(changeset) do
+            {:error, reason} ->
+              Logger.error("Build daily score: #{inspect reason}")
+              Repo.rollback(reason)
+
+            {_, blog} ->
+              blog
+          end
         end
-      end
-    end)
-    |> Enum.filter(fn trans ->
-      case trans do
-        {:ok, %Blog{}} -> true
-        _              -> false
-      end
-    end)
-    |> Enum.map(fn trans ->
-      {:ok, blog} = trans
-       blog
-    end)
+      end)
+      |> Enum.filter(fn trans ->
+        case trans do
+          {:ok, %Blog{}} -> true
+          _              -> false
+        end
+      end)
+      |> Enum.map(fn trans ->
+        {:ok, blog} = trans
+         blog
+      end)
+
+    end
   end
 
   defp make_scores(scores, count, blog) when is_list(scores) do

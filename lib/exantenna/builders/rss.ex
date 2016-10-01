@@ -71,18 +71,19 @@ defmodule Exantenna.Builders.Rss do
   end
 
   defp availabled_shuffle(queryable) do
-    queryable =
+    blogs =
       queryable
       |> Blog.available
+      |> Repo.all
+      |> Enum.shuffle  # TODO: shuffle logic
 
-    queryable
-    |> Repo.all
-    |> Enum.shuffle  # TODO: shuffle logic
-    |> feed_into
+    ExSentry.capture_exceptions fn ->
+      feed_into blogs
+    end
   end
 
   def feed_into(blogs) when is_list(blogs) do
-    Enum.map blogs, fn blog ->
+    Enum.each blogs, fn blog ->
       blog = Blog.feed_changeset(blog, Feed.get(blog.rss))
 
       blog =

@@ -28,63 +28,67 @@ defmodule Exantenna.Builders.Summary do
 
   # launch "45 * * * *"
   def aggs do
-    blogs = Exantenna.Builders.Score.inscore_into
+    ExSentry.capture_exceptions fn ->
 
-    resource =
-      Enum.flat_map(blogs, fn b ->
-        Enum.filter b.scores, & &1.name == Score.const_in_daily
-      end)
-      |> Enum.reduce(%{}, fn b, acc ->
-        Map.merge acc, %{b.assoc_id => b.count}
-      end)
-      |> WalkersAliasMethod.resource  # TODO: Fix right of expression: WalkersAliasMethod.resource %{1 => 0, 2 => 0}
+      blogs = Exantenna.Builders.Score.inscore_into
 
-    ids =
-      Enum.map(1..@limit, fn _ ->
-        WalkersAliasMethod.choice(resource)
-      end)
-      |> Enum.filter(& &1)
-      # |> Enum.uniq
+      resource =
+        Enum.flat_map(blogs, fn b ->
+          Enum.filter b.scores, & &1.name == Score.const_in_daily
+        end)
+        |> Enum.reduce(%{}, fn b, acc ->
+          Map.merge acc, %{b.assoc_id => b.count}
+        end)
+        |> WalkersAliasMethod.resource  # TODO: Fix right of expression: WalkersAliasMethod.resource %{1 => 0, 2 => 0}
 
-    # TODO: must fix logic below to better with selected ids.
-    qs =
-      from a in Antenna.query_all(:esreindex),
-        where: a.blog_id in ^ids,
-        order_by: [desc: a.id],
-        limit: ^@limit
+      ids =
+        Enum.map(1..@limit, fn _ ->
+          WalkersAliasMethod.choice(resource)
+        end)
+        |> Enum.filter(& &1)
+        # |> Enum.uniq
 
-    updateable =
-      qs
-      |> Repo.all
-      |> Enum.shuffle
-      |> Enum.with_index
-      |> Enum.map(fn {an, index} ->
-        m = Antenna.summary_changeset an, %{summary: %{sort: index}}
-        Repo.update! m
-      end)
-
-    if length(updateable) > div(@limit, 2) do
+      # TODO: must fix logic below to better with selected ids.
       qs =
         from a in Antenna.query_all(:esreindex),
-          join: s in Summary,
-          where: s.id == a.summary_id,
-          order_by: [asc: a.id],
-          limit: ^div(@limit, 2)
+          where: a.blog_id in ^ids,
+          order_by: [desc: a.id],
+          limit: ^@limit
 
-      removeable =
+      updateable =
         qs
         |> Repo.all
-        |> Enum.map(fn an ->
-          m = Summary.changeset an.summary, %{}
-          Repo.delete! m
-
-          struct an, [summary: nil, summary_id: nil]
+        |> Enum.shuffle
+        |> Enum.with_index
+        |> Enum.map(fn {an, index} ->
+          m = Antenna.summary_changeset an, %{summary: %{sort: index}}
+          Repo.update! m
         end)
 
-      Es.Document.put_document(removeable)
-    end
+      if length(updateable) > div(@limit, 2) do
+        qs =
+          from a in Antenna.query_all(:esreindex),
+            join: s in Summary,
+            where: s.id == a.summary_id,
+            order_by: [asc: a.id],
+            limit: ^div(@limit, 2)
 
-    Es.Document.put_document(updateable)
+        removeable =
+          qs
+          |> Repo.all
+          |> Enum.map(fn an ->
+            m = Summary.changeset an.summary, %{}
+            Repo.delete! m
+
+            struct an, [summary: nil, summary_id: nil]
+          end)
+
+        Es.Document.put_document(removeable)
+      end
+
+      Es.Document.put_document(updateable)
+
+    end
   end
 
 end

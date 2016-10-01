@@ -175,20 +175,22 @@ defmodule Exantenna.Builders.Penalty do
   end
 
   defp evolve(blog, penalty) do
-    Repo.transaction fn ->
+    ExSentry.capture_exceptions fn ->
+      Repo.transaction fn ->
 
-      changeset =
-        blog
-        |> Repo.preload(:penalty)
-        |> Blog.penalty_changeset(%{"penalty" => penalty})
-
-      case Repo.update(changeset) do
-        {:error, reason} ->
-          Logger.error("Build daily score: #{inspect reason}")
-          Repo.rollback(reason)
-
-        {_, blog} ->
+        changeset =
           blog
+          |> Repo.preload(:penalty)
+          |> Blog.penalty_changeset(%{"penalty" => penalty})
+
+        case Repo.update(changeset) do
+          {:error, reason} ->
+            Logger.error("Build daily score: #{inspect reason}")
+            Repo.rollback(reason)
+
+          {_, blog} ->
+            blog
+        end
       end
     end
   end

@@ -30,6 +30,8 @@ defmodule Exantenna.Services.Antenna do
   #
   def add_by(%Blog{}, nil), do: {:warn, "nil value"}
   def add_by(%Blog{}, %{"url" => url}) when is_nil(url), do: {:error, "Item's url was nil"}
+  def add_by(%Blog{}, %{"title" => url}) when is_nil(url), do: {:error, "Item's title was nil"}
+  def add_by(%Blog{}, %{"title" => ""}), do: {:error, "Item's title was blank"}
   def add_by(%Blog{} = blog, item) do
 
     # XXX: Temporary fix. coz of above's reason.
