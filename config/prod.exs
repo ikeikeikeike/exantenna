@@ -139,27 +139,27 @@ config :quantum,
       args: []
     ],
     penalty_up: [
-      schedule: "8 22 * * *", # Every AM01:08 UTC
+      schedule: "8 22 * * *", # Every AM22:08 UTC
       task: "Exantenna.Builders.Penalty.penalty",
       args: [:up]
     ],
     penalty_down: [
-      schedule: "18 22 * * *", # Every AM01:18 UTC
+      schedule: "18 22 * * *", # Every AM22:18 UTC
       task: "Exantenna.Builders.Penalty.penalty",
       args: [:down]
     ],
     # penalty_ban: [
-      # schedule: "28 22 * * 1", # Every week AM01:28 UTC
-      # task: "Exantenna.Builders.Penalty.penalty",
-      # args: [:ban]
+    #   schedule: "28 22 * * 6", # Every week AM22:28 UTC
+    #   task: "Exantenna.Builders.Penalty.penalty",
+    #   args: [:ban]
     # ],
     # penalty_left: [
-      # schedule: "38 22 * * 1", # Every week AM01:38 UTC
-      # task: "Exantenna.Builders.Penalty.penalty",
-      # args: [:left]
+    #   schedule: "38 22 * * 6", # Every week AM22:38 UTC
+    #   task: "Exantenna.Builders.Penalty.penalty",
+    #   args: [:left]
     # ],
     penalty_nothing: [
-      schedule: "48 22 * * *", # Every AM01:48 UTC
+      schedule: "48 22 * * *", # Every AM22:48 UTC
       task: "Exantenna.Builders.Penalty.penalty",
       args: [:nothing]
     ],

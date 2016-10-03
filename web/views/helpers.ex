@@ -378,10 +378,7 @@ defmodule Exantenna.Helpers do
   def appeared(scores, model), do: Score.appeared scores, model_to_string(model)
 
   def view_embed_on_safety(embed_code) do
-    case String.contains?(embed_code, "iframe") do
-      false -> raw embed_code
-      true  -> PhoenixHtmlSanitizer.Helpers.sanitize embed_code, :full_html
-    end
+    raw HtmlSanitizeEx.noscrub(embed_code)
   end
 
   def get_title(%Antenna{} = antenna) do
