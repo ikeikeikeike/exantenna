@@ -27,7 +27,7 @@ defmodule Exantenna.Api.V1.PartsController do
         _       -> %{is_summary: true}
       end
 
-    per_page = (params["per_item"] || 5) |> to_i
+    per_page = (params["per_item"] || 10) |> to_i
 	if per_page > 50 do
 		per_page = 50
     end
@@ -47,7 +47,7 @@ defmodule Exantenna.Api.V1.PartsController do
           |> Es.Paginator.paginate(Antenna.query_all, options)
 
         Enum.filter antennas.entries, fn an ->
-          length(Extractor.thumb(an)) > 0
+          !(an.id in [135]) && length(Extractor.thumb(an)) > 0
         end
       end
 
