@@ -139,27 +139,27 @@ config :quantum,
       args: []
     ],
     penalty_up: [
-      schedule: "8 22 * * *", # Every AM22:08 UTC
+      schedule: "8 22 * * *", # Every 22:08 UTC
       task: "Exantenna.Builders.Penalty.penalty",
       args: [:up]
     ],
     penalty_down: [
-      schedule: "18 22 * * *", # Every AM22:18 UTC
+      schedule: "18 22 * * *", # Every 22:18 UTC
       task: "Exantenna.Builders.Penalty.penalty",
       args: [:down]
     ],
     # penalty_ban: [
-    #   schedule: "28 22 * * 6", # Every week AM22:28 UTC
+    #   schedule: "28 22 * * 6", # Every week 22:28 UTC
     #   task: "Exantenna.Builders.Penalty.penalty",
     #   args: [:ban]
     # ],
     # penalty_left: [
-    #   schedule: "38 22 * * 6", # Every week AM22:38 UTC
+    #   schedule: "38 22 * * 6", # Every week 22:38 UTC
     #   task: "Exantenna.Builders.Penalty.penalty",
     #   args: [:left]
     # ],
     penalty_nothing: [
-      schedule: "48 22 * * *", # Every AM22:48 UTC
+      schedule: "48 22 * * *", # Every 22:48 UTC
       task: "Exantenna.Builders.Penalty.penalty",
       args: [:nothing]
     ],
@@ -167,6 +167,26 @@ config :quantum,
       schedule: "58 * * * *", # Every 58 min.
       task: "Exantenna.Builders.Penalty.penalty",
       args: [:begin]
+    ],
+    translation_diva: [
+      schedule: "13 23 * * 5", # Every week 23:13 UTC
+      task: "Exantenna.Builders.Translation.tag",
+      args: []
+    ],
+    translation_toon: [
+      schedule: "26 23 * * 5", # Every week 23:26 UTC
+      task: "Exantenna.Builders.Translation.tag",
+      args: []
+    ],
+    translation_char: [
+      schedule: "39 23 * * 5", # Every week 23:39 UTC
+      task: "Exantenna.Builders.Translation.tag",
+      args: []
+    ],
+    translation_tag: [
+      schedule: "52 23 * * 5", # Every week 23:52 UTC
+      task: "Exantenna.Builders.Translation.tag",
+      args: []
     ]
   ]
 
