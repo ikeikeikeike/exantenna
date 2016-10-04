@@ -170,17 +170,17 @@ config :quantum,
     ],
     translation_diva: [
       schedule: "13 23 * * 5", # Every week 23:13 UTC
-      task: "Exantenna.Builders.Translation.tag",
+      task: "Exantenna.Builders.Translation.diva",
       args: []
     ],
     translation_toon: [
       schedule: "26 23 * * 5", # Every week 23:26 UTC
-      task: "Exantenna.Builders.Translation.tag",
+      task: "Exantenna.Builders.Translation.toon",
       args: []
     ],
     translation_char: [
       schedule: "39 23 * * 5", # Every week 23:39 UTC
-      task: "Exantenna.Builders.Translation.tag",
+      task: "Exantenna.Builders.Translation.char",
       args: []
     ],
     translation_tag: [
