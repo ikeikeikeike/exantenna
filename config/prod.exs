@@ -144,7 +144,7 @@ config :quantum,
       args: [:up]
     ],
     penalty_down: [
-      schedule: "18 22 * * *", # Every 22:18 UTC
+      schedule: "18 16,22 * * *", # Every 16:18,22:18 UTC
       task: "Exantenna.Builders.Penalty.penalty",
       args: [:down]
     ],
