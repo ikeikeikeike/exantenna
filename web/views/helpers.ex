@@ -315,10 +315,12 @@ defmodule Exantenna.Helpers do
     thumb
   end
 
-  def ordering(models, :child, :available) do
-    Enum.sort models, fn a, b ->
-      blank?(pick(b.thumbs))
-    end
+  def ordering(models, :thumb, :randomize, :available) do
+    models
+    |> Enum.filter(fn b ->
+      ! blank?(pick(b.thumbs))
+    end)
+    |> Enum.shuffle
   end
 
   def anstget(%Antenna{} = antenna), do: antenna
