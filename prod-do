@@ -66,14 +66,14 @@ remove() {
     rm -fr rel/exantenna/lib/exantenna-$1
     rm -fr rel/exantenna/releases/$1
 
+    rsync -avr --delete --stats rel/exantenna/lib      adult@${BUILDING}:~/src/exantenna/rel/exantenna/
+    rsync -avr --delete --stats rel/exantenna/releases adult@${BUILDING}:~/src/exantenna/rel/exantenna/
+
     rsync -avr --delete --stats rel/exantenna/lib      adult@${PRODUCTION}:~/rel/exantenna/
     rsync -avr --delete --stats rel/exantenna/releases adult@${PRODUCTION}:~/rel/exantenna/
 
     rsync -avr --delete --stats rel/exantenna/lib      adult@${INNER1}:~/rel/exantenna/
     rsync -avr --delete --stats rel/exantenna/releases adult@${INNER1}:~/rel/exantenna/
-
-    rsync -avr --delete --stats rel/exantenna/lib      adult@${BUILDING}:~/src/exantenna/rel/exantenna/
-    rsync -avr --delete --stats rel/exantenna/releases adult@${BUILDING}:~/src/exantenna/rel/exantenna/
 }
 
 deployed() {

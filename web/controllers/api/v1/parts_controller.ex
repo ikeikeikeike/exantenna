@@ -47,7 +47,7 @@ defmodule Exantenna.Api.V1.PartsController do
           |> Es.Paginator.paginate(Antenna.query_all, options)
 
         Enum.filter antennas.entries, fn an ->
-          !(an.id in [135]) && length(Extractor.thumb(an)) > 0
+          !(an.blog_id in [135]) && length(Extractor.thumb(an)) > 0
         end
       end
 
