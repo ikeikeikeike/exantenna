@@ -4,6 +4,17 @@ defmodule Exantenna.Ecto.Q do
   alias Exantenna.Repo
   alias Exantenna.Blank
 
+  def exists?(queryable) do
+    query =
+      Ecto.Query.from(x in queryable, limit: 1)
+      |> Ecto.Queryable.to_query
+
+    case Repo.all(query) do
+      [] -> false
+      _  -> true
+    end
+  end
+
   def fuzzy_find(mod, name) when is_nil(name), do: fuzzy_find(mod, [])
   def fuzzy_find(mod, name) when is_bitstring(name) do
     case String.split(name, ~r(、|（|）)) do

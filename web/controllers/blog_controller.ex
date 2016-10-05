@@ -7,12 +7,14 @@ defmodule Exantenna.BlogController do
   alias Exantenna.Antenna
 
   alias Exantenna.Filter
+  alias Exantenna.Ecto.Q
   alias Exantenna.Es.Paginator
 
   import Ecto.Query
 
   def show(conn, %{"id" => id} = params) do
     blog = Repo.get_by!(Blog.query_all(1), id: id)
+
     queryable =
       Antenna.query_all(:index)
       |> Exantenna.Domain.Q.allowed_join(conn)
@@ -21,6 +23,9 @@ defmodule Exantenna.BlogController do
       from q in queryable,
         where: q.blog_id == ^id,
         order_by: [desc: q.id]
+
+    unless Q.exists?(queryable),
+      do: raise Ecto.NoResultsError.exception queryable: queryable
 
     pager =
       queryable
@@ -33,6 +38,5 @@ defmodule Exantenna.BlogController do
   def show(conn, %{"id" => _id, "title" => _title} = params) do
     show conn, params
   end
-
 
 end
