@@ -154,6 +154,11 @@ defmodule Exantenna.Blog do
     |> cast_assoc(:verifiers, required: true)
   end
 
+  def delete_changeset(model, params \\ :invalid) do
+    model
+    |> cast(params, ~w(), @optional_fields)
+  end
+
   def feed_changeset(model, feed \\ :invalid) do
     params = %{
       url: feed["host"],

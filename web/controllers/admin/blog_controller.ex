@@ -75,7 +75,7 @@ defmodule Exantenna.Admin.BlogController do
 
       {:error, changeset} ->
         conn
-        |> put_flash(:warn, gettext("couldnt delete %{name}.", name: "Blog"))
+        |> put_flash(:error, gettext("Cound not delete %{name}.", name: "Blog"))
         |> redirect(to: admin_blog_path(conn, :index))
     end
   end
