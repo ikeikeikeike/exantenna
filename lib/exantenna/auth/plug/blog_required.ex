@@ -1,20 +1,22 @@
-defmodule Exantenna.Auth.Plug.LoginRequired do
+defmodule Exantenna.Auth.Plug.BlogRequired do
   import Plug.Conn
   alias Exantenna.User
+  alias Exantenna.Blog
 
   def init(opts), do: opts
 
   def call(conn, opts) do
-    if user = current_user(conn, opts) do
-      assign(conn, :current_user, user)
+    with %User{} = user <- current_user(conn, opts),
+         [%Blog{}]      <- Enum.filter(user.blogs, & "#{&1.id}" == conn.params["id"]) do
+      conn
     else
-      redirect(conn, opts)
+      _ -> redirect(conn, opts)
     end
   end
 
   defp current_user(conn, _ops) do
     case Guardian.Plug.current_resource(conn) do
-      %User{} = user -> user
+      %User{} = user -> User.with_blogs(user)
       _ -> false
     end
   end

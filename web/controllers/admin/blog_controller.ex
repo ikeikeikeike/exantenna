@@ -7,6 +7,7 @@ defmodule Exantenna.Admin.BlogController do
 
   plug AuthPlug.LoginRequired
   plug AuthPlug.AssignUser
+  plug AuthPlug.BlogRequired when action in [:show, :edit, :delete]
   plug :put_layout, {Exantenna.Admin.LayoutView, "app.html"}
 
   def index(conn, _params) do
@@ -59,5 +60,25 @@ defmodule Exantenna.Admin.BlogController do
         render(conn, "edit.html", blog: blog, changeset: changeset)
     end
   end
+
+  def delete(conn, %{"id" => id}) do
+    blog = Repo.get!(Blog, id) |> Repo.preload(:verifiers)
+
+    params = %{"user_id" => nil, "rss" => nil, "url" => nil}
+    changeset = Blog.delete_changeset(blog, params)
+
+    case Repo.update(changeset) do
+      {:ok, _blog} ->
+        conn
+        |> put_flash(:info, gettext("%{name} deleted successfully.", name: "Blog"))
+        |> redirect(to: admin_blog_path(conn, :index))
+
+      {:error, changeset} ->
+        conn
+        |> put_flash(:warn, gettext("couldnt delete %{name}.", name: "Blog"))
+        |> redirect(to: admin_blog_path(conn, :index))
+    end
+  end
+
 
 end
