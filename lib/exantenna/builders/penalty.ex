@@ -20,7 +20,8 @@ defmodule Exantenna.Builders.Penalty do
         join: j in assoc(f, :scores),
         where: j.assoc_id == f.id
            and j.count <= 0
-           and j.name == ^Score.const_in_daily
+           and j.name == ^Score.const_in_weekly
+           # and j.name == ^Score.const_in_daily
 
     queryable
     |> Repo.all
@@ -49,7 +50,8 @@ defmodule Exantenna.Builders.Penalty do
         join: j in assoc(f, :scores),
         where: j.assoc_id == f.id
            and j.count > 0
-           and j.name == ^Score.const_in_daily
+           and j.name == ^Score.const_in_weekly
+           # and j.name == ^Score.const_in_daily
 
     queryable
     |> Repo.all

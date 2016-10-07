@@ -34,7 +34,8 @@ defmodule Exantenna.Builders.Summary do
 
       resource =
         Enum.flat_map(blogs, fn b ->
-          Enum.filter b.scores, & &1.name == Score.const_in_daily
+          Enum.filter b.scores, & &1.name == Score.const_in_weekly
+          # Enum.filter b.scores, & &1.name == Score.const_in_daily
         end)
         |> Enum.reduce(%{}, fn b, acc ->
           Map.merge acc, %{b.assoc_id => b.count}
