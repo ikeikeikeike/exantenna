@@ -20,7 +20,7 @@ defmodule Exantenna.VideoMetadata do
   end
 
   @required_fields ~w()
-  @optional_fields ~w(title url content embed_code duration)
+  @optional_fields ~w(title url content embed_code duration site_id site)
 
   def changeset(model, params \\ :invalid) do
     model

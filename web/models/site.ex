@@ -22,4 +22,21 @@ defmodule Exantenna.Site do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
+  def get_or_changeset(model, %{"url" => url}),
+    do: get_or_changeset(model, %{url: url})
+  def get_or_changeset(model, %{url: url}) do
+    u = URI.parse(url)
+
+    case Exantenna.Ecto.Changeset.get_or_changeset(model, %{domain: u.host}) do
+      %Site{} = model ->
+        model
+      cset ->
+        cset
+        |> update_change(:url, URI.to_string(%URI{scheme: u.scheme, host: u.host}))
+        |> update_change(:name, u.host)
+        |> update_change(:domain, u.host)
+    end
+  end
+
 end

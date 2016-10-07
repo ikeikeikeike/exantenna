@@ -7,7 +7,6 @@ defmodule Exantenna.Video do
   alias Exantenna.Redis.Imginfo
 
   import Exantenna.Blank
-  import Exantenna.Ecto.Changeset, only: [get_or_changeset: 2]
 
   @json_fields ~w(metadatas)
   @derive {Poison.Encoder, only: Enum.map(@json_fields, &(String.to_atom(&1)))}
@@ -66,21 +65,7 @@ defmodule Exantenna.Video do
                   inf -> inf
                 end
               end),
-              site: fn url ->
-                u = URI.parse(url)
-                url = URI.to_string(%URI{scheme: u.scheme, host: u.host})
-
-                case get_or_changeset(Site, %{domain: u.host}) do
-                  %Site{} = model ->
-                    model
-                  cset ->
-                    %{
-                      "name" => u.host,
-                      "url" => url,
-                      "domain" => u.host,
-                    }
-                end
-              end.(vid["url"])
+              site: Site.get_or_changeset(Site, %{url: vid["url"]}),
             }
           end
 
