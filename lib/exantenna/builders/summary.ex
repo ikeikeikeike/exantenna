@@ -34,7 +34,7 @@ defmodule Exantenna.Builders.Summary do
 
       resource =
         Enum.filter(fn b ->
-          ! b.id in [135]
+          ! b.id in [135] # Ignore 135 id
         end)
         Enum.flat_map(blogs, fn b ->
           Enum.filter b.scores, & &1.name == Score.const_in_weekly
