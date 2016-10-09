@@ -14,7 +14,7 @@ defmodule Exantenna.Builders.Summary do
 
   require Logger
 
-  @limit 750
+  @limit 1500
 
   # TODO: below
   # Find entry 10 days ago and not pushed entry yet.
@@ -33,10 +33,11 @@ defmodule Exantenna.Builders.Summary do
       blogs = Exantenna.Builders.Score.inscore_into
 
       resource =
-        Enum.filter(fn b ->
+        blogs
+        |> Enum.filter(fn b ->
           ! b.id in [135] # Ignore 135 id
         end)
-        Enum.flat_map(blogs, fn b ->
+        |> Enum.flat_map(fn b ->
           Enum.filter b.scores, & &1.name == Score.const_in_weekly
           # Enum.filter b.scores, & &1.name == Score.const_in_daily
         end)
