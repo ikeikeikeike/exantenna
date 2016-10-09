@@ -65,7 +65,7 @@ defmodule Exantenna.Video do
                   inf -> inf
                 end
               end),
-              site: Site.get_or_changeset(Site, %{url: vid["url"]}),
+              # site: Site.tobe_map(Site, %{url: vid["url"]}),
             }
           end
 

@@ -20,11 +20,12 @@ defmodule Exantenna.VideoMetadata do
   end
 
   @required_fields ~w()
-  @optional_fields ~w(title url content embed_code duration site_id site)
+  @optional_fields ~w(title url content embed_code duration site_id)
 
   def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> cast_assoc(:site, required: false)
     |> validate_format(:url, ~r/^https?:\/\//)
   end
 end
