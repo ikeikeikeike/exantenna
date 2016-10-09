@@ -33,6 +33,9 @@ defmodule Exantenna.Builders.Summary do
       blogs = Exantenna.Builders.Score.inscore_into
 
       resource =
+        Enum.filter(fn b ->
+          ! b.id in [135]
+        end)
         Enum.flat_map(blogs, fn b ->
           Enum.filter b.scores, & &1.name == Score.const_in_weekly
           # Enum.filter b.scores, & &1.name == Score.const_in_daily
