@@ -16,6 +16,10 @@ defmodule Exantenna.Domain.Filter do
     end
   end
 
+  def subdomain?(%Plug.Conn{} = conn) do
+    !! conn.private[:subdomain]
+  end
+
   def what(%Plug.Conn{} = conn) do
     conn.private[:subdomain]
   end
