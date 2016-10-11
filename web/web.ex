@@ -60,6 +60,7 @@ defmodule Exantenna.Web do
       import Exantenna.Helpers
       import Exantenna.Gettext
 
+      import Exantenna.Domain.Filter
       import Exantenna.HTML.Safe
 
       import SimpleFormat
