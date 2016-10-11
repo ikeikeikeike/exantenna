@@ -6,9 +6,12 @@ defmodule Exantenna.SchemaOrg do
   alias Exantenna.Toon
   alias Exantenna.Antenna
 
+  alias Exantenna.Helpers
   alias Exantenna.Ecto.Extractor
 
+  import Exantenna.Helpers
   import Exantenna.Gettext
+  import Exantenna.Router.Helpers
 
   def person(title, %Antenna{} = model) do
     people =
@@ -21,6 +24,25 @@ defmodule Exantenna.SchemaOrg do
         person title, char
       end
     end
+  end
+
+  def video_object(%Plug.Conn{} = conn, %Exantenna.Es.Paginator{} = pager) do
+    Enum.map(pager.entries, fn maybe ->
+      an = anstget maybe
+      thumb = choose_thumb an, :entry
+
+      %{
+        "@type": "VideoObject",
+        "url": entry_path(conn, :show, an.id),
+        "name": an.metadata.seo_title,
+        "headline": an.metadata.seo_title,
+        "description": an.metadata.seo_content,
+        "image": (if thumb, do: thumb.src, else: fallback),
+        "thumbnailUrl": (if thumb, do: thumb.src, else: fallback),
+        "keywords": get_keywords(an),
+        "uploadDate": Timex.format!(an.metadata.published_at || an.inserted_at, "{ISOz}")
+      }
+    end)
   end
 
   def image_object(title, %Antenna{} = model) do
