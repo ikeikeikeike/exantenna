@@ -49,8 +49,12 @@ upload() {
 
 upgrade() {
     # upgrade
+    ssh adult@${PRODUCTION} "(cd src/exantenna; hg pull ; hg up -C)"
     ssh adult@${PRODUCTION} "sh rel/exantenna/bin/exantenna upgrade $1"
-    ssh adult@${INNER1}     "sh rel/exantenna/bin/exantenna upgrade $1"
+
+    ssh adult@${INNER1} "(cd src/exantenna; hg pull ; hg up -C)"
+    ssh adult@${INNER1} "sh rel/exantenna/bin/exantenna upgrade $1"
+
     echo;deployed
 }
 

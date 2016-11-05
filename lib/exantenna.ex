@@ -30,7 +30,7 @@ defmodule Exantenna do
     Supervisor.start_link(children, opts)
 
     # for error
-    Logger.add_backend(ExSentry.LoggerBackend)
+    # Logger.add_backend(ExSentry.LoggerBackend)
   end
 
   # Tell Phoenix to update the endpoint configuration

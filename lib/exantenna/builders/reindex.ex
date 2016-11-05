@@ -1,12 +1,12 @@
 defmodule Exantenna.Builders.Reindex do
 
   def evolve do
-    ExSentry.capture_exceptions fn ->
+    # ExSentry.capture_exceptions fn ->
       evolve :tag
       evolve :toon
       evolve :char
       evolve :diva
-    end
+    # end
   end
   def evolve([]), do: evolve
   def evolve(:tag), do: evolve Exantenna.Tag

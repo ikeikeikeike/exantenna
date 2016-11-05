@@ -29,9 +29,9 @@ defmodule Exantenna.Builders.Appear do
         Map.update(acc, map[:key], m, &Map.merge(&1, m))
       end
 
-    ExSentry.capture_exceptions fn ->
+    # ExSentry.capture_exceptions fn ->
       aggs mod, merged
-    end
+    # end
   end
 
   def aggs(mod, aggs) do

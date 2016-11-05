@@ -14,7 +14,7 @@ defmodule Exantenna.Mixfile do
   end
 
   defp version do
-    v = "0.2.27"
+    v = "0.2.31"
     File.write! "VERSION", v
     v
   end
@@ -48,7 +48,7 @@ defmodule Exantenna.Mixfile do
         :sitemap,
         :httpoison,
         :mogrify,
-        :exsentry,
+        # :exsentry,
         :exkanji,
       ],
       included_applications: [
@@ -106,7 +106,7 @@ defmodule Exantenna.Mixfile do
       {:sitemap, ">= 0.0.0"},
       {:mogrify, "~> 0.4"},
       {:httpoison, "~> 0.9"},
-      {:exsentry, "~> 0.7"},
+      # {:exsentry, "~> 0.7"},
       {:exkanji, "~> 0.3"},
     ]
   end

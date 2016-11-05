@@ -77,9 +77,9 @@ defmodule Exantenna.Builders.Rss do
       |> Repo.all
       |> Enum.shuffle  # TODO: shuffle logic
 
-    ExSentry.capture_exceptions fn ->
+    # ExSentry.capture_exceptions fn ->
       feed_into blogs
-    end
+    # end
   end
 
   def feed_into(blogs) when is_list(blogs) do

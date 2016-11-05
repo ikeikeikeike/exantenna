@@ -28,7 +28,7 @@ defmodule Exantenna.Builders.Summary do
 
   # launch "45 * * * *"
   def aggs do
-    ExSentry.capture_exceptions fn ->
+    # ExSentry.capture_exceptions fn ->
 
       blogs = Exantenna.Builders.Score.inscore_into
 
@@ -93,7 +93,7 @@ defmodule Exantenna.Builders.Summary do
 
       Es.Document.put_document(updateable)
 
-    end
+    # end
   end
 
 end

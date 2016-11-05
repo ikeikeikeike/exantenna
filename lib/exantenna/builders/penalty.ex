@@ -177,7 +177,7 @@ defmodule Exantenna.Builders.Penalty do
   end
 
   defp evolve(blog, penalty) do
-    ExSentry.capture_exceptions fn ->
+    # ExSentry.capture_exceptions fn ->
       Repo.transaction fn ->
 
         changeset =
@@ -194,7 +194,7 @@ defmodule Exantenna.Builders.Penalty do
             blog
         end
       end
-    end
+    # end
   end
 
 end

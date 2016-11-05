@@ -13,7 +13,7 @@ defmodule Exantenna.Builders.Score do
   # TODO: To be:  Repo.stream(chunk_size: 10)
   # Launch this per a hour or it also launchs before summary batch.
   def inscore_into do
-    ExSentry.capture_exceptions fn ->
+    # ExSentry.capture_exceptions fn ->
 
       blogs = Repo.all Blog
 
@@ -65,7 +65,7 @@ defmodule Exantenna.Builders.Score do
          blog
       end)
 
-    end
+    # end
   end
 
   defp make_scores(scores, count, blog) when is_list(scores) do

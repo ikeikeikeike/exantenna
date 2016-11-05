@@ -45,7 +45,7 @@ defmodule Exantenna.Builders.Translation do
   end
 
   def update_ruby(%{kana: _, romaji: _, gyou: _} = model) do
-    ExSentry.capture_exceptions fn ->
+    # ExSentry.capture_exceptions fn ->
       params = %{
         "kana" => Exkanji.hira(model.name),
         "romaji" => Exkanji.romaji(model.name),
@@ -53,7 +53,7 @@ defmodule Exantenna.Builders.Translation do
       }
 
       Repo.update model.__struct__.changeset(model, params)
-    end
+    # end
   end
 
   defp sound_romaji(word) do
