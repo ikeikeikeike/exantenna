@@ -49,9 +49,39 @@ upload() {
 
 upgrade() {
     # upgrade
+    ssh adult@${PRODUCTION} "(cd src/exantenna; hg pull ; hg up -C)"
     ssh adult@${PRODUCTION} "sh rel/exantenna/bin/exantenna upgrade $1"
-    ssh adult@${INNER1}     "sh rel/exantenna/bin/exantenna upgrade $1"
+
+    ssh adult@${INNER1} "(cd src/exantenna; hg pull ; hg up -C)"
+    ssh adult@${INNER1} "sh rel/exantenna/bin/exantenna upgrade $1"
+
+    startsrv
+
     echo;deployed
+}
+
+startsrv() {
+    set +e
+
+    OUT=`ssh adult@${INNER1} "ps aux | grep '/rel/exantenna/bin/exantenna' | grep -v 'grep'"`
+    echo "INNER1 OUT: $OUT"
+    ssh adult@${INNER1} "sudo systemctl restart phoenix"
+    ssh adult@${INNER1} "sudo systemctl start phoenix"
+    ssh adult@${INNER1} "sudo systemctl start phoenix"
+    ssh adult@${INNER1} "sudo systemctl start phoenix"
+    OUT=`ssh adult@${INNER1} "ps aux | grep '/rel/exantenna/bin/exantenna' | grep -v 'grep'"`
+    echo "INNER1 OUT: $OUT"
+
+    OUT=`ssh adult@${PRODUCTION} "ps aux | grep '/rel/exantenna/bin/exantenna' | grep -v 'grep'"`
+    echo;echo "PRODUCTION OUT: $OUT"
+    ssh adult@${PRODUCTION} "sudo systemctl restart phoenix"
+    ssh adult@${PRODUCTION} "sudo systemctl start phoenix"
+    ssh adult@${PRODUCTION} "sudo systemctl start phoenix"
+    ssh adult@${PRODUCTION} "sudo systemctl start phoenix"
+    OUT=`ssh adult@${PRODUCTION} "ps aux | grep '/rel/exantenna/bin/exantenna' | grep -v 'grep'"`
+    echo "PRODUCTION OUT: $OUT"
+
+    set -e
 }
 
 downgrade() {
@@ -96,7 +126,7 @@ case "$1" in
     downgrade)          downgrade $2      ;;
     deployed)           deployed          ;;
     remove)             remove $2         ;;
-    restart)            stopsrv; startsrv ;;
+    restart)            startsrv          ;;
     *) echo "
 Usage:
     $0 <command> [options]
@@ -112,6 +142,7 @@ Commands:
     downgrade  <version>      Hot deploy server.
     deployed                  Deployed versions.
     remove                    Removing before versions.
+    restart                   Restarting servers
 
 " >&2
        exit 1
