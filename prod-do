@@ -1,6 +1,7 @@
 #!/bin/bash -eu
 VERSION=`cat VERSION`
 
+USER=`cat USER`
 BUILDING=`cat BUILDING`
 PRODUCTION=`cat PRODUCTION`
 INNER1=`cat INNER1`
@@ -24,13 +25,13 @@ fixversion() {
 build() {
     fixversion
 
-    ssh adult@${BUILDING} "rm -rf src/exantenna/priv/static/css/*"
-    ssh adult@${BUILDING} "rm -rf src/exantenna/priv/static/js/*"
-    ssh adult@${BUILDING} "cd src/exantenna && bash build"
+    ssh ${USER}@${BUILDING} "rm -rf src/exantenna/priv/static/css/*"
+    ssh ${USER}@${BUILDING} "rm -rf src/exantenna/priv/static/js/*"
+    ssh ${USER}@${BUILDING} "cd src/exantenna && bash build"
 }
 
 download() {
-    rsync -avr --stats adult@${BUILDING}:~/src/exantenna/rel .
+    rsync -avr --stats ${USER}@${BUILDING}:~/src/exantenna/rel .
 
     (cd rel/exantenna
         rm -rf  static
@@ -40,45 +41,45 @@ download() {
 
 upload() {
     # upload staging
-    rsync -avr --stats rel adult@${PRODUCTION}:~/
+    rsync -avr --stats rel ${USER}@${PRODUCTION}:~/
 
     # TODO: rsync to be background process if additional more INNER server.
     bash mix run for_inners.exs
-    rsync -avr --stats rel adult@${INNER1}:~/
+    rsync -avr --stats rel ${USER}@${INNER1}:~/
 }
 
 upgrade() {
     # upgrade
-    ssh adult@${PRODUCTION} "(cd src/exantenna; hg pull ; hg up -C)"
-    ssh adult@${PRODUCTION} "sh rel/exantenna/bin/exantenna upgrade $1"
+    ssh ${USER}@${PRODUCTION} "(cd src/exantenna; hg pull ; hg up -C)"
+    ssh ${USER}@${PRODUCTION} "sh rel/exantenna/bin/exantenna upgrade $1"
 
-    ssh adult@${INNER1} "(cd src/exantenna; hg pull ; hg up -C)"
-    ssh adult@${INNER1} "sh rel/exantenna/bin/exantenna upgrade $1"
+    ssh ${USER}@${INNER1} "(cd src/exantenna; hg pull ; hg up -C)"
+    ssh ${USER}@${INNER1} "sh rel/exantenna/bin/exantenna upgrade $1"
 
-    startsrv
+    restartsrv
 
     echo;deployed
 }
 
-startsrv() {
+restartsrv() {
     set +e
 
-    OUT=`ssh adult@${INNER1} "ps aux | grep '/rel/exantenna/bin/exantenna' | grep -v 'grep'"`
+    OUT=`ssh ${USER}@${INNER1} "ps aux | grep '/rel/exantenna/bin/exantenna' | grep -v 'grep'"`
     echo "INNER1 OUT: $OUT"
-    ssh adult@${INNER1} "sudo systemctl restart phoenix"
-    ssh adult@${INNER1} "sudo systemctl start phoenix"
-    ssh adult@${INNER1} "sudo systemctl start phoenix"
-    ssh adult@${INNER1} "sudo systemctl start phoenix"
-    OUT=`ssh adult@${INNER1} "ps aux | grep '/rel/exantenna/bin/exantenna' | grep -v 'grep'"`
+    ssh ${USER}@${INNER1} "sudo systemctl restart phoenix"
+    ssh ${USER}@${INNER1} "sudo systemctl start phoenix"
+    ssh ${USER}@${INNER1} "sudo systemctl start phoenix"
+    ssh ${USER}@${INNER1} "sudo systemctl start phoenix"
+    OUT=`ssh ${USER}@${INNER1} "ps aux | grep '/rel/exantenna/bin/exantenna' | grep -v 'grep'"`
     echo "INNER1 OUT: $OUT"
 
-    OUT=`ssh adult@${PRODUCTION} "ps aux | grep '/rel/exantenna/bin/exantenna' | grep -v 'grep'"`
+    OUT=`ssh ${USER}@${PRODUCTION} "ps aux | grep '/rel/exantenna/bin/exantenna' | grep -v 'grep'"`
     echo;echo "PRODUCTION OUT: $OUT"
-    ssh adult@${PRODUCTION} "sudo systemctl restart phoenix"
-    ssh adult@${PRODUCTION} "sudo systemctl start phoenix"
-    ssh adult@${PRODUCTION} "sudo systemctl start phoenix"
-    ssh adult@${PRODUCTION} "sudo systemctl start phoenix"
-    OUT=`ssh adult@${PRODUCTION} "ps aux | grep '/rel/exantenna/bin/exantenna' | grep -v 'grep'"`
+    ssh ${USER}@${PRODUCTION} "sudo systemctl restart phoenix"
+    ssh ${USER}@${PRODUCTION} "sudo systemctl start phoenix"
+    ssh ${USER}@${PRODUCTION} "sudo systemctl start phoenix"
+    ssh ${USER}@${PRODUCTION} "sudo systemctl start phoenix"
+    OUT=`ssh ${USER}@${PRODUCTION} "ps aux | grep '/rel/exantenna/bin/exantenna' | grep -v 'grep'"`
     echo "PRODUCTION OUT: $OUT"
 
     set -e
@@ -86,8 +87,8 @@ startsrv() {
 
 downgrade() {
     # upgrade
-    ssh adult@${PRODUCTION} "sh rel/exantenna/bin/exantenna downgrade $1"
-    ssh adult@${INNER1}     "sh rel/exantenna/bin/exantenna downgrade $1"
+    ssh ${USER}@${PRODUCTION} "sh rel/exantenna/bin/exantenna downgrade $1"
+    ssh ${USER}@${INNER1}     "sh rel/exantenna/bin/exantenna downgrade $1"
 
     echo;deployed
 }
@@ -96,23 +97,23 @@ remove() {
     rm -fr rel/exantenna/lib/exantenna-$1
     rm -fr rel/exantenna/releases/$1
 
-    rsync -avr --delete --stats rel/exantenna/lib      adult@${BUILDING}:~/src/exantenna/rel/exantenna/
-    rsync -avr --delete --stats rel/exantenna/releases adult@${BUILDING}:~/src/exantenna/rel/exantenna/
+    rsync -avr --delete --stats rel/exantenna/lib      ${USER}@${BUILDING}:~/src/exantenna/rel/exantenna/
+    rsync -avr --delete --stats rel/exantenna/releases ${USER}@${BUILDING}:~/src/exantenna/rel/exantenna/
 
-    rsync -avr --delete --stats rel/exantenna/lib      adult@${PRODUCTION}:~/rel/exantenna/
-    rsync -avr --delete --stats rel/exantenna/releases adult@${PRODUCTION}:~/rel/exantenna/
+    rsync -avr --delete --stats rel/exantenna/lib      ${USER}@${PRODUCTION}:~/rel/exantenna/
+    rsync -avr --delete --stats rel/exantenna/releases ${USER}@${PRODUCTION}:~/rel/exantenna/
 
-    rsync -avr --delete --stats rel/exantenna/lib      adult@${INNER1}:~/rel/exantenna/
-    rsync -avr --delete --stats rel/exantenna/releases adult@${INNER1}:~/rel/exantenna/
+    rsync -avr --delete --stats rel/exantenna/lib      ${USER}@${INNER1}:~/rel/exantenna/
+    rsync -avr --delete --stats rel/exantenna/releases ${USER}@${INNER1}:~/rel/exantenna/
 }
 
 deployed() {
     # upgrade
     echo "PRODUCTION"
-    ssh adult@${PRODUCTION} "ls -t rel/exantenna/releases"
+    ssh ${USER}@${PRODUCTION} "ls -t rel/exantenna/releases"
 
     echo "INNER1"
-    ssh adult@${INNER1} "ls -t rel/exantenna/releases"
+    ssh ${USER}@${INNER1} "ls -t rel/exantenna/releases"
 }
 
 case "$1" in
@@ -126,7 +127,7 @@ case "$1" in
     downgrade)          downgrade $2      ;;
     deployed)           deployed          ;;
     remove)             remove $2         ;;
-    restart)            startsrv          ;;
+    restart)            restartsrv        ;;
     *) echo "
 Usage:
     $0 <command> [options]
