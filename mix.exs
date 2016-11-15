@@ -36,7 +36,6 @@ defmodule Exantenna.Mixfile do
         :common_device_detector,
         :html_entities,
         :tributary,
-        :phoenix_html_sanitizer,
         :simple_format,
         :guardian,
         :cors_plug,
@@ -50,6 +49,9 @@ defmodule Exantenna.Mixfile do
         :mogrify,
         :exsentry,
         :exkanji,
+        :floki,
+        :mochiweb,
+        :html_sanitize_ex,
       ],
       included_applications: [
        :scrivener,
@@ -88,7 +90,6 @@ defmodule Exantenna.Mixfile do
       {:mailgun, "~> 0.1"},
       {:redix, ">= 0.0.0"},
       {:bing_translator, "~> 0.3"},
-      {:phoenix_html_sanitizer, "~> 1.0.0"},
       {:con_cache, "~> 0.11"},
       {:tirexs, "~> 0.8"},
       {:simple_format, "~> 0.1"},
@@ -108,6 +109,9 @@ defmodule Exantenna.Mixfile do
       {:httpoison, "~> 0.9"},
       {:exsentry, "~> 0.7"},
       {:exkanji, "~> 0.3"},
+      {:html_sanitize_ex, "~> 1.1"},
+      {:floki, "~> 0.11"},
+      {:mochiweb, ">= 2.12.2", override: true}
     ]
   end
 
